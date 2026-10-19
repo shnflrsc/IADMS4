@@ -32,28 +32,33 @@ public class CoordinatorDashboardView {
 
     public void show(String coordinatorName) {
         new Menu(console, "Coordinator Dashboard - " + coordinatorName, "Log out")
+                // Students & interns
                 .add("View students", this::viewStudents)
                 .add("Search students & interns", this::searchStudents)
                 .add("Register student", this::registerStudent)
                 .add("View interns (with status)", this::viewInterns)
                 .add("Filter interns by status", this::filterInterns)
-                .add("View company representatives", this::viewRepresentatives)
-                .add("View coordinators", this::viewCoordinators)
-                .add("Edit a person's details", this::editPerson)
-                .add("Delete a person", this::deletePerson)
-                .add("Reset a user's password", this::resetPassword)
+                .add("View intern evaluations", this::viewEvaluations)
+                // Openings & applications
                 .add("View openings", this::viewOpenings)
                 .add("Endorse student to an opening", this::endorse)
                 .add("View applications", this::viewApplications)
                 .add("Filter applications by status", this::filterApplications)
                 .add("Withdraw a pending application", this::withdraw)
-                .add("View intern evaluations", this::viewEvaluations)
+                // Companies
                 .add("View companies", this::viewCompanies)
                 .add("Add company", this::addCompany)
                 .add("Rename a company", this::renameCompany)
                 .add("Delete a company", this::deleteCompany)
+                // Users & accounts
+                .add("View company representatives", this::viewRepresentatives)
+                .add("View coordinators", this::viewCoordinators)
                 .add("Add company representative account", this::addRepresentative)
                 .add("Add coordinator account", this::addCoordinator)
+                .add("Edit a person's details", this::editPerson)
+                .add("Delete a person", this::deletePerson)
+                .add("Reset a user's password", this::resetPassword)
+                // Reports & settings
                 .add("System summary report", this::report)
                 .add("Account settings", settings::show)
                 .run();

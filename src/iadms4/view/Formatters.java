@@ -1,10 +1,13 @@
 package iadms4.view;
 
 import iadms4.model.Application;
+import iadms4.model.CompanyRepresentative;
+import iadms4.model.Coordinator;
 import iadms4.model.Intern;
 import iadms4.model.Opening;
 import iadms4.model.Person;
 import iadms4.model.Position;
+import iadms4.model.Student;
 
 /**
  * VIEW helper. One-line text versions of model objects, reused by the choose-from-list prompts.
@@ -32,6 +35,18 @@ final class Formatters {
     }
 
     static String kind(Person p) {
-        return p instanceof Intern ? "Intern" : "Student";
+        if (p instanceof Intern) {
+            return "Intern";
+        }
+        if (p instanceof Student) {
+            return "Student";
+        }
+        if (p instanceof Coordinator) {
+            return "Coordinator";
+        }
+        if (p instanceof CompanyRepresentative) {
+            return "Company Rep";
+        }
+        return "Person";
     }
 }
