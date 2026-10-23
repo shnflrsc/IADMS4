@@ -1,4 +1,4 @@
-/**
+/*
  * MODEL layer: plain data classes (no screens, no storage, no business rules).
  *
  * Start here to learn the vocabulary of the system:

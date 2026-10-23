@@ -10,22 +10,36 @@ import iadms4.model.InternStatus;
 import iadms4.repository.DailyLogRepository;
 import iadms4.repository.PersonRepository;
 
-/**
- * SERVICE. Everything an intern does after deployment: log hours (creates a DailyLog), the
- * representative status changes (COMPLETED is manual and final), and listing interns or logs.
+/*
+ * SERVICE. Business rules for everything that happens to an intern after deployment.
+ *
+ * Responsibilities: logging hours (which creates a DailyLog), the representative's status
+ * changes (COMPLETED is manual and final), and listing interns or logs.
  */
 public class InternService {
+    // Used to look up interns.
     private final PersonRepository persons;
+    // Storage of daily logs.
     private final DailyLogRepository logs;
 
+    /*
+     * Creates the service.
+     *
+     * It takes persons (the person repository) and logs (the daily log repository).
+     */
     public InternService(PersonRepository persons, DailyLogRepository logs) {
         this.persons = persons;
         this.logs = logs;
     }
 
-    /**
-     * Logs hours with a daily log entry. Returns hours remaining. Reaching the requirement does NOT
-     * complete the internship: the company representative does that manually (changeStatus).
+    /*
+     * Logs hours with a daily log entry. Reaching the requirement does NOT complete the internship:
+     * the company representative does that manually (see changeStatus).
+     *
+     * It takes intern (the intern logging hours), hours (the hours worked) and description (what the intern
+     * did). It returns the number of hours still needed to reach the requirement. It throws
+     * IllegalStateException if the intern is not ACTIVE or already met the required hours. It throws
+     * IllegalArgumentException if the hours are not positive or the description is blank.
      */
     public int logHours(Intern intern, int hours, String description) {
         if (intern.getStatus() != InternStatus.ACTIVE) {
@@ -51,9 +65,12 @@ public class InternService {
         return required - total;
     }
 
-    /**
-     * Representative sets the status. COMPLETED is manual, needs the required hours, and is final
-     * (a completed internship and its logs are never reopened).
+    /*
+     * A representative sets the status of an intern. COMPLETED is manual, needs the required hours, and is
+     * final (a completed internship and its logs are never reopened).
+     *
+     * It takes intern (the intern whose status changes) and status (the new status). It throws
+     * IllegalStateException if the intern is already COMPLETED, or the hours are not met yet.
      */
     public void changeStatus(Intern intern, InternStatus status) {
         if (intern.getStatus() == InternStatus.COMPLETED) {
@@ -67,17 +84,32 @@ public class InternService {
         intern.setStatus(status);
     }
 
-    /** Interns of a company; a null status means no filter. */
+    /*
+     * Lists the interns of a company, optionally filtered by status.
+     *
+     * It takes company (the company) and status (the status to keep, or null for no filter). It returns the
+     * matching interns.
+     */
     public List<Intern> internsOf(Company company, InternStatus status) {
         return persons.findInterns().stream()
                 .filter(i -> i.getPosition().getCompany().getId() == company.getId())
                 .filter(i -> status == null || i.getStatus() == status).toList();
     }
 
+    /*
+     * Lists all interns of a company regardless of status.
+     *
+     * It takes company (the company). It returns that company's interns.
+     */
     public List<Intern> internsOf(Company company) {
         return internsOf(company, null);
     }
 
+    /*
+     * Lists the daily logs of an intern.
+     *
+     * It takes intern (the intern). It returns the intern's logs.
+     */
     public List<DailyLog> logsOf(Intern intern) {
         return logs.findByInternId(intern.getId());
     }

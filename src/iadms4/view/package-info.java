@@ -1,4 +1,4 @@
-/**
+/*
  * VIEW layer: the text user interface (TUI).
  *
  * Views print screens and read what the user types (always through Console). Each dashboard builds

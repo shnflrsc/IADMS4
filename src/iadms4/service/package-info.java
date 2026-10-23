@@ -1,4 +1,4 @@
-/**
+/*
  * SERVICE layer: the business rules of the system.
  *
  * Services validate input, enforce rules (for example "an intern can only be evaluated once"),

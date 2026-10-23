@@ -1,4 +1,4 @@
-/**
+/*
  * REPOSITORY layer: in-memory storage (maps keyed by id). One repository per kind of object.
  *
  * Rule of thumb: a repository answers "give me / save this object". It never decides whether

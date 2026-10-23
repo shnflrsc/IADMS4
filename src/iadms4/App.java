@@ -35,26 +35,38 @@ import iadms4.view.CoordinatorDashboardView;
 import iadms4.view.InternDashboardView;
 import iadms4.view.StudentDashboardView;
 
-/**
- * Entry point and composition root. HOW THE PROJECT FITS TOGETHER:
+/*
+ * Entry point and composition root of the program.
+ *
+ * Responsibilities: creates every repository, service, controller and view, connects them, and runs the
+ * main loop (setup, login, dashboard, logout). HOW THE PROJECT FITS TOGETHER:
  *
  *   View  ->  Controller  ->  Service  ->  Repository  ->  Model
  *   (TUI)     (routes)        (rules)      (storage)       (data)
  *
- * A request from the user always travels down these layers and the result travels back up. We call
- * one such complete flow a "drill" (see the docs folder). The constructor below creates every
- * repository, passes them to the services, passes the services to the controllers, and passes the
- * controllers to the views (constructor injection, no framework). run() is the main loop:
- * setup if no accounts exist, otherwise login, then the dashboard that matches the logged-in person.
+ * A request from the user always travels down these layers and the result travels back up.
+ * The constructor below creates every repository, passes them to the services, passes the
+ * services to the controllers, and passes the controllers to the views (constructor injection, no framework).
+ * run() is the main loop: setup if no accounts exist, otherwise login, then the dashboard that matches the logged-in person.
  */
 public class App {
+    // Controller used to check setup and login state.
     private final AuthController auth;
+    // Screen for first-time setup and login.
     private final AuthView authView;
+    // Dashboard shown to coordinators.
     private final CoordinatorDashboardView coordinatorView;
+    // Dashboard shown to company representatives.
     private final CompanyRepDashboardView repView;
+    // Dashboard shown to students.
     private final StudentDashboardView studentView;
+    // Dashboard shown to interns.
     private final InternDashboardView internView;
 
+    /*
+     * Builds the whole application. Objects are created from the bottom layer up: repositories first,
+     * then services, then controllers, then views, and each layer receives the layer below it.
+     */
     public App() {
         AccountRepository accountRepo = new AccountRepository();
         PersonRepository personRepo = new PersonRepository();
@@ -94,7 +106,7 @@ public class App {
                 settings);
     }
 
-    /** Main loop: first-time setup -> login -> the dashboard of the logged-in person -> logout -> repeat. */
+    // Main loop: first-time setup -> login -> the dashboard of the logged-in person -> logout -> repeat. Returns when the user exits at the login screen.
     public void run() {
         while (true) {
             if (auth.needsSetup()) {
@@ -110,7 +122,12 @@ public class App {
         }
     }
 
-    /** Picks the dashboard from the TYPE of the logged-in person. Intern must be checked before Student. */
+    /*
+     * Picks the dashboard from the TYPE of the logged-in person. Intern must be checked before Student
+     * because an Intern is also a Student.
+     *
+     * It takes person (the person who just logged in).
+     */
     private void showDashboard(Person person) {
         if (person instanceof Coordinator) {
             coordinatorView.show(person.getName());
@@ -123,6 +140,7 @@ public class App {
         }
     }
 
+    // Starts the program.
     public static void main(String[] args) {
         try {
             new App().run();

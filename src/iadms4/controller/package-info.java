@@ -1,4 +1,4 @@
-/**
+/*
  * CONTROLLER layer: the glue between views and services.
  *
  * One controller per kind of dashboard. A controller method receives what the user typed from the

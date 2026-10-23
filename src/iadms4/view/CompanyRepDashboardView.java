@@ -10,21 +10,38 @@ import iadms4.model.InternStatus;
 import iadms4.model.Opening;
 import iadms4.model.Position;
 
-/**
- * VIEW. The Company Representative dashboard. Each private method is one menu action ("drill"):
- * ask for input, call CompanyRepController, print the result.
+/*
+ * VIEW. The Company Representative dashboard.
+ *
+ * Responsibilities: builds the representative's menu. Each private method is one menu action:
+ * it asks for input, calls CompanyRepController, and prints the result. The view never talks to a
+ * service or repository directly.
  */
 public class CompanyRepDashboardView {
+    // Used for printing and reading.
     private final Console console;
+    // Controller that handles the representative's requests.
     private final CompanyRepController controller;
+    // Screen reused for the "Account settings" menu item.
     private final AccountSettingsView settings;
 
+    /*
+     * Creates the view.
+     *
+     * It takes console (the console used for input and output), controller (the company representative
+     * controller) and settings (the shared account settings screen).
+     */
     public CompanyRepDashboardView(Console console, CompanyRepController controller, AccountSettingsView settings) {
         this.console = console;
         this.controller = controller;
         this.settings = settings;
     }
 
+    /*
+     * Shows the representative menu until the representative logs out.
+     *
+     * It takes repName (the name of the logged-in representative, shown in the menu title).
+     */
     public void show(String repName) {
         new Menu(console, "Company Representative - " + repName + " (" + controller.company().getName() + ")",
                 "Log out")
@@ -51,12 +68,14 @@ public class CompanyRepDashboardView {
                 .run();
     }
 
+    // Prints a table of the company's positions.
     private void viewPositions() {
         List<String[]> rows = controller.positions().stream().map(p -> new String[] {
                 String.valueOf(p.getId()), p.getTitle(), String.valueOf(p.getRequiredHours()) }).toList();
         console.table(new String[] { "ID", "Title", "Required hours" }, rows);
     }
 
+    // Asks for a title and required hours, then adds a new position.
     private void addPosition() {
         String title = console.readRequired("Position title");
         int hours = console.readInt("Required hours", 1, 10000);
@@ -64,6 +83,7 @@ public class CompanyRepDashboardView {
         console.println("  Position added.");
     }
 
+    // Lets the user pick a position and change its title and hours. A blank answer keeps the old value.
     private void editPosition() {
         Position position = console.choose("Position to edit", controller.positions(), Formatters::position);
         if (position == null) {
@@ -76,6 +96,12 @@ public class CompanyRepDashboardView {
         console.println("  Position updated.");
     }
 
+    /*
+     * Converts the typed hours into a number.
+     *
+     * It takes raw (the text typed by the user). It returns the number of hours. It throws
+     * IllegalArgumentException if the text is not a whole number.
+     */
     private int parseHours(String raw) {
         try {
             return Integer.parseInt(raw);
@@ -84,6 +110,7 @@ public class CompanyRepDashboardView {
         }
     }
 
+    // Lets the user pick a position and deletes it.
     private void deletePosition() {
         Position position = console.choose("Position to delete", controller.positions(), Formatters::position);
         if (position == null) {
@@ -93,6 +120,7 @@ public class CompanyRepDashboardView {
         console.println("  Position deleted.");
     }
 
+    // Lets the user pick an opening and deletes it.
     private void deleteOpening() {
         Opening opening = console.choose("Opening to delete", controller.openings(), Formatters::opening);
         if (opening == null) {
@@ -102,6 +130,7 @@ public class CompanyRepDashboardView {
         console.println("  Opening deleted.");
     }
 
+    // Asks for a status (or All) and prints the company's applications that match it.
     private void filterApplications() {
         ApplicationStatus status = console.chooseFilter("Status", ApplicationStatus.values());
         List<String[]> rows = controller.applications(status).stream().map(a -> new String[] {
@@ -111,6 +140,7 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Student", "Section", "Position", "Endorsed by", "Status" }, rows);
     }
 
+    // Asks for a status (or All) and prints the company's interns that match it.
     private void filterInterns() {
         InternStatus status = console.chooseFilter("Status", InternStatus.values());
         List<String[]> rows = controller.interns(status).stream().map(i -> new String[] {
@@ -120,10 +150,12 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Student No.", "Name", "Position", "Hours", "Status" }, rows);
     }
 
+    // Prints the summary report of the representative's company.
     private void report() {
         Reports.print(console, "Summary for " + controller.company().getName(), controller.report(), false);
     }
 
+    // Prints a table of the company's openings.
     private void viewOpenings() {
         List<String[]> rows = controller.openings().stream().map(o -> new String[] {
                 String.valueOf(o.getId()), o.getPosition().getTitle(),
@@ -131,6 +163,7 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Position", "Hours", "Status" }, rows);
     }
 
+    // Lets the user pick a position and publishes it as a new opening.
     private void createOpening() {
         Position position = console.choose("Position", controller.positions(), p -> p.getTitle());
         if (position == null) {
@@ -140,6 +173,7 @@ public class CompanyRepDashboardView {
         console.println("  Opening created.");
     }
 
+    // Lets the user pick an opening and switches it between OPEN and CLOSED.
     private void toggleOpening() {
         Opening opening = console.choose("Opening", controller.openings(), Formatters::opening);
         if (opening == null) {
@@ -149,6 +183,7 @@ public class CompanyRepDashboardView {
         console.println("  Opening is now " + opening.getStatus() + ".");
     }
 
+    // Prints a table of all applications made to the company.
     private void viewApplications() {
         List<String[]> rows = controller.applications().stream().map(a -> new String[] {
                 String.valueOf(a.getId()), a.getStudent().getName(), a.getStudent().getSection(),
@@ -157,6 +192,7 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Student", "Section", "Position", "Endorsed by", "Status" }, rows);
     }
 
+    // Lets the user pick a pending application and approves it, turning the student into an intern.
     private void approve() {
         Application application = console.choose("Pending application", controller.pendingApplications(),
                 Formatters::application);
@@ -168,6 +204,7 @@ public class CompanyRepDashboardView {
                 + intern.getPosition().getTitle() + ".");
     }
 
+    // Lets the user pick a pending application and denies it.
     private void deny() {
         Application application = console.choose("Pending application", controller.pendingApplications(),
                 Formatters::application);
@@ -178,6 +215,7 @@ public class CompanyRepDashboardView {
         console.println("  Application denied.");
     }
 
+    // Prints a table of every intern of the company with their hours and status.
     private void monitorInterns() {
         List<String[]> rows = controller.interns().stream().map(i -> new String[] {
                 String.valueOf(i.getId()), i.getStudentId(), i.getName(), i.getPosition().getTitle(),
@@ -186,6 +224,7 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Student No.", "Name", "Position", "Hours", "Status" }, rows);
     }
 
+    // Lets the user pick an intern and prints that intern's daily logs.
     private void viewDailyLogs() {
         Intern intern = console.choose("Intern", controller.interns(), Formatters::intern);
         if (intern == null) {
@@ -198,6 +237,7 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Date", "Hours", "Description" }, rows);
     }
 
+    // Lets the user pick a completed intern, then asks for a rating and comments and saves the evaluation.
     private void evaluate() {
         Intern intern = console.choose("Completed intern awaiting evaluation", controller.internsAwaitingEvaluation(),
                 Formatters::intern);
@@ -210,6 +250,7 @@ public class CompanyRepDashboardView {
         console.println("  Evaluation saved for " + intern.getName() + ".");
     }
 
+    // Prints a table of the evaluations of the company's interns.
     private void viewEvaluations() {
         List<String[]> rows = controller.evaluations().stream().map(e -> new String[] {
                 String.valueOf(e.getId()), e.getIntern().getName(), e.getIntern().getPosition().getTitle(),
@@ -218,6 +259,7 @@ public class CompanyRepDashboardView {
         console.table(new String[] { "ID", "Intern", "Position", "Rating", "Evaluator", "Date", "Comments" }, rows);
     }
 
+    // Lets the user pick an intern and a new status (including COMPLETED), then applies it.
     private void changeInternStatus() {
         Intern intern = console.choose("Intern", controller.interns(), Formatters::intern);
         if (intern == null) {
