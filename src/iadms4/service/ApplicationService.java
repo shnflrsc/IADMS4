@@ -72,7 +72,7 @@ public class ApplicationService {
 
     /*
      * Approves the application and promotes the student to an intern. The student's other pending
-     * applications are rejected automatically.
+     * applications are rejected automatically, and the opening is closed because it has been filled.
      *
      * It takes application (the application to approve). It returns the new Intern who replaced the
      * Student. It throws IllegalStateException if the application is not pending, the opening is closed, or
@@ -97,6 +97,8 @@ public class ApplicationService {
                 other.setStatus(ApplicationStatus.REJECTED);
             }
         }
+        // Step 4: the opening has been filled, so it is closed automatically.
+        application.getOpening().setStatus(OpeningStatus.CLOSED);
         return intern;
     }
 

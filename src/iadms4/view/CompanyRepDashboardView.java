@@ -201,7 +201,7 @@ public class CompanyRepDashboardView {
         }
         Intern intern = controller.approve(application);
         console.println("  Approved. " + intern.getName() + " is now an intern for "
-                + intern.getPosition().getTitle() + ".");
+                + intern.getPosition().getTitle() + ". The opening is now closed.");
     }
 
     // Lets the user pick a pending application and denies it.
