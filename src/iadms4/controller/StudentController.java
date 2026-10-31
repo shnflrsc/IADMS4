@@ -10,49 +10,28 @@ import iadms4.service.PersonService;
 
 /*
  * CONTROLLER. Handles the read-only actions of the Student dashboard.
- *
- * Responsibilities: gives the student access to their own profile, email and applications.
- * The student is the logged-in person taken from Session.
  */
 public class StudentController {
-    // Service used to list the student's applications.
     private final ApplicationService applications;
-    // Service used to look up the student's email.
     private final PersonService persons;
 
-    /*
-     * Creates the controller.
-     *
-     * It takes applications (the application service) and persons (the person service).
-     */
+    // Creates the controller using the given services.
     public StudentController(ApplicationService applications, PersonService persons) {
         this.applications = applications;
         this.persons = persons;
     }
 
-    /*
-     * Gets the logged-in student.
-     *
-     * It returns the current person cast to Student.
-     */
+    // Returns the logged-in student.
     public Student me() {
         return (Student) Session.getInstance().getPerson();
     }
 
-    /*
-     * Gets the student's login email.
-     *
-     * It returns the email.
-     */
+    // Returns the student's login email.
     public String email() {
         return persons.emailOf(me());
     }
 
-    /*
-     * Lists the logged-in student's own applications.
-     *
-     * It returns the student's applications.
-     */
+    // Returns the logged-in student's own applications.
     public List<Application> myApplications() {
         return applications.forStudent(me().getId());
     }

@@ -1,6 +1,7 @@
 package iadms4.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import iadms4.model.Company;
@@ -11,36 +12,20 @@ import iadms4.repository.DailyLogRepository;
 import iadms4.repository.PersonRepository;
 
 /*
- * SERVICE. Business rules for everything that happens to an intern after deployment.
- *
- * Responsibilities: logging hours (which creates a DailyLog), the representative's status
- * changes (COMPLETED is manual and final), and listing interns or logs.
+ * SERVICE. Business rules for what happens to an intern after deployment.
+ * It handles logging hours and status changes. COMPLETED is set by the representative and is final.
  */
 public class InternService {
-    // Used to look up interns.
     private final PersonRepository persons;
-    // Storage of daily logs.
     private final DailyLogRepository logs;
 
-    /*
-     * Creates the service.
-     *
-     * It takes persons (the person repository) and logs (the daily log repository).
-     */
+    // Creates the service using the given repositories.
     public InternService(PersonRepository persons, DailyLogRepository logs) {
         this.persons = persons;
         this.logs = logs;
     }
 
-    /*
-     * Logs hours with a daily log entry. Reaching the requirement does NOT complete the internship:
-     * the company representative does that manually (see changeStatus).
-     *
-     * It takes intern (the intern logging hours), hours (the hours worked) and description (what the intern
-     * did). It returns the number of hours still needed to reach the requirement. It throws
-     * IllegalStateException if the intern is not ACTIVE or already met the required hours. It throws
-     * IllegalArgumentException if the hours are not positive or the description is blank.
-     */
+    // Logs hours with a description for the given intern and returns the hours still needed.
     public int logHours(Intern intern, int hours, String description) {
         if (intern.getStatus() != InternStatus.ACTIVE) {
             throw new IllegalStateException("Only ACTIVE interns can log hours (status: " + intern.getStatus() + ").");
@@ -58,20 +43,12 @@ public class InternService {
         // Never credit more than what is left to reach the requirement.
         int credited = Math.min(hours, required - intern.getRecordedHours());
         int total = intern.getRecordedHours() + credited;
-        // The Intern object is shared with the repository, so changing it here is enough (no save needed).
         intern.setRecordedHours(total);
-        // Every logging also stores a DailyLog (only company representatives can read these).
         logs.save(new DailyLog(logs.nextId(), intern, LocalDate.now(), credited, description.trim()));
         return required - total;
     }
 
-    /*
-     * A representative sets the status of an intern. COMPLETED is manual, needs the required hours, and is
-     * final (a completed internship and its logs are never reopened).
-     *
-     * It takes intern (the intern whose status changes) and status (the new status). It throws
-     * IllegalStateException if the intern is already COMPLETED, or the hours are not met yet.
-     */
+    // Sets the status of the given intern. COMPLETED needs the required hours, and it cannot be changed later.
     public void changeStatus(Intern intern, InternStatus status) {
         if (intern.getStatus() == InternStatus.COMPLETED) {
             throw new IllegalStateException("A COMPLETED internship cannot be changed.");
@@ -84,32 +61,19 @@ public class InternService {
         intern.setStatus(status);
     }
 
-    /*
-     * Lists the interns of a company, optionally filtered by status.
-     *
-     * It takes company (the company) and status (the status to keep, or null for no filter). It returns the
-     * matching interns.
-     */
+    // Returns the interns of the given company with the given status, or all of them if status is null.
     public List<Intern> internsOf(Company company, InternStatus status) {
-        return persons.findInterns().stream()
-                .filter(i -> i.getPosition().getCompany().getId() == company.getId())
-                .filter(i -> status == null || i.getStatus() == status).toList();
+        List<Intern> matches = new ArrayList<>();
+        for (Intern intern : persons.findInterns()) {
+            if (intern.getPosition().getCompany().getId() == company.getId()
+                    && (status == null || intern.getStatus() == status)) {
+                matches.add(intern);
+            }
+        }
+        return matches;
     }
 
-    /*
-     * Lists all interns of a company regardless of status.
-     *
-     * It takes company (the company). It returns that company's interns.
-     */
-    public List<Intern> internsOf(Company company) {
-        return internsOf(company, null);
-    }
-
-    /*
-     * Lists the daily logs of an intern.
-     *
-     * It takes intern (the intern). It returns the intern's logs.
-     */
+    // Returns the daily logs of the given intern.
     public List<DailyLog> logsOf(Intern intern) {
         return logs.findByInternId(intern.getId());
     }

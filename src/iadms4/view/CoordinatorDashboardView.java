@@ -1,100 +1,99 @@
 package iadms4.view;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import iadms4.controller.CoordinatorController;
 import iadms4.model.Application;
-import iadms4.model.ApplicationStatus;
 import iadms4.model.Company;
+import iadms4.model.CompanyRepresentative;
+import iadms4.model.Coordinator;
+import iadms4.model.Evaluation;
 import iadms4.model.Gender;
-import iadms4.model.InternStatus;
-import iadms4.model.Person;
 import iadms4.model.Intern;
 import iadms4.model.Opening;
+import iadms4.model.Person;
 import iadms4.model.Student;
 
 /*
  * VIEW. The Coordinator dashboard.
- *
- * Responsibilities: builds the coordinator's menu. Each private method is one menu action ("drill"):
- * it asks the user for input through Console, calls CoordinatorController, then prints
- * the result. The view never talks to a service or repository directly.
+ * Each private method is one menu action ("drill"): it asks for input through Console, calls
+ * CoordinatorController, then prints the result. The view never talks to a service or repository directly.
  */
-public class CoordinatorDashboardView {
-    // Used for printing and reading.
-    private final Console console;
-    // Controller that handles the coordinator's requests.
+public class CoordinatorDashboardView extends Menu {
     private final CoordinatorController controller;
-    // Screen reused for the "Account settings" menu item.
     private final AccountSettingsView settings;
 
-    /*
-     * Creates the view.
-     *
-     * It takes console (the console used for input and output), controller (the coordinator controller) and
-     * settings (the shared account settings screen).
-     */
+    // Creates the view using the given console, controller and account settings screen.
     public CoordinatorDashboardView(Console console, CoordinatorController controller,
             AccountSettingsView settings) {
-        this.console = console;
+        super(console);
         this.controller = controller;
         this.settings = settings;
     }
 
-    /*
-     * Shows the coordinator menu until the coordinator logs out. The items are grouped by topic.
-     *
-     * It takes coordinatorName (the name of the logged-in coordinator, shown in the menu title).
-     */
+    // Shows the coordinator menu until they log out. The items are grouped by topic.
     public void show(String coordinatorName) {
-        new Menu(console, "Coordinator Dashboard - " + coordinatorName, "Log out")
-                // Students & interns
-                .add("View students", this::viewStudents)
-                .add("Search students & interns", this::searchStudents)
-                .add("Register student", this::registerStudent)
-                .add("View interns (with status)", this::viewInterns)
-                .add("Filter interns by status", this::filterInterns)
-                .add("View intern evaluations", this::viewEvaluations)
-                // Openings & applications
-                .add("View openings", this::viewOpenings)
-                .add("Endorse student to an opening", this::endorse)
-                .add("View applications", this::viewApplications)
-                .add("Filter applications by status", this::filterApplications)
-                .add("Withdraw a pending application", this::withdraw)
+        String[] items = {
+                // Students and interns
+                "View students", "Search students & interns", "Register student", "View interns (with status)",
+                "Filter interns by status", "View intern evaluations",
+                // Openings and applications
+                "View openings", "Endorse student to an opening", "View applications",
+                "Filter applications by status", "Withdraw a pending application",
                 // Companies
-                .add("View companies", this::viewCompanies)
-                .add("Add company", this::addCompany)
-                .add("Rename a company", this::renameCompany)
-                .add("Delete a company", this::deleteCompany)
-                // Users & accounts
-                .add("View company representatives", this::viewRepresentatives)
-                .add("View coordinators", this::viewCoordinators)
-                .add("Add company representative account", this::addRepresentative)
-                .add("Add coordinator account", this::addCoordinator)
-                .add("Edit a person's details", this::editPerson)
-                .add("Delete a person", this::deletePerson)
-                .add("Reset a user's password", this::resetPassword)
-                // Reports & settings
-                .add("System summary report", this::report)
-                .add("Account settings", settings::show)
-                .run();
+                "View companies", "Add company", "Rename a company", "Delete a company",
+                // Users and accounts
+                "View company representatives", "View coordinators", "Add company representative account",
+                "Add coordinator account", "Edit a person's details", "Delete a person", "Reset a user's password",
+                // Reports and settings
+                "System summary report", "Account settings" };
+        run("Coordinator Dashboard - " + coordinatorName, items, "Log out");
     }
 
-    // Prints a table of all students and interns.
-    private void viewStudents() {
-        printStudents(controller.students());
+    // Runs the menu item with the given number.
+    @Override
+    protected void runItem(int choice) {
+        switch (choice) {
+            case 1: printStudents(controller.students()); break;
+            case 2: searchStudents(); break;
+            case 3: registerStudent(); break;
+            case 4: printInterns(controller.interns()); break;
+            case 5: printInterns(controller.interns(console.chooseInternStatus())); break;
+            case 6: viewEvaluations(); break;
+            case 7: viewOpenings(); break;
+            case 8: endorse(); break;
+            case 9: printApplications(controller.applications()); break;
+            case 10: printApplications(controller.applications(console.chooseApplicationStatus())); break;
+            case 11: withdraw(); break;
+            case 12: viewCompanies(); break;
+            case 13: addCompany(); break;
+            case 14: renameCompany(); break;
+            case 15: deleteCompany(); break;
+            case 16: viewRepresentatives(); break;
+            case 17: viewCoordinators(); break;
+            case 18: addRepresentative(); break;
+            case 19: addCoordinator(); break;
+            case 20: editPerson(); break;
+            case 21: deletePerson(); break;
+            case 22: resetPassword(); break;
+            case 23: report(); break;
+            case 24: settings.show(); break;
+        }
     }
 
-    /*
-     * Prints a table of the given students. Interns show the company they are deployed to.
-     *
-     * It takes students (the students to print).
-     */
+    // Prints a table of the given students. Interns show the company they are deployed to.
     private void printStudents(List<Student> students) {
-        List<String[]> rows = students.stream().map(s -> new String[] {
-                String.valueOf(s.getId()), s.getStudentId(), s.getName(), s.getSection(), controller.emailOf(s),
-                s instanceof Intern i ? "Intern @ " + i.getPosition().getCompany().getName() : "Student" }).toList();
+        List<String[]> rows = new ArrayList<>();
+        for (Student s : students) {
+            String status = "Student";
+            if (s instanceof Intern) {
+                status = "Intern @ " + ((Intern) s).getPosition().getCompany().getName();
+            }
+            rows.add(new String[] { String.valueOf(s.getId()), s.getStudentId(), s.getName(), s.getSection(),
+                    controller.emailOf(s), status });
+        }
         console.table(new String[] { "ID", "Student No.", "Name", "Section", "Email", "Status" }, rows);
     }
 
@@ -102,136 +101,6 @@ public class CoordinatorDashboardView {
     private void searchStudents() {
         String keyword = console.readLine("Search (name, student no., section or email; blank = all)");
         printStudents(controller.searchStudents(keyword));
-    }
-
-    // Asks for an intern status (or All) and prints the interns that match it.
-    private void filterInterns() {
-        InternStatus status = console.chooseFilter("Status", InternStatus.values());
-        printInterns(controller.interns(status));
-    }
-
-    // Asks for an application status (or All) and prints the applications that match it.
-    private void filterApplications() {
-        ApplicationStatus status = console.chooseFilter("Status", ApplicationStatus.values());
-        printApplications(controller.applications(status));
-    }
-
-    // Lets the user pick a pending application and withdraws it.
-    private void withdraw() {
-        Application application = console.choose("Pending application to withdraw", controller.pendingApplications(),
-                Formatters::application);
-        if (application == null) {
-            return;
-        }
-        controller.withdraw(application);
-        console.println("  Application withdrawn. The student can be endorsed again.");
-    }
-
-    /*
-     * Lets the user pick a person and change their details. A blank answer keeps the old value;
-     * the section is only asked for students.
-     */
-    private void editPerson() {
-        Person person = console.choose("Person to edit", controller.everyone(),
-                p -> Formatters.kind(p) + ": " + p.getName());
-        if (person == null) {
-            return;
-        }
-        String name = console.readLine("Full name (blank = keep \"" + person.getName() + "\")");
-        String change = console.readLine("Change gender? currently " + person.getGender() + " (y/N)");
-        Gender gender = change.equalsIgnoreCase("y") ? console.readGender() : person.getGender();
-        LocalDate birthdate = console.readOptionalDate("Birthdate (now " + person.getBirthdate() + ")");
-        String section = person instanceof Student s
-                ? console.readLine("Section (blank = keep \"" + s.getSection() + "\")") : null;
-        controller.updatePerson(person, name.isEmpty() ? person.getName() : name, gender,
-                birthdate == null ? person.getBirthdate() : birthdate,
-                section == null || section.isEmpty() ? null : section);
-        console.println("  Details updated.");
-    }
-
-    // Lets the user pick a person and deletes them after the word DELETE is typed to confirm.
-    private void deletePerson() {
-        Person person = console.choose("Person to delete", controller.everyone(),
-                p -> Formatters.kind(p) + ": " + p.getName());
-        if (person == null) {
-            return;
-        }
-        if (!console.readLine("Type DELETE to confirm deleting " + person.getName()).equals("DELETE")) {
-            console.println("  Cancelled.");
-            return;
-        }
-        controller.deletePerson(person);
-        console.println("  Deleted.");
-    }
-
-    // Lets the user pick a person and sets a new password for them.
-    private void resetPassword() {
-        Person person = console.choose("Person", controller.everyone(), p -> Formatters.kind(p) + ": " + p.getName());
-        if (person == null) {
-            return;
-        }
-        controller.resetPassword(person, console.readRequired("New password (min 4 chars)"));
-        console.println("  Password reset for " + person.getName() + ".");
-    }
-
-    // Lets the user pick a company and rename it.
-    private void renameCompany() {
-        Company company = console.choose("Company", controller.companies(), c -> c.getName());
-        if (company == null) {
-            return;
-        }
-        controller.renameCompany(company, console.readRequired("New name"));
-        console.println("  Company renamed.");
-    }
-
-    // Lets the user pick a company and deletes it.
-    private void deleteCompany() {
-        Company company = console.choose("Company to delete", controller.companies(), c -> c.getName());
-        if (company == null) {
-            return;
-        }
-        controller.deleteCompany(company);
-        console.println("  Company deleted.");
-    }
-
-    // Prints the system summary report followed by the per-company table.
-    private void report() {
-        Reports.print(console, "System summary", controller.report(), true);
-        console.println("");
-        Reports.printCompanies(console, controller.reportPerCompany());
-    }
-
-    // Prints a table of all interns.
-    private void viewInterns() {
-        printInterns(controller.interns());
-    }
-
-    /*
-     * Prints a table of the given interns.
-     *
-     * It takes interns (the interns to print).
-     */
-    private void printInterns(List<Intern> interns) {
-        List<String[]> rows = interns.stream().map(i -> new String[] {
-                String.valueOf(i.getId()), i.getStudentId(), i.getName(), i.getPosition().getCompany().getName(),
-                i.getPosition().getTitle(), i.getRecordedHours() + "/" + i.getPosition().getRequiredHours(),
-                i.getStatus().toString(), controller.emailOf(i) }).toList();
-        console.table(new String[] { "ID", "Student No.", "Name", "Company", "Position", "Hours", "Status", "Email" },
-                rows);
-    }
-
-    // Prints a table of all company representatives.
-    private void viewRepresentatives() {
-        List<String[]> rows = controller.representatives().stream().map(r -> new String[] {
-                String.valueOf(r.getId()), r.getName(), r.getCompany().getName(), controller.emailOf(r) }).toList();
-        console.table(new String[] { "ID", "Name", "Company", "Email" }, rows);
-    }
-
-    // Prints a table of all coordinators.
-    private void viewCoordinators() {
-        List<String[]> rows = controller.coordinators().stream().map(c -> new String[] {
-                String.valueOf(c.getId()), c.getEmployeeId(), c.getName(), controller.emailOf(c) }).toList();
-        console.table(new String[] { "ID", "Employee ID", "Name", "Email" }, rows);
     }
 
     // Asks for the details of a new student and registers the student with a login account.
@@ -247,66 +116,88 @@ public class CoordinatorDashboardView {
         console.println("  Student registered.");
     }
 
-    // Prints a table of the openings of every company.
-    private void viewOpenings() {
-        List<String[]> rows = controller.allOpenings().stream().map(o -> new String[] {
-                String.valueOf(o.getId()), o.getPosition().getCompany().getName(), o.getPosition().getTitle(),
-                String.valueOf(o.getPosition().getRequiredHours()), o.getStatus().toString() }).toList();
-        console.table(new String[] { "ID", "Company", "Position", "Hours", "Status" }, rows);
-    }
-
-    /*
-     * Lets the user pick a student and an opening, then asks the controller to endorse the student.
-     * This is a good example of a drill: the view only collects input, and the rules (already an
-     * intern? opening closed? duplicate?) are checked in ApplicationService.
-     */
-    private void endorse() {
-        Student student = console.choose("Student", controller.students(),
-                s -> s.getStudentId() + " " + s.getName() + " (" + Formatters.kind(s) + ")");
-        if (student == null) {
-            return;
+    // Prints a table of the given interns.
+    private void printInterns(List<Intern> interns) {
+        List<String[]> rows = new ArrayList<>();
+        for (Intern i : interns) {
+            rows.add(new String[] { String.valueOf(i.getId()), i.getStudentId(), i.getName(),
+                    i.getPosition().getCompany().getName(), i.getPosition().getTitle(),
+                    i.getRecordedHours() + "/" + i.getPosition().getRequiredHours(), i.getStatus().toString(),
+                    controller.emailOf(i) });
         }
-        Opening opening = console.choose("Opening", controller.openOpenings(), Formatters::opening);
-        if (opening == null) {
-            return;
-        }
-        controller.endorse(student, opening);
-        console.println("  " + student.getName() + " endorsed to " + opening.getPosition().getTitle() + ".");
-    }
-
-    // Prints a table of every application.
-    private void viewApplications() {
-        printApplications(controller.applications());
-    }
-
-    /*
-     * Prints a table of the given applications.
-     *
-     * It takes applications (the applications to print).
-     */
-    private void printApplications(List<Application> applications) {
-        List<String[]> rows = applications.stream().map(a -> new String[] {
-                String.valueOf(a.getId()), a.getStudent().getName(), a.getOpening().getPosition().getCompany().getName(),
-                a.getOpening().getPosition().getTitle(), a.getCoordinator().getName(), a.getStatus().toString() })
-                .toList();
-        console.table(new String[] { "ID", "Student", "Company", "Position", "Endorsed by", "Status" }, rows);
+        console.table(new String[] { "ID", "Student No.", "Name", "Company", "Position", "Hours", "Status", "Email" },
+                rows);
     }
 
     // Prints a table of every intern evaluation.
     private void viewEvaluations() {
-        List<String[]> rows = controller.evaluations().stream().map(e -> new String[] {
-                String.valueOf(e.getId()), e.getIntern().getName(),
-                e.getIntern().getPosition().getCompany().getName(), e.getIntern().getPosition().getTitle(),
-                e.getRating() + "/5", e.getEvaluator().getName(), e.getDate().toString(), e.getComments() })
-                .toList();
+        List<String[]> rows = new ArrayList<>();
+        for (Evaluation e : controller.evaluations()) {
+            rows.add(new String[] { String.valueOf(e.getId()), e.getIntern().getName(),
+                    e.getIntern().getPosition().getCompany().getName(), e.getIntern().getPosition().getTitle(),
+                    e.getRating() + "/5", e.getEvaluator().getName(), e.getDate().toString(), e.getComments() });
+        }
         console.table(new String[] { "ID", "Intern", "Company", "Position", "Rating", "Evaluator", "Date", "Comments" },
                 rows);
     }
 
+    // Prints a table of the openings of every company.
+    private void viewOpenings() {
+        List<String[]> rows = new ArrayList<>();
+        for (Opening o : controller.allOpenings()) {
+            rows.add(new String[] { String.valueOf(o.getId()), o.getPosition().getCompany().getName(),
+                    o.getPosition().getTitle(), String.valueOf(o.getPosition().getRequiredHours()),
+                    o.getStatus().toString() });
+        }
+        console.table(new String[] { "ID", "Company", "Position", "Hours", "Status" }, rows);
+    }
+
+    // Lets the user pick a student and an opening. The rules are checked in ApplicationService.
+    private void endorse() {
+        List<Student> students = controller.students();
+        int studentIndex = console.choose("Student", Formatters.students(students));
+        if (studentIndex == -1) {
+            return;
+        }
+        List<Opening> openings = controller.openOpenings();
+        int openingIndex = console.choose("Opening", Formatters.openings(openings));
+        if (openingIndex == -1) {
+            return;
+        }
+        Student student = students.get(studentIndex);
+        Opening opening = openings.get(openingIndex);
+        controller.endorse(student, opening);
+        console.println("  " + student.getName() + " endorsed to " + opening.getPosition().getTitle() + ".");
+    }
+
+    // Prints a table of the given applications.
+    private void printApplications(List<Application> applications) {
+        List<String[]> rows = new ArrayList<>();
+        for (Application a : applications) {
+            rows.add(new String[] { String.valueOf(a.getId()), a.getStudent().getName(),
+                    a.getOpening().getPosition().getCompany().getName(), a.getOpening().getPosition().getTitle(),
+                    a.getCoordinator().getName(), a.getStatus().toString() });
+        }
+        console.table(new String[] { "ID", "Student", "Company", "Position", "Endorsed by", "Status" }, rows);
+    }
+
+    // Lets the user pick a pending application and withdraws it.
+    private void withdraw() {
+        List<Application> pending = controller.pendingApplications();
+        int index = console.choose("Pending application to withdraw", Formatters.applications(pending));
+        if (index == -1) {
+            return;
+        }
+        controller.withdraw(pending.get(index));
+        console.println("  Application withdrawn. The student can be endorsed again.");
+    }
+
     // Prints a table of all companies.
     private void viewCompanies() {
-        List<String[]> rows = controller.companies().stream()
-                .map(c -> new String[] { String.valueOf(c.getId()), c.getName() }).toList();
+        List<String[]> rows = new ArrayList<>();
+        for (Company c : controller.companies()) {
+            rows.add(new String[] { String.valueOf(c.getId()), c.getName() });
+        }
         console.table(new String[] { "ID", "Company" }, rows);
     }
 
@@ -316,13 +207,56 @@ public class CoordinatorDashboardView {
         console.println("  Company added.");
     }
 
+    // Lets the user pick a company and rename it.
+    private void renameCompany() {
+        List<Company> companies = controller.companies();
+        int index = console.choose("Company", Formatters.companies(companies));
+        if (index == -1) {
+            return;
+        }
+        controller.renameCompany(companies.get(index), console.readRequired("New name"));
+        console.println("  Company renamed.");
+    }
+
+    // Lets the user pick a company and deletes it.
+    private void deleteCompany() {
+        List<Company> companies = controller.companies();
+        int index = console.choose("Company to delete", Formatters.companies(companies));
+        if (index == -1) {
+            return;
+        }
+        controller.deleteCompany(companies.get(index));
+        console.println("  Company deleted.");
+    }
+
+    // Prints a table of all company representatives.
+    private void viewRepresentatives() {
+        List<String[]> rows = new ArrayList<>();
+        for (CompanyRepresentative r : controller.representatives()) {
+            rows.add(new String[] { String.valueOf(r.getId()), r.getName(), r.getCompany().getName(),
+                    controller.emailOf(r) });
+        }
+        console.table(new String[] { "ID", "Name", "Company", "Email" }, rows);
+    }
+
+    // Prints a table of all coordinators.
+    private void viewCoordinators() {
+        List<String[]> rows = new ArrayList<>();
+        for (Coordinator c : controller.coordinators()) {
+            rows.add(new String[] { String.valueOf(c.getId()), c.getEmployeeId(), c.getName(), controller.emailOf(c) });
+        }
+        console.table(new String[] { "ID", "Employee ID", "Name", "Email" }, rows);
+    }
+
     // Lets the user pick a company, then creates a representative account for it.
     private void addRepresentative() {
-        var company = console.choose("Company", controller.companies(), c -> c.getName());
-        if (company == null) {
+        List<Company> companies = controller.companies();
+        int index = console.choose("Company", Formatters.companies(companies));
+        if (index == -1) {
             console.println("  Add a company first.");
             return;
         }
+        Company company = companies.get(index);
         String name = console.readRequired("Full name");
         Gender gender = console.readGender();
         LocalDate birthdate = console.readDate("Birthdate");
@@ -342,5 +276,73 @@ public class CoordinatorDashboardView {
         String password = console.readRequired("Initial password");
         controller.addCoordinator(name, gender, birthdate, employeeId, email, password);
         console.println("  Coordinator account created.");
+    }
+
+    // Lets the user pick a person and change their details. A blank answer keeps the old value.
+    private void editPerson() {
+        List<Person> people = controller.everyone();
+        int index = console.choose("Person to edit", Formatters.people(people));
+        if (index == -1) {
+            return;
+        }
+        Person person = people.get(index);
+        String name = console.readLine("Full name (blank = keep \"" + person.getName() + "\")");
+        if (name.isEmpty()) {
+            name = person.getName();
+        }
+        Gender gender = person.getGender();
+        String change = console.readLine("Change gender? currently " + person.getGender() + " (y/N)");
+        if (change.equalsIgnoreCase("y")) {
+            gender = console.readGender();
+        }
+        LocalDate birthdate = console.readOptionalDate("Birthdate (now " + person.getBirthdate() + ")");
+        if (birthdate == null) {
+            birthdate = person.getBirthdate();
+        }
+        // Only students have a section. A null section tells the service to leave it unchanged.
+        String section = null;
+        if (person instanceof Student) {
+            section = console.readLine("Section (blank = keep \"" + ((Student) person).getSection() + "\")");
+            if (section.isEmpty()) {
+                section = null;
+            }
+        }
+        controller.updatePerson(person, name, gender, birthdate, section);
+        console.println("  Details updated.");
+    }
+
+    // Lets the user pick a person and deletes them after the word DELETE is typed to confirm.
+    private void deletePerson() {
+        List<Person> people = controller.everyone();
+        int index = console.choose("Person to delete", Formatters.people(people));
+        if (index == -1) {
+            return;
+        }
+        Person person = people.get(index);
+        if (!console.readLine("Type DELETE to confirm deleting " + person.getName()).equals("DELETE")) {
+            console.println("  Cancelled.");
+            return;
+        }
+        controller.deletePerson(person);
+        console.println("  Deleted.");
+    }
+
+    // Lets the user pick a person and sets a new password for them.
+    private void resetPassword() {
+        List<Person> people = controller.everyone();
+        int index = console.choose("Person", Formatters.people(people));
+        if (index == -1) {
+            return;
+        }
+        Person person = people.get(index);
+        controller.resetPassword(person, console.readRequired("New password (min 4 chars)"));
+        console.println("  Password reset for " + person.getName() + ".");
+    }
+
+    // Prints the system summary report followed by the per-company table.
+    private void report() {
+        Reports.print(console, "System summary", controller.report(), true);
+        console.println("");
+        Reports.printCompanies(console, controller.companies(), controller.reportPerCompany());
     }
 }

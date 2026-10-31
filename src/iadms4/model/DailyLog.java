@@ -4,29 +4,16 @@ import java.time.LocalDate;
 
 /*
  * MODEL. One entry written by an Intern every time they log hours.
- *
- * Responsibilities: stores the date, the hours credited and a short description of the work done.
- * Every field is final, so a log cannot be changed after it is created. Only company representatives
- * can read daily logs.
+ * Every field is final, so a log cannot be changed after it is created.
  */
 public class DailyLog {
-    // Unique id of the log entry.
     private final int id;
-    // The intern who wrote the log.
     private final Intern intern;
-    // The day the work was done.
     private final LocalDate date;
-    // Hours credited for that day.
     private final int hours;
-    // Short description of the work.
     private final String description;
 
-    /*
-     * Creates a daily log entry.
-     *
-     * It takes id (the unique id), intern (the intern who logged the hours), date (the date of the work),
-     * hours (the hours credited) and description (what the intern did).
-     */
+    // Creates a log entry with the given id, intern, date, credited hours and description.
     public DailyLog(int id, Intern intern, LocalDate date, int hours, String description) {
         this.id = id;
         this.intern = intern;
@@ -35,47 +22,27 @@ public class DailyLog {
         this.description = description;
     }
 
-    /*
-     * Gets the id.
-     *
-     * It returns the log id.
-     */
+    // Returns the log id.
     public int getId() {
         return id;
     }
 
-    /*
-     * Gets the intern.
-     *
-     * It returns the intern who wrote this log.
-     */
+    // Returns the intern who wrote this log.
     public Intern getIntern() {
         return intern;
     }
 
-    /*
-     * Gets the date.
-     *
-     * It returns the day the work was done.
-     */
+    // Returns the day the work was done.
     public LocalDate getDate() {
         return date;
     }
 
-    /*
-     * Gets the hours.
-     *
-     * It returns the hours credited.
-     */
+    // Returns the hours credited for that day.
     public int getHours() {
         return hours;
     }
 
-    /*
-     * Gets the description.
-     *
-     * It returns the description of the work.
-     */
+    // Returns the description of the work done.
     public String getDescription() {
         return description;
     }

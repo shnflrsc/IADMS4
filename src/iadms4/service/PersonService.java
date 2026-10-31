@@ -1,12 +1,15 @@
 package iadms4.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import iadms4.model.Account;
+import iadms4.model.Application;
 import iadms4.model.Company;
 import iadms4.model.CompanyRepresentative;
 import iadms4.model.Coordinator;
+import iadms4.model.Evaluation;
 import iadms4.model.Gender;
 import iadms4.model.Intern;
 import iadms4.model.InternStatus;
@@ -20,27 +23,16 @@ import iadms4.repository.PersonRepository;
 
 /*
  * SERVICE. Business rules for people and their accounts.
- *
- * Responsibilities: creates people together with their accounts (coordinator, student, representative)
- * and applies the rules: required fields, unique email, unique student number. It also promotes a Student
- * to an Intern, edits and deletes people, and searches students.
+ * It creates people with their accounts, promotes students to interns, edits and deletes people,
+ * and searches students.
  */
 public class PersonService {
-    // Storage of people.
     private final PersonRepository persons;
-    // Storage of accounts.
     private final AccountRepository accounts;
-    // Used to protect people who have application history.
     private final ApplicationRepository applications;
-    // Used to protect representatives who wrote evaluations.
     private final EvaluationRepository evaluations;
 
-    /*
-     * Creates the service.
-     *
-     * It takes persons (the person repository), accounts (the account repository), applications (the
-     * application repository) and evaluations (the evaluation repository).
-     */
+    // Creates the service using the given repositories.
     public PersonService(PersonRepository persons, AccountRepository accounts, ApplicationRepository applications,
             EvaluationRepository evaluations) {
         this.persons = persons;
@@ -49,13 +41,7 @@ public class PersonService {
         this.evaluations = evaluations;
     }
 
-    /*
-     * Checks the details shared by every new account.
-     *
-     * It takes name (the full name), email (the login email) and password (the login password). It throws
-     * IllegalArgumentException if the name is blank, the email is invalid or already used, or the password
-     * is shorter than 4 characters.
-     */
+    // Checks the name, email and password shared by every new account and throws an exception if one is invalid.
     private void validate(String name, String email, String password) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name is required.");
@@ -71,91 +57,67 @@ public class PersonService {
         }
     }
 
-    /*
-     * Creates a coordinator together with a login account.
-     *
-     * It takes name (the full name), gender (the gender), birthdate (the date of birth), employeeId (the
-     * school-issued employee number), email (the login email) and password (the login password). It returns
-     * the new account (its person is the new coordinator). It throws IllegalArgumentException if any field
-     * is invalid.
-     */
+    // Creates a coordinator with a login account and returns the account.
     public Account registerCoordinator(String name, Gender gender, LocalDate birthdate, String employeeId,
             String email, String password) {
         validate(name, email, password);
         if (employeeId == null || employeeId.isBlank()) {
             throw new IllegalArgumentException("Employee ID is required.");
         }
-        Coordinator c = new Coordinator(persons.nextId(), name.trim(), gender, birthdate, employeeId.trim());
-        persons.save(c);
-        return accounts.save(new Account(c, email.trim(), password));
+        Coordinator coordinator = new Coordinator(persons.nextId(), name.trim(), gender, birthdate, employeeId.trim());
+        persons.save(coordinator);
+        return accounts.save(new Account(coordinator, email.trim(), password));
     }
 
-    /*
-     * Creates a student together with a login account.
-     *
-     * It takes name (the full name), gender (the gender), birthdate (the date of birth), studentId (the
-     * school-issued student number (must be unique)), section (the class section), email (the login email)
-     * and password (the login password). It returns the new account (its person is the new student). It
-     * throws IllegalArgumentException if any field is invalid or the student number is taken.
-     */
-    public Account registerStudent(String name, Gender gender, LocalDate birthdate, String studentId,
-            String section, String email, String password) {
+    // Creates a student with a login account. The studentId must be unique.
+    public void registerStudent(String name, Gender gender, LocalDate birthdate, String studentId, String section,
+            String email, String password) {
         validate(name, email, password);
         if (studentId == null || studentId.isBlank()) {
             throw new IllegalArgumentException("Student ID is required.");
         }
-        if (persons.findStudents().stream().anyMatch(s -> s.getStudentId().equalsIgnoreCase(studentId.trim()))) {
-            throw new IllegalArgumentException("A student with that student ID already exists.");
+        for (Student other : persons.findStudents()) {
+            if (other.getStudentId().equalsIgnoreCase(studentId.trim())) {
+                throw new IllegalArgumentException("A student with that student ID already exists.");
+            }
         }
-        Student s = new Student(persons.nextId(), name.trim(), gender, birthdate, studentId.trim(),
-                section == null ? "" : section.trim());
-        persons.save(s);
-        return accounts.save(new Account(s, email.trim(), password));
+        String cleanSection = "";
+        if (section != null) {
+            cleanSection = section.trim();
+        }
+        Student student = new Student(persons.nextId(), name.trim(), gender, birthdate, studentId.trim(), cleanSection);
+        persons.save(student);
+        accounts.save(new Account(student, email.trim(), password));
     }
 
-    /*
-     * Creates a company representative together with a login account.
-     *
-     * It takes name (the full name), gender (the gender), birthdate (the date of birth), company (the
-     * company the person represents), email (the login email) and password (the login password). It returns
-     * the new account (its person is the new representative). It throws IllegalArgumentException if any
-     * field is invalid or no company is given.
-     */
-    public Account registerRepresentative(String name, Gender gender, LocalDate birthdate, Company company,
+    // Creates a company representative for the given company with a login account.
+    public void registerRepresentative(String name, Gender gender, LocalDate birthdate, Company company,
             String email, String password) {
         validate(name, email, password);
         if (company == null) {
             throw new IllegalArgumentException("A company is required.");
         }
-        CompanyRepresentative r = new CompanyRepresentative(persons.nextId(), name.trim(), gender, birthdate, company);
-        persons.save(r);
-        return accounts.save(new Account(r, email.trim(), password));
+        CompanyRepresentative representative = new CompanyRepresentative(persons.nextId(), name.trim(), gender,
+                birthdate, company);
+        persons.save(representative);
+        accounts.save(new Account(representative, email.trim(), password));
     }
 
-    /*
-     * Replaces a Student with an Intern (same id) deployed to the position, re-pointing the account.
-     *
-     * It takes student (the student being promoted) and position (the position the new intern is deployed
-     * to). It returns the new Intern.
-     */
+    // Replaces the given student with an Intern deployed to the position, and returns the new intern.
     public Intern promoteToIntern(Student student, Position position) {
         Intern intern = new Intern(student.getId(), student.getName(), student.getGender(), student.getBirthdate(),
                 student.getStudentId(), student.getSection(), position, 0, InternStatus.ACTIVE);
-        // Same id, so saving REPLACES the Student entry in the repository with the Intern.
+        // The id is the same, so saving replaces the Student in the repository.
         persons.save(intern);
-        // Account.person is final, so build a new Account for the Intern with the same login details.
-        accounts.findByPersonId(student.getId())
-                .ifPresent(old -> accounts.save(new Account(intern, old.getEmail(), old.getPassword())));
+        // Account.person is final, so a new Account is saved with the same email and password.
+        Account old = accounts.findByPersonId(student.getId());
+        if (old != null) {
+            accounts.save(new Account(intern, old.getEmail(), old.getPassword()));
+        }
         return intern;
     }
 
-    /*
-     * Edits the shared details of any person. The section only applies to students and interns.
-     *
-     * It takes person (the person to edit), name (the new name), gender (the new gender), birthdate (the
-     * new birthdate) and section (the new section, or null to leave it unchanged). It throws
-     * IllegalArgumentException if the name is blank.
-     */
+    // Edits the given person. The section only applies to students and interns; null leaves it unchanged.
     public void updateDetails(Person person, String name, Gender gender, LocalDate birthdate, String section) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name is required.");
@@ -163,19 +125,12 @@ public class PersonService {
         person.setName(name.trim());
         person.setGender(gender);
         person.setBirthdate(birthdate);
-        if (person instanceof Student student && section != null) {
-            student.setSection(section.trim());
+        if (person instanceof Student && section != null) {
+            ((Student) person).setSection(section.trim());
         }
     }
 
-    /*
-     * Deletes a person and their account. Blocked when other records depend on them: interns,
-     * students with application history, representatives who wrote evaluations, coordinators who
-     * endorsed students, yourself, and the last coordinator.
-     *
-     * It takes actor (the coordinator doing the deletion) and target (the person to delete). It throws
-     * IllegalStateException if one of the protection rules above applies.
-     */
+    // Deletes target and their account for the coordinator actor, unless other records depend on them.
     public void delete(Coordinator actor, Person target) {
         if (target.getId() == actor.getId()) {
             throw new IllegalStateException("You cannot delete your own account.");
@@ -186,95 +141,96 @@ public class PersonService {
         if (target instanceof Student && !applications.findByStudentId(target.getId()).isEmpty()) {
             throw new IllegalStateException("This student has application history and cannot be deleted.");
         }
-        if (target instanceof CompanyRepresentative
-                && evaluations.findAll().stream().anyMatch(e -> e.getEvaluator().getId() == target.getId())) {
+        if (target instanceof CompanyRepresentative && wroteEvaluations(target)) {
             throw new IllegalStateException("This representative wrote evaluations and cannot be deleted.");
         }
         if (target instanceof Coordinator) {
-            if (applications.findAll().stream().anyMatch(a -> a.getCoordinator().getId() == target.getId())) {
+            if (endorsedStudents(target)) {
                 throw new IllegalStateException("This coordinator endorsed students and cannot be deleted.");
             }
             if (persons.findCoordinators().size() <= 1) {
                 throw new IllegalStateException("The last coordinator cannot be deleted.");
             }
         }
-        accounts.findByPersonId(target.getId()).ifPresent(accounts::remove);
+        Account account = accounts.findByPersonId(target.getId());
+        if (account != null) {
+            accounts.remove(account);
+        }
         persons.remove(target.getId());
     }
 
-    /*
-     * Searches students and interns by keyword.
-     *
-     * It takes keyword (text to look for in the name, student number, section or email (blank = everyone)).
-     * It returns the students whose details contain the keyword.
-     */
+    // Returns true if the given person wrote at least one evaluation.
+    private boolean wroteEvaluations(Person person) {
+        for (Evaluation evaluation : evaluations.findAll()) {
+            if (evaluation.getEvaluator().getId() == person.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Returns true if the given person endorsed at least one student.
+    private boolean endorsedStudents(Person person) {
+        for (Application application : applications.findAll()) {
+            if (application.getCoordinator().getId() == person.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Returns the students whose name, student number, section or email contains keyword (blank = everyone).
     public List<Student> searchStudents(String keyword) {
-        String k = keyword == null ? "" : keyword.trim().toLowerCase();
-        return persons.findStudents().stream().filter(s -> k.isEmpty()
-                || s.getName().toLowerCase().contains(k) || s.getStudentId().toLowerCase().contains(k)
-                || s.getSection().toLowerCase().contains(k) || emailOf(s).toLowerCase().contains(k)).toList();
+        String text = keyword.trim().toLowerCase();
+        List<Student> matches = new ArrayList<>();
+        for (Student student : persons.findStudents()) {
+            if (student.getName().toLowerCase().contains(text)
+                    || student.getStudentId().toLowerCase().contains(text)
+                    || student.getSection().toLowerCase().contains(text)
+                    || emailOf(student).toLowerCase().contains(text)) {
+                matches.add(student);
+            }
+        }
+        return matches;
     }
 
-    /*
-     * Lists all interns with the given status.
-     *
-     * It takes status (the status to keep, or null for no filter). It returns the matching interns.
-     */
+    // Returns the interns with the given status, or all interns if status is null.
     public List<Intern> interns(InternStatus status) {
-        return persons.findInterns().stream().filter(i -> status == null || i.getStatus() == status).toList();
+        List<Intern> matches = new ArrayList<>();
+        for (Intern intern : persons.findInterns()) {
+            if (status == null || intern.getStatus() == status) {
+                matches.add(intern);
+            }
+        }
+        return matches;
     }
 
-    /*
-     * Gets the login email of a person.
-     *
-     * It takes person (the person). It returns the email, or "-" if the person has no account.
-     */
+    // Returns the login email of the given person, or "-" if they have no account.
     public String emailOf(Person person) {
-        return accounts.findByPersonId(person.getId()).map(Account::getEmail).orElse("-");
+        Account account = accounts.findByPersonId(person.getId());
+        if (account == null) {
+            return "-";
+        }
+        return account.getEmail();
     }
 
-    /*
-     * Lists all students (interns included).
-     *
-     * It returns the students.
-     */
+    // Returns all students, including interns.
     public List<Student> students() {
         return persons.findStudents();
     }
 
-    /*
-     * Lists all interns.
-     *
-     * It returns the interns.
-     */
+    // Returns all interns.
     public List<Intern> interns() {
         return persons.findInterns();
     }
 
-    /*
-     * Lists all coordinators.
-     *
-     * It returns the coordinators.
-     */
+    // Returns all coordinators.
     public List<Coordinator> coordinators() {
         return persons.findCoordinators();
     }
 
-    /*
-     * Lists all company representatives.
-     *
-     * It returns the representatives of every company.
-     */
+    // Returns the representatives of every company.
     public List<CompanyRepresentative> representatives() {
         return persons.findRepresentatives();
-    }
-
-    /*
-     * Lists the representatives of one company.
-     *
-     * It takes company (the company). It returns the representatives who work for it.
-     */
-    public List<CompanyRepresentative> representatives(Company company) {
-        return persons.findRepresentatives(company);
     }
 }

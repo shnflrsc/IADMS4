@@ -1,54 +1,46 @@
 package iadms4.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import iadms4.service.ReportService.CompanyLine;
-import iadms4.service.ReportService.Summary;
+import iadms4.model.Company;
+import iadms4.model.Summary;
 
 /*
- * VIEW helper. Prints summary reports.
- *
- * Responsibilities: formats the numbers from ReportService so that the coordinator and representative
- * dashboards show the same layout. All methods are static and the constructor is private.
+ * VIEW helper. Prints summary reports so that the coordinator and representative dashboards
+ * show the same layout. All methods are static.
  */
-final class Reports {
-    // Private so that nobody creates an object of this utility class.
-    private Reports() {
-    }
-
-    /*
-     * Prints one summary report.
-     *
-     * It takes console (the console to print on), title (the heading of the report), s (the numbers to
-     * print) and showStudents (true to include the count of students who are not yet interns).
-     */
+class Reports {
+    // Prints one summary with the given title. showStudents adds the count of students not yet deployed.
     static void print(Console console, String title, Summary s, boolean showStudents) {
         console.println("  " + title);
         if (showStudents) {
-            console.println("  Students not yet deployed: " + s.students());
+            console.println("  Students not yet deployed: " + s.getStudents());
         }
-        console.println("  Interns:      " + s.interns() + "  (ACTIVE " + s.active() + ", DEACTIVATED "
-                + s.deactivated() + ", COMPLETED " + s.completed() + ")");
-        console.println("  Hours:        " + s.recordedHours() + " recorded of " + s.requiredHours() + " required ("
-                + s.progressPercent() + "%)");
-        console.println("  Openings:     " + s.openOpenings() + " open, " + s.closedOpenings() + " closed");
-        console.println("  Applications: PENDING " + s.pending() + ", APPROVED " + s.approved() + ", REJECTED "
-                + s.rejected() + ", WITHDRAWN " + s.withdrawn());
-        console.println("  Evaluations:  " + s.evaluations()
-                + (s.evaluations() == 0 ? "" : String.format(", average rating %.2f/5", s.averageRating())));
+        console.println("  Interns:      " + s.getInterns() + "  (ACTIVE " + s.getActive() + ", DEACTIVATED "
+                + s.getDeactivated() + ", COMPLETED " + s.getCompleted() + ")");
+        console.println("  Hours:        " + s.getRecordedHours() + " recorded of " + s.getRequiredHours()
+                + " required (" + s.getProgressPercent() + "%)");
+        console.println("  Openings:     " + s.getOpenOpenings() + " open, " + s.getClosedOpenings() + " closed");
+        console.println("  Applications: PENDING " + s.getPending() + ", APPROVED " + s.getApproved() + ", REJECTED "
+                + s.getRejected() + ", WITHDRAWN " + s.getWithdrawn());
+        String evaluations = "  Evaluations:  " + s.getEvaluations();
+        if (s.getEvaluations() != 0) {
+            evaluations += String.format(", average rating %.2f/5", s.getAverageRating());
+        }
+        console.println(evaluations);
     }
 
-    /*
-     * Prints the per-company breakdown as a table.
-     *
-     * It takes console (the console to print on) and lines (one line of numbers for each company).
-     */
-    static void printCompanies(Console console, List<CompanyLine> lines) {
-        List<String[]> rows = lines.stream().map(l -> new String[] { l.company(),
-                String.valueOf(l.summary().interns()), String.valueOf(l.summary().active()),
-                String.valueOf(l.summary().completed()),
-                l.summary().recordedHours() + "/" + l.summary().requiredHours(),
-                String.valueOf(l.summary().openOpenings()), String.valueOf(l.summary().pending()) }).toList();
+    // Prints a table with one row per company. The summaries must be in the same order as the companies.
+    static void printCompanies(Console console, List<Company> companies, List<Summary> summaries) {
+        List<String[]> rows = new ArrayList<>();
+        for (int i = 0; i < companies.size(); i++) {
+            Summary s = summaries.get(i);
+            rows.add(new String[] { companies.get(i).getName(), String.valueOf(s.getInterns()),
+                    String.valueOf(s.getActive()), String.valueOf(s.getCompleted()),
+                    s.getRecordedHours() + "/" + s.getRequiredHours(), String.valueOf(s.getOpenOpenings()),
+                    String.valueOf(s.getPending()) });
+        }
         console.println("  Per company");
         console.table(new String[] { "Company", "Interns", "Active", "Completed", "Hours", "Open openings", "Pending apps" },
                 rows);

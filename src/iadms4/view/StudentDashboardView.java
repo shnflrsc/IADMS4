@@ -1,44 +1,41 @@
 package iadms4.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iadms4.controller.StudentController;
+import iadms4.model.Application;
 import iadms4.model.Student;
 
 /*
- * VIEW. The Student dashboard (read-only).
- *
- * Responsibilities: builds the student's menu and prints the student's profile and applications.
+ * VIEW. The read-only Student dashboard.
  * A student can only look at information; every change is done by a coordinator.
  */
-public class StudentDashboardView {
-    // Used for printing and reading.
-    private final Console console;
-    // Controller that provides the student's data.
+public class StudentDashboardView extends Menu {
     private final StudentController controller;
-    // Screen reused for the "Account settings" menu item.
     private final AccountSettingsView settings;
 
-    /*
-     * Creates the view.
-     *
-     * It takes console (the console used for input and output), controller (the student controller) and
-     * settings (the shared account settings screen).
-     */
+    // Creates the view using the given console, controller and account settings screen.
     public StudentDashboardView(Console console, StudentController controller, AccountSettingsView settings) {
-        this.console = console;
+        super(console);
         this.controller = controller;
         this.settings = settings;
     }
 
     // Shows the student menu until the student logs out.
     public void show() {
-        Student me = controller.me();
-        new Menu(console, "Student Dashboard - " + me.getName(), "Log out")
-                .add("View my profile", this::profile)
-                .add("View my applications", this::applications)
-                .add("Account settings", settings::show)
-                .run();
+        String[] items = { "View my profile", "View my applications", "Account settings" };
+        run("Student Dashboard - " + controller.me().getName(), items, "Log out");
+    }
+
+    // Runs the menu item with the given number.
+    @Override
+    protected void runItem(int choice) {
+        switch (choice) {
+            case 1: profile(); break;
+            case 2: applications(); break;
+            case 3: settings.show(); break;
+        }
     }
 
     // Prints the student's name, student number, section, email and birthdate.
@@ -51,11 +48,13 @@ public class StudentDashboardView {
         console.println("  Birthdate:   " + me.getBirthdate());
     }
 
-    // Prints a table of the student's applications with company, position and status.
+    // Prints a table of the student's applications.
     private void applications() {
-        List<String[]> rows = controller.myApplications().stream().map(a -> new String[] {
-                String.valueOf(a.getId()), a.getOpening().getPosition().getCompany().getName(),
-                a.getOpening().getPosition().getTitle(), a.getStatus().toString() }).toList();
+        List<String[]> rows = new ArrayList<>();
+        for (Application a : controller.myApplications()) {
+            rows.add(new String[] { String.valueOf(a.getId()), a.getOpening().getPosition().getCompany().getName(),
+                    a.getOpening().getPosition().getTitle(), a.getStatus().toString() });
+        }
         console.table(new String[] { "ID", "Company", "Position", "Status" }, rows);
     }
 }

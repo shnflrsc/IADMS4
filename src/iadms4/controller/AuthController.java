@@ -11,70 +11,41 @@ import iadms4.service.PersonService;
 
 /*
  * CONTROLLER. Handles login, logout and first-time setup.
- *
- * Responsibilities: receives the requests from AuthView and forwards them to the services.
- * Controllers contain no business rules; they only connect views to services.
+ * Controllers have no business rules; they only connect views to services.
  */
 public class AuthController {
-    // Service that checks credentials and manages the session.
     private final AuthService auth;
-    // Service that creates the first coordinator.
     private final PersonService persons;
 
-    /*
-     * Creates the controller.
-     *
-     * It takes auth (the authentication service) and persons (the person service).
-     */
+    // Creates the controller using the given services.
     public AuthController(AuthService auth, PersonService persons) {
         this.auth = auth;
         this.persons = persons;
     }
 
-    /*
-     * Asks whether the first-time setup is still needed.
-     *
-     * It returns true if no account exists yet.
-     */
+    // Returns true if no account exists yet.
     public boolean needsSetup() {
         return auth.needsSetup();
     }
 
-    /*
-     * Asks whether someone is logged in.
-     *
-     * It returns true if there is an active session.
-     */
+    // Returns true if someone is logged in.
     public boolean isLoggedIn() {
         return Session.getInstance().isLoggedIn();
     }
 
-    /*
-     * Gets the person who is logged in.
-     *
-     * It returns the current person, or null if nobody is logged in.
-     */
+    // Returns the person who is logged in, or null if nobody is.
     public Person currentPerson() {
         return Session.getInstance().getPerson();
     }
 
-    /*
-     * First-boot setup: creates the initial coordinator account and logs it in.
-     *
-     * It takes name (the full name), gender (the gender), birthdate (the date of birth), employeeId (the
-     * employee number), email (the login email) and password (the login password).
-     */
+    // Creates the first coordinator from the given details and logs them in.
     public void setup(String name, Gender gender, LocalDate birthdate, String employeeId, String email,
             String password) {
         Account account = persons.registerCoordinator(name, gender, birthdate, employeeId, email, password);
         auth.startSession(account);
     }
 
-    /*
-     * Logs a user in.
-     *
-     * It takes email (the typed email) and password (the typed password).
-     */
+    // Logs a user in with the given email and password.
     public void login(String email, String password) {
         auth.login(email, password);
     }

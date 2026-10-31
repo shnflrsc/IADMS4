@@ -4,35 +4,33 @@ import iadms4.controller.AccountController;
 
 /*
  * VIEW. The account settings screen shared by every dashboard.
- *
- * Responsibilities: lets the logged-in user change their own password or login email by sending the
- * typed values to AccountController.
+ * It lets the logged-in user change their own password or login email.
  */
-public class AccountSettingsView {
-    // Used for printing and reading.
-    private final Console console;
-    // Controller that handles the changes.
+public class AccountSettingsView extends Menu {
     private final AccountController controller;
 
-    /*
-     * Creates the view.
-     *
-     * It takes console (the console used for input and output) and controller (the account controller).
-     */
+    // Creates the view using the given console and controller.
     public AccountSettingsView(Console console, AccountController controller) {
-        this.console = console;
+        super(console);
         this.controller = controller;
     }
 
     // Shows the account settings menu until the user goes back.
     public void show() {
-        new Menu(console, "Account Settings", "Back")
-                .add("Change password", this::changePassword)
-                .add("Change email", this::changeEmail)
-                .run();
+        String[] items = { "Change password", "Change email" };
+        run("Account Settings", items, "Back");
     }
 
-    // Asks for the current and new passwords, then asks the controller to change the password.
+    // Runs the menu item with the given number.
+    @Override
+    protected void runItem(int choice) {
+        switch (choice) {
+            case 1: changePassword(); break;
+            case 2: changeEmail(); break;
+        }
+    }
+
+    // Asks for the current and new passwords, then changes the password.
     private void changePassword() {
         String current = console.readRequired("Current password");
         String next = console.readRequired("New password (min 4 chars)");
@@ -41,7 +39,7 @@ public class AccountSettingsView {
         console.println("  Password changed.");
     }
 
-    // Shows the current email, asks for the password and a new email, then asks the controller to change it.
+    // Shows the current email, asks for the password and a new email, then changes the email.
     private void changeEmail() {
         console.println("  Current email: " + controller.email());
         String password = console.readRequired("Password");

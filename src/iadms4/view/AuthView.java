@@ -6,29 +6,19 @@ import iadms4.controller.AuthController;
 import iadms4.model.Gender;
 
 /*
- * VIEW. The screens shown before anyone is logged in.
- *
- * Responsibilities: the first-time setup screen (creates the first Coordinator) and the login screen.
- * It reads what the user types and passes it to AuthController.
+ * VIEW. The screens shown before anyone is logged in: first-time setup and login.
  */
 public class AuthView {
-    // Used for printing and reading.
     private final Console console;
-    // Controller that handles setup and login requests.
     private final AuthController controller;
 
-    /*
-     * Creates the view.
-     *
-     * It takes console (the console used for input and output) and controller (the authentication
-     * controller).
-     */
+    // Creates the view using the given console and controller.
     public AuthView(Console console, AuthController controller) {
         this.console = console;
         this.controller = controller;
     }
 
-    // Repeats until the first coordinator account has been created.
+    // Keeps asking for details until the first coordinator account has been created.
     public void setup() {
         console.header("IADMS - First Time Setup");
         console.println("  No accounts exist yet. Create the first Coordinator account.");
@@ -48,11 +38,7 @@ public class AuthView {
         }
     }
 
-    /*
-     * Shows the login screen and tries to log the user in.
-     *
-     * It returns false when the user chooses to exit the application, otherwise true.
-     */
+    // Shows the login screen. Returns false if the user chooses to exit, otherwise true.
     public boolean login() {
         console.header("IADMS - Internship Application & Deployment Monitoring");
         console.println("  [1] Log in");

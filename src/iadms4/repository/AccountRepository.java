@@ -1,96 +1,70 @@
 package iadms4.repository;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import iadms4.model.Account;
 
 /*
- * REPOSITORY. Stores Accounts keyed by lower-cased email, so login is a simple lookup.
- *
- * Responsibilities: save, remove and search accounts. It does not extend Repository because accounts
- * are identified by email instead of a numeric id. Lower-casing the key makes emails case-insensitive.
+ * REPOSITORY. Stores Accounts.
+ * It does not extend Repository because accounts are identified by email instead of a number.
+ * Emails are compared without capital letters or outer spaces.
  */
 public class AccountRepository {
-    // Accounts stored by their normalized (trimmed, lower-case) email.
-    private final Map<String, Account> accounts = new LinkedHashMap<>();
+    private final List<Account> accounts = new ArrayList<>();
 
-    /*
-     * Converts an email into the form used as the map key.
-     *
-     * It takes email (the raw email text). It returns the email with spaces trimmed and letters in lower
-     * case.
-     */
-    private static String key(String email) {
+    // Returns the given email trimmed and in lower case, which is the form used for comparing.
+    private String normalize(String email) {
         return email.trim().toLowerCase();
     }
 
-    /*
-     * Inserts or replaces the account with the same email.
-     *
-     * It takes account (the account to store). It returns the same account that was stored.
-     */
+    // Stores the given account and returns it. An account with the same email is replaced in the same place.
     public Account save(Account account) {
-        accounts.put(key(account.getEmail()), account);
+        for (int i = 0; i < accounts.size(); i++) {
+            if (normalize(accounts.get(i).getEmail()).equals(normalize(account.getEmail()))) {
+                accounts.set(i, account);
+                return account;
+            }
+        }
+        accounts.add(account);
         return account;
     }
 
-    /*
-     * Removes the account stored under its email (used when an email changes or a person is deleted).
-     *
-     * It takes account (the account to remove).
-     */
+    // Removes the account that uses the same email as the given account.
     public void remove(Account account) {
-        accounts.remove(key(account.getEmail()));
+        Account stored = findByEmail(account.getEmail());
+        if (stored != null) {
+            accounts.remove(stored);
+        }
     }
 
-    /*
-     * Finds an account by email, ignoring capital letters and surrounding spaces.
-     *
-     * It takes email (the email to search for). It returns an Optional with the account, or an empty
-     * Optional if there is none.
-     */
-    public Optional<Account> findByEmail(String email) {
-        return Optional.ofNullable(accounts.get(key(email)));
+    // Returns the account with the given email, or null if there is none.
+    public Account findByEmail(String email) {
+        for (Account account : accounts) {
+            if (normalize(account.getEmail()).equals(normalize(email))) {
+                return account;
+            }
+        }
+        return null;
     }
 
-    /*
-     * Finds the account that belongs to a person.
-     *
-     * It takes personId (the id of the owner). It returns an Optional with the account, or an empty
-     * Optional if the person has none.
-     */
-    public Optional<Account> findByPersonId(int personId) {
-        return accounts.values().stream().filter(a -> a.getPerson().getId() == personId).findFirst();
+    // Returns the account owned by the person with the given id, or null if there is none.
+    public Account findByPersonId(int personId) {
+        for (Account account : accounts) {
+            if (account.getPerson().getId() == personId) {
+                return account;
+            }
+        }
+        return null;
     }
 
-    /*
-     * Checks whether an email is already registered.
-     *
-     * It takes email (the email to check). It returns true if an account already uses that email.
-     */
+    // Returns true if an account already uses the given email.
     public boolean existsByEmail(String email) {
-        return accounts.containsKey(key(email));
+        return findByEmail(email) != null;
     }
 
-    /*
-     * Checks whether no account exists yet (true on the very first run of the program).
-     *
-     * It returns true if there are no accounts.
-     */
+    // Returns true if there are no accounts yet (the very first run of the program).
     public boolean isEmpty() {
         return accounts.isEmpty();
-    }
-
-    /*
-     * Gets every account.
-     *
-     * It returns a new list containing all accounts.
-     */
-    public List<Account> findAll() {
-        return new ArrayList<>(accounts.values());
     }
 }

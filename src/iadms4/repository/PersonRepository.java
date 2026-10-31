@@ -1,5 +1,6 @@
 package iadms4.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iadms4.model.Company;
@@ -10,69 +11,68 @@ import iadms4.model.Person;
 import iadms4.model.Student;
 
 /*
- * REPOSITORY. Stores every Person (students, interns, coordinators, representatives) in one place
- * because they share one id space.
- *
- * Responsibilities: besides the basic operations inherited from Repository, it can list people of
- * one subclass. The find* methods filter by subclass using instanceof, which checks the real type of an
- * object at runtime.
+ * REPOSITORY. Stores every Person in one place because they all share one id space.
+ * The find methods use instanceof to pick out the people of one subclass.
  */
 public class PersonRepository extends Repository<Person> {
-    /*
-     * Reads the id of a person so the base class can use it as the map key.
-     *
-     * It takes item (the person). It returns the person's id.
-     */
+    // Returns the id of the given person.
     @Override
     protected int idOf(Person item) {
         return item.getId();
     }
 
-    /*
-     * Lists all students, including those already promoted to interns (an Intern is also a Student).
-     *
-     * It returns the list of students.
-     */
+    // Returns all students, including interns because an Intern is also a Student.
     public List<Student> findStudents() {
-        return findAll().stream().filter(p -> p instanceof Student).map(p -> (Student) p).toList();
+        List<Student> students = new ArrayList<>();
+        for (Person person : findAll()) {
+            if (person instanceof Student) {
+                students.add((Student) person);
+            }
+        }
+        return students;
     }
 
-    /*
-     * Lists only the interns.
-     *
-     * It returns the list of interns.
-     */
+    // Returns only the interns.
     public List<Intern> findInterns() {
-        return findAll().stream().filter(p -> p instanceof Intern).map(p -> (Intern) p).toList();
+        List<Intern> interns = new ArrayList<>();
+        for (Person person : findAll()) {
+            if (person instanceof Intern) {
+                interns.add((Intern) person);
+            }
+        }
+        return interns;
     }
 
-    /*
-     * Lists all coordinators.
-     *
-     * It returns the list of coordinators.
-     */
+    // Returns all coordinators.
     public List<Coordinator> findCoordinators() {
-        return findAll().stream().filter(p -> p instanceof Coordinator).map(p -> (Coordinator) p).toList();
+        List<Coordinator> coordinators = new ArrayList<>();
+        for (Person person : findAll()) {
+            if (person instanceof Coordinator) {
+                coordinators.add((Coordinator) person);
+            }
+        }
+        return coordinators;
     }
 
-    /*
-     * Lists the representatives of every company.
-     *
-     * It returns the list of company representatives.
-     */
+    // Returns the representatives of every company.
     public List<CompanyRepresentative> findRepresentatives() {
-        return findAll().stream().filter(p -> p instanceof CompanyRepresentative)
-                .map(p -> (CompanyRepresentative) p).toList();
+        List<CompanyRepresentative> representatives = new ArrayList<>();
+        for (Person person : findAll()) {
+            if (person instanceof CompanyRepresentative) {
+                representatives.add((CompanyRepresentative) person);
+            }
+        }
+        return representatives;
     }
 
-    /*
-     * Lists the representatives of one particular company.
-     *
-     * It takes company (the company to filter by). It returns the representatives who work for that
-     * company.
-     */
+    // Returns the representatives who work for the given company.
     public List<CompanyRepresentative> findRepresentatives(Company company) {
-        return findAll().stream().filter(p -> p instanceof CompanyRepresentative)
-                .map(p -> (CompanyRepresentative) p).filter(r -> r.getCompany().getId() == company.getId()).toList();
+        List<CompanyRepresentative> matches = new ArrayList<>();
+        for (CompanyRepresentative representative : findRepresentatives()) {
+            if (representative.getCompany().getId() == company.getId()) {
+                matches.add(representative);
+            }
+        }
+        return matches;
     }
 }
