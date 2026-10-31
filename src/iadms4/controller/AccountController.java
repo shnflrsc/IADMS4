@@ -5,29 +5,29 @@ import iadms4.service.AuthService;
 import iadms4.service.PersonService;
 
 /*
- * CONTROLLER. Handles the account settings shared by every account type.
+ * CONTROLLER. account settings stuff, same for all account types
  */
 public class AccountController {
     private final AuthService auth;
     private final PersonService persons;
 
-    // Creates the controller using the given services.
+    // constructor, just saves the services
     public AccountController(AuthService auth, PersonService persons) {
         this.auth = auth;
         this.persons = persons;
     }
 
-    // Returns the email of the logged-in user.
+    // email of whoever is logged in
     public String email() {
         return persons.emailOf(Session.getInstance().getPerson());
     }
 
-    // Changes the logged-in user's password.
+    // change own password
     public void changePassword(String current, String newPassword, String confirm) {
         auth.changePassword(current, newPassword, confirm);
     }
 
-    // Changes the logged-in user's email after checking their password.
+    // change own email, needs password
     public void changeEmail(String password, String newEmail) {
         auth.changeEmail(password, newEmail);
     }

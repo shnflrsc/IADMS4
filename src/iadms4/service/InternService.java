@@ -12,20 +12,20 @@ import iadms4.repository.DailyLogRepository;
 import iadms4.repository.PersonRepository;
 
 /*
- * SERVICE. Business rules for what happens to an intern after deployment.
- * It handles logging hours and status changes. COMPLETED is set by the representative and is final.
+ * SERVICE. intern stuff after deployment
+ * logging hours + status changes. COMPLETED is final
  */
 public class InternService {
     private final PersonRepository persons;
     private final DailyLogRepository logs;
 
-    // Creates the service using the given repositories.
+    // constructor
     public InternService(PersonRepository persons, DailyLogRepository logs) {
         this.persons = persons;
         this.logs = logs;
     }
 
-    // Logs hours with a description for the given intern and returns the hours still needed.
+    // log hours, gives back hours left
     public int logHours(Intern intern, int hours, String description) {
         if (intern.getStatus() != InternStatus.ACTIVE) {
             throw new IllegalStateException("Only ACTIVE interns can log hours (status: " + intern.getStatus() + ").");
@@ -40,7 +40,7 @@ public class InternService {
         if (intern.getRecordedHours() >= required) {
             throw new IllegalStateException("Required hours already met; wait for your company representative to mark the internship COMPLETED.");
         }
-        // Never credit more than what is left to reach the requirement.
+        // cap it so they dont go over required hours
         int credited = Math.min(hours, required - intern.getRecordedHours());
         int total = intern.getRecordedHours() + credited;
         intern.setRecordedHours(total);
@@ -48,7 +48,7 @@ public class InternService {
         return required - total;
     }
 
-    // Sets the status of the given intern. COMPLETED needs the required hours, and it cannot be changed later.
+    // change status. COMPLETED needs full hours and cant be undone
     public void changeStatus(Intern intern, InternStatus status) {
         if (intern.getStatus() == InternStatus.COMPLETED) {
             throw new IllegalStateException("A COMPLETED internship cannot be changed.");
@@ -61,7 +61,7 @@ public class InternService {
         intern.setStatus(status);
     }
 
-    // Returns the interns of the given company with the given status, or all of them if status is null.
+    // interns of company by status, null = all
     public List<Intern> internsOf(Company company, InternStatus status) {
         List<Intern> matches = new ArrayList<>();
         for (Intern intern : persons.findInterns()) {
@@ -73,7 +73,7 @@ public class InternService {
         return matches;
     }
 
-    // Returns the daily logs of the given intern.
+    // daily logs of this intern
     public List<DailyLog> logsOf(Intern intern) {
         return logs.findByInternId(intern.getId());
     }

@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * REPOSITORY (base class). The in-memory "database table" for one type of object.
- * It stores items in a list, hands out new ids, and offers save, find and remove. Business rules belong
- * in the service layer. T is the type of object stored, and each child class decides what T is.
+ * REPOSITORY base class. acts like a db table but its just a list in memory
+ * save, find, remove, next id. NO business rules here, those go in services
+ * T = whatever type the child class stores
  */
 public abstract class Repository<T> {
     private final List<T> items = new ArrayList<>();
     private int nextId = 1;
 
-    // Returns the id of the given item. Each child class writes this because only it knows what T is.
+    // child classes write this bc only they know what T is
     protected abstract int idOf(T item);
 
-    // Returns a new unused id and moves the counter forward.
+    // next free id
     public int nextId() {
         int id = nextId;
         nextId++;
         return id;
     }
 
-    // Stores the given item and returns it. An item with the same id is replaced in the same place.
+    // save item. same id = replace, keeps its spot in the list
     public T save(T item) {
         for (int i = 0; i < items.size(); i++) {
             if (idOf(items.get(i)) == idOf(item)) {
@@ -34,7 +34,7 @@ public abstract class Repository<T> {
         return item;
     }
 
-    // Returns the item with the given id, or null if there is none.
+    // find by id, null if none
     public T findById(int id) {
         for (T item : items) {
             if (idOf(item) == id) {
@@ -44,12 +44,12 @@ public abstract class Repository<T> {
         return null;
     }
 
-    // Returns a copy of the list of items, so callers cannot change the storage by accident.
+    // gives a copy so nobody messes up the real list
     public List<T> findAll() {
         return new ArrayList<>(items);
     }
 
-    // Deletes the item with the given id.
+    // delete by id
     public void remove(int id) {
         for (int i = 0; i < items.size(); i++) {
             if (idOf(items.get(i)) == id) {

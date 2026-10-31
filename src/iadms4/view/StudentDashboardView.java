@@ -8,27 +8,27 @@ import iadms4.model.Application;
 import iadms4.model.Student;
 
 /*
- * VIEW. The read-only Student dashboard.
- * A student can only look at information; every change is done by a coordinator.
+ * VIEW. student dashboard, read only
+ * coordinators do all the changes
  */
 public class StudentDashboardView extends Menu {
     private final StudentController controller;
     private final AccountSettingsView settings;
 
-    // Creates the view using the given console, controller and account settings screen.
+    // constructor
     public StudentDashboardView(Console console, StudentController controller, AccountSettingsView settings) {
         super(console);
         this.controller = controller;
         this.settings = settings;
     }
 
-    // Shows the student menu until the student logs out.
+    // student menu, stays here til logout
     public void show() {
         String[] items = { "View my profile", "View my applications", "Account settings" };
         run("Student Dashboard - " + controller.me().getName(), items, "Log out");
     }
 
-    // Runs the menu item with the given number.
+    // what each number does
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -38,7 +38,7 @@ public class StudentDashboardView extends Menu {
         }
     }
 
-    // Prints the student's name, student number, section, email and birthdate.
+    // profile
     private void profile() {
         Student me = controller.me();
         console.println("  Name:        " + me.getName());
@@ -48,7 +48,7 @@ public class StudentDashboardView extends Menu {
         console.println("  Birthdate:   " + me.getBirthdate());
     }
 
-    // Prints a table of the student's applications.
+    // my applications table
     private void applications() {
         List<String[]> rows = new ArrayList<>();
         for (Application a : controller.myApplications()) {

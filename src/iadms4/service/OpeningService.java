@@ -14,8 +14,8 @@ import iadms4.repository.PersonRepository;
 import iadms4.repository.PositionRepository;
 
 /*
- * SERVICE. Business rules for positions and openings.
- * It creates, edits and deletes them, with safety rules so that data in use is protected.
+ * SERVICE. positions AND openings, theyre together bc the rules depend on each other
+ * cant delete stuff thats being used
  */
 public class OpeningService {
     private final PositionRepository positions;
@@ -23,7 +23,7 @@ public class OpeningService {
     private final PersonRepository persons;
     private final ApplicationRepository applications;
 
-    // Creates the service using the given repositories.
+    // constructor
     public OpeningService(PositionRepository positions, OpeningRepository openings, PersonRepository persons,
             ApplicationRepository applications) {
         this.positions = positions;
@@ -32,13 +32,13 @@ public class OpeningService {
         this.applications = applications;
     }
 
-    // Creates a position for the given company with a title and requiredHours.
+    // new position
     public void createPosition(Company company, String title, int requiredHours) {
         requireValidDetails(title, requiredHours);
         positions.save(new Position(positions.nextId(), company, title.trim(), requiredHours));
     }
 
-    // Edits a position of the given company. This is blocked once an intern is deployed to it.
+    // edit position, not allowed if theres an intern on it
     public void updatePosition(Company company, Position position, String title, int requiredHours) {
         requireOwn(company, position);
         for (Intern intern : persons.findInterns()) {
@@ -51,7 +51,7 @@ public class OpeningService {
         position.setRequiredHours(requiredHours);
     }
 
-    // Throws an exception if the title is blank or the hours are not positive.
+    // title cant be blank, hours must be > 0
     private void requireValidDetails(String title, int requiredHours) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Position title is required.");
@@ -61,7 +61,7 @@ public class OpeningService {
         }
     }
 
-    // Deletes a position of the given company if it has no openings.
+    // delete position, only if no openings
     public void deletePosition(Company company, Position position) {
         requireOwn(company, position);
         for (Opening opening : openings.findAll()) {
@@ -72,7 +72,7 @@ public class OpeningService {
         positions.remove(position.getId());
     }
 
-    // Deletes an opening of the given company if nobody was ever endorsed to it.
+    // delete opening, only if nobody was ever endorsed
     public void deleteOpening(Company company, Opening opening) {
         requireOwn(company, opening.getPosition());
         for (Application application : applications.findAll()) {
@@ -83,39 +83,39 @@ public class OpeningService {
         openings.remove(opening.getId());
     }
 
-    // Throws an exception if the given position belongs to a different company.
+    // error if its another company's position
     private void requireOwn(Company company, Position position) {
         if (position.getCompany().getId() != company.getId()) {
             throw new IllegalStateException("That position belongs to another company.");
         }
     }
 
-    // Publishes the given position as a new OPEN opening.
+    // new OPEN opening
     public void createOpening(Position position) {
         openings.save(new Opening(openings.nextId(), position, OpeningStatus.OPEN));
     }
 
-    // Changes the given opening to the given status.
+    // set status
     public void setStatus(Opening opening, OpeningStatus status) {
         opening.setStatus(status);
     }
 
-    // Returns the positions of the given company.
+    // positions of company
     public List<Position> positionsOf(Company company) {
         return positions.findByCompany(company);
     }
 
-    // Returns the openings of the given company.
+    // openings of company
     public List<Opening> openingsOf(Company company) {
         return openings.findByCompany(company);
     }
 
-    // Returns every opening of every company.
+    // all openings
     public List<Opening> allOpenings() {
         return openings.findAll();
     }
 
-    // Returns only the openings that are OPEN.
+    // OPEN ones only
     public List<Opening> openOpenings() {
         return openings.findByStatus(OpeningStatus.OPEN);
     }

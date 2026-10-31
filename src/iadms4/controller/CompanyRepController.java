@@ -22,8 +22,8 @@ import iadms4.service.OpeningService;
 import iadms4.service.ReportService;
 
 /*
- * CONTROLLER. Handles everything the Company Representative dashboard can do.
- * Every request is limited to the representative's own company.
+ * CONTROLLER. everything the company rep dashboard does
+ * everything is limited to the rep's own company
  */
 public class CompanyRepController {
     private final OpeningService openings;
@@ -32,7 +32,7 @@ public class CompanyRepController {
     private final EvaluationService evaluations;
     private final ReportService reports;
 
-    // Creates the controller using the given services.
+    // constructor, just saves the services
     public CompanyRepController(OpeningService openings, ApplicationService applications, InternService interns,
             EvaluationService evaluations, ReportService reports) {
         this.openings = openings;
@@ -42,97 +42,97 @@ public class CompanyRepController {
         this.reports = reports;
     }
 
-    // Returns the logged-in representative.
+    // the rep thats logged in
     private CompanyRepresentative me() {
         return (CompanyRepresentative) Session.getInstance().getPerson();
     }
 
-    // Returns the company of the logged-in representative.
+    // the logged in rep's company
     public Company company() {
         return me().getCompany();
     }
 
-    // Returns the company's positions.
+    // positions of this company
     public List<Position> positions() {
         return openings.positionsOf(company());
     }
 
-    // Returns the company's openings.
+    // openings of this company
     public List<Opening> openings() {
         return openings.openingsOf(company());
     }
 
-    // Returns all applications made to the company.
+    // all applications for this company
     public List<Application> applications() {
         return applications.forCompany(company());
     }
 
-    // Returns the company's applications with the given status, or all if status is null.
+    // company applications by status, null = all
     public List<Application> applications(ApplicationStatus status) {
         return applications.forCompany(company(), status);
     }
 
-    // Returns the company's PENDING applications.
+    // pending ones only
     public List<Application> pendingApplications() {
         return applications.pendingForCompany(company());
     }
 
-    // Returns all interns of the company.
+    // all interns of this company
     public List<Intern> interns() {
         return interns.internsOf(company(), null);
     }
 
-    // Returns the company's interns with the given status, or all if status is null.
+    // company interns by status, null = all
     public List<Intern> interns(InternStatus status) {
         return interns.internsOf(company(), status);
     }
 
-    // Returns the daily logs of the given intern.
+    // daily logs of this intern
     public List<DailyLog> dailyLogs(Intern intern) {
         return interns.logsOf(intern);
     }
 
-    // Returns the COMPLETED interns that still need an evaluation.
+    // completed interns w/ no evaluation yet
     public List<Intern> internsAwaitingEvaluation() {
         return evaluations.awaitingEvaluation(company());
     }
 
-    // Returns the evaluations of the company's interns.
+    // evaluations for this company
     public List<Evaluation> evaluations() {
         return evaluations.forCompany(company());
     }
 
-    // Returns the summary report of the company.
+    // company report
     public Summary report() {
         return reports.forCompany(company());
     }
 
-    // Adds a position with the given title and requiredHours to the company.
+    // add position
     public void addPosition(String title, int requiredHours) {
         openings.createPosition(company(), title, requiredHours);
     }
 
-    // Edits the given position of the company.
+    // edit position
     public void editPosition(Position position, String title, int requiredHours) {
         openings.updatePosition(company(), position, title, requiredHours);
     }
 
-    // Deletes the given position of the company.
+    // delete position
     public void deletePosition(Position position) {
         openings.deletePosition(company(), position);
     }
 
-    // Publishes the given position as an opening.
+    // turns a position into an opening
     public void createOpening(Position position) {
         openings.createOpening(position);
     }
 
-    // Deletes the given opening of the company.
+    // delete opening
     public void deleteOpening(Opening opening) {
         openings.deleteOpening(company(), opening);
     }
 
-    // Switches the given opening between OPEN and CLOSED.
+    // OPEN <-> CLOSED
     public void toggleOpening(Opening opening) {
         if (opening.getStatus() == OpeningStatus.OPEN) {
             openings.setStatus(opening, OpeningStatus.CLOSED);
@@ -141,22 +141,22 @@ public class CompanyRepController {
         }
     }
 
-    // Approves the given application and returns the new intern.
+    // approve, gives back the new intern
     public Intern approve(Application application) {
         return applications.approve(application);
     }
 
-    // Denies the given application.
+    // deny
     public void deny(Application application) {
         applications.reject(application);
     }
 
-    // Changes the status of the given intern.
+    // change intern status
     public void changeInternStatus(Intern intern, InternStatus status) {
         interns.changeStatus(intern, status);
     }
 
-    // Saves an evaluation of the given intern, signed by the logged-in representative.
+    // saves evaluation, logged in rep is the evaluator
     public void evaluate(Intern intern, int rating, String comments) {
         evaluations.evaluate(me(), intern, rating, comments);
     }

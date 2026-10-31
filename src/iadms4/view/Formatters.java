@@ -15,16 +15,16 @@ import iadms4.model.Position;
 import iadms4.model.Student;
 
 /*
- * VIEW helper. Turns model objects into the one-line texts shown by Console.choose.
- * All methods are static, so no object of this class is ever created.
+ * VIEW helper. makes the one line labels for Console.choose
+ * all static
  */
 class Formatters {
-    // Returns text such as "Backend Developer @ Acme (300h)" for the given position.
+    // like "Backend Developer @ Acme (300h)"
     private static String position(Position p) {
         return p.getTitle() + " @ " + p.getCompany().getName() + " (" + p.getRequiredHours() + "h)";
     }
 
-    // Returns "Intern", "Student", "Coordinator", "Company Rep" or "Person". Intern is checked before Student.
+    // what kind of person. intern first again bc intern is a student
     private static String kind(Person p) {
         if (p instanceof Intern) {
             return "Intern";
@@ -41,7 +41,7 @@ class Formatters {
         return "Person";
     }
 
-    // Returns a label with the title, company and hours of each given position.
+    // labels for positions
     static List<String> positions(List<Position> positions) {
         List<String> labels = new ArrayList<>();
         for (Position p : positions) {
@@ -50,7 +50,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns only the title of each given position.
+    // titles only
     static List<String> positionTitles(List<Position> positions) {
         List<String> labels = new ArrayList<>();
         for (Position p : positions) {
@@ -59,7 +59,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns a label with the id, position and status of each given opening.
+    // labels for openings
     static List<String> openings(List<Opening> openings) {
         List<String> labels = new ArrayList<>();
         for (Opening o : openings) {
@@ -68,7 +68,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns a label with the id, student, position and status of each given application.
+    // labels for applications
     static List<String> applications(List<Application> applications) {
         List<String> labels = new ArrayList<>();
         for (Application a : applications) {
@@ -78,7 +78,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns a label with the name, position, hours and status of each given intern.
+    // labels for interns
     static List<String> interns(List<Intern> interns) {
         List<String> labels = new ArrayList<>();
         for (Intern i : interns) {
@@ -88,7 +88,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns a label with the kind and name of each given person.
+    // labels for people
     static List<String> people(List<Person> people) {
         List<String> labels = new ArrayList<>();
         for (Person p : people) {
@@ -97,7 +97,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns a label with the student number, name and kind of each given student.
+    // labels for students
     static List<String> students(List<Student> students) {
         List<String> labels = new ArrayList<>();
         for (Student s : students) {
@@ -106,7 +106,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns the name of each given company.
+    // company names
     static List<String> companies(List<Company> companies) {
         List<String> labels = new ArrayList<>();
         for (Company c : companies) {
@@ -115,7 +115,7 @@ class Formatters {
         return labels;
     }
 
-    // Returns the name of every intern status.
+    // intern status names
     static List<String> internStatuses() {
         List<String> labels = new ArrayList<>();
         for (InternStatus status : InternStatus.values()) {

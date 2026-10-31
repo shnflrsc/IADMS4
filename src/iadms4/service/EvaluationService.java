@@ -13,20 +13,20 @@ import iadms4.repository.EvaluationRepository;
 import iadms4.repository.PersonRepository;
 
 /*
- * SERVICE. Business rules for intern evaluations.
- * Only a COMPLETED intern of the representative's own company can be evaluated, and only once.
+ * SERVICE. evaluation rules
+ * COMPLETED interns of ur own company only, one time only
  */
 public class EvaluationService {
     private final EvaluationRepository evaluations;
     private final PersonRepository persons;
 
-    // Creates the service using the given repositories.
+    // constructor
     public EvaluationService(EvaluationRepository evaluations, PersonRepository persons) {
         this.evaluations = evaluations;
         this.persons = persons;
     }
 
-    // Saves the evaluation of the given intern written by rep, with a rating from 1 to 5 and comments.
+    // save evaluation, lots of checks first
     public void evaluate(CompanyRepresentative rep, Intern intern, int rating, String comments) {
         if (intern.getPosition().getCompany().getId() != rep.getCompany().getId()) {
             throw new IllegalStateException("That intern does not belong to your company.");
@@ -46,7 +46,7 @@ public class EvaluationService {
         evaluations.save(new Evaluation(evaluations.nextId(), intern, rep, rating, comments.trim(), LocalDate.now()));
     }
 
-    // Returns the COMPLETED interns of the given company that have no evaluation yet.
+    // completed interns w/ no evaluation yet
     public List<Intern> awaitingEvaluation(Company company) {
         List<Intern> matches = new ArrayList<>();
         for (Intern intern : persons.findInterns()) {
@@ -59,17 +59,17 @@ public class EvaluationService {
         return matches;
     }
 
-    // Returns the evaluation of the given intern, or null if there is none yet.
+    // evaluation of intern, null if none
     public Evaluation forIntern(Intern intern) {
         return evaluations.findByInternId(intern.getId());
     }
 
-    // Returns the evaluations of the interns of the given company.
+    // evaluations of company
     public List<Evaluation> forCompany(Company company) {
         return evaluations.findByCompany(company);
     }
 
-    // Returns every evaluation in the system.
+    // all evaluations
     public List<Evaluation> all() {
         return evaluations.findAll();
     }

@@ -8,16 +8,16 @@ import iadms4.model.Opening;
 import iadms4.model.OpeningStatus;
 
 /*
- * REPOSITORY. Stores Opening objects and can filter them by status or by company.
+ * REPOSITORY. stores openings, filter by status or company
  */
 public class OpeningRepository extends Repository<Opening> {
-    // Returns the id of the given opening.
+    // id of opening
     @Override
     protected int idOf(Opening item) {
         return item.getId();
     }
 
-    // Returns the openings that have the given status.
+    // openings by status
     public List<Opening> findByStatus(OpeningStatus status) {
         List<Opening> matches = new ArrayList<>();
         for (Opening opening : findAll()) {
@@ -28,7 +28,7 @@ public class OpeningRepository extends Repository<Opening> {
         return matches;
     }
 
-    // Returns the openings published by the given company.
+    // openings of one company
     public List<Opening> findByCompany(Company company) {
         List<Opening> matches = new ArrayList<>();
         for (Opening opening : findAll()) {

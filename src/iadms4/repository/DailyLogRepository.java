@@ -6,16 +6,16 @@ import java.util.List;
 import iadms4.model.DailyLog;
 
 /*
- * REPOSITORY. Stores DailyLog entries and can list the logs of one intern.
+ * REPOSITORY. stores daily logs
  */
 public class DailyLogRepository extends Repository<DailyLog> {
-    // Returns the id of the given log.
+    // id of log
     @Override
     protected int idOf(DailyLog item) {
         return item.getId();
     }
 
-    // Returns the logs written by the intern with the given id.
+    // logs of one intern
     public List<DailyLog> findByInternId(int internId) {
         List<DailyLog> matches = new ArrayList<>();
         for (DailyLog log : findAll()) {

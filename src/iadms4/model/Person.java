@@ -3,8 +3,8 @@ package iadms4.model;
 import java.time.LocalDate;
 
 /*
- * MODEL. Abstract parent of every kind of user: Student, Intern, Coordinator and CompanyRepresentative.
- * It holds the details every person has. It is abstract, so only its subclasses can be created.
+ * MODEL. parent of Student, Intern, Coordinator, CompanyRepresentative
+ * abstract so u cant make a plain Person
  */
 public abstract class Person {
     private final int id;
@@ -12,7 +12,7 @@ public abstract class Person {
     private Gender gender;
     private LocalDate birthdate;
 
-    // Creates a person from the given id, name, gender and birthdate.
+    // constructor
     public Person(int id, String name, Gender gender, LocalDate birthdate) {
         this.id = id;
         this.name = name;
@@ -20,37 +20,37 @@ public abstract class Person {
         this.birthdate = birthdate;
     }
 
-    // Returns the unique id of this person.
+    // getter
     public int getId() {
         return id;
     }
 
-    // Returns the full name.
+    // getter
     public String getName() {
         return name;
     }
 
-    // Changes the full name to the given name.
+    // setter
     public void setName(String name) {
         this.name = name;
     }
 
-    // Returns the gender.
+    // getter
     public Gender getGender() {
         return gender;
     }
 
-    // Changes the gender to the given gender.
+    // setter
     public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    // Returns the date of birth.
+    // getter
     public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    // Changes the date of birth to the given birthdate.
+    // setter
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }

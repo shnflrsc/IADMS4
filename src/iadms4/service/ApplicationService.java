@@ -16,16 +16,16 @@ import iadms4.repository.ApplicationRepository;
 import iadms4.repository.PersonRepository;
 
 /*
- * SERVICE. The endorsement workflow of the system.
- * A coordinator endorses a student, then the representative approves (the student becomes an Intern)
- * or rejects, or a coordinator withdraws. Rejected or withdrawn students can be endorsed again.
+ * SERVICE. the endorsement flow
+ * endorse > approve (student becomes intern) or reject or withdraw
+ * rejected/withdrawn students can be endorsed again
  */
 public class ApplicationService {
     private final ApplicationRepository applications;
     private final PersonRepository persons;
     private final PersonService personService;
 
-    // Creates the service using the given repositories and personService, which promotes students.
+    // constructor, personService is for promoting students
     public ApplicationService(ApplicationRepository applications, PersonRepository persons,
             PersonService personService) {
         this.applications = applications;
@@ -33,9 +33,9 @@ public class ApplicationService {
         this.personService = personService;
     }
 
-    // Saves a new PENDING application of the student to the opening, endorsed by the coordinator.
+    // coordinator endorses student, saved as PENDING
     public void endorse(Coordinator coordinator, Student student, Opening opening) {
-        // Read the student again because they may have been promoted to an Intern since being listed.
+        // re-read bc they might be an intern already by now
         Person current = persons.findById(student.getId());
         if (current instanceof Intern) {
             throw new IllegalStateException(student.getName() + " is already deployed as an intern.");
@@ -53,9 +53,9 @@ public class ApplicationService {
                 ApplicationStatus.PENDING));
     }
 
-    // Approves the application, turns the student into an Intern and returns the new intern.
+    // approve. student becomes intern. this one does a lot
     public Intern approve(Application application) {
-        // Step 1: the application must still be pending and the opening must still be open.
+        // step 1: still pending? still open?
         requirePending(application);
         if (application.getOpening().getStatus() != OpeningStatus.OPEN) {
             throw new IllegalStateException("The opening is closed; cannot approve.");
@@ -64,40 +64,40 @@ public class ApplicationService {
         if (current instanceof Intern) {
             throw new IllegalStateException("The student is already deployed as an intern.");
         }
-        // Step 2: mark it approved, then swap the Student for an Intern.
+        // step 2: approve, swap student for intern
         application.setStatus(ApplicationStatus.APPROVED);
         Intern intern = personService.promoteToIntern((Student) current, application.getOpening().getPosition());
-        // Step 3: the student is now deployed, so their other pending applications are rejected.
+        // step 3: reject their other pending apps
         for (Application other : applications.findByStudentId(intern.getId())) {
             if (other.getStatus() == ApplicationStatus.PENDING) {
                 other.setStatus(ApplicationStatus.REJECTED);
             }
         }
-        // Step 4: the opening has been filled, so it is closed.
+        // step 4: opening is filled so close it
         application.getOpening().setStatus(OpeningStatus.CLOSED);
         return intern;
     }
 
-    // Rejects the given pending application.
+    // reject
     public void reject(Application application) {
         requirePending(application);
         application.setStatus(ApplicationStatus.REJECTED);
     }
 
-    // Withdraws the given pending application. The student may be endorsed again later.
+    // withdraw, they can get endorsed again later
     public void withdraw(Application application) {
         requirePending(application);
         application.setStatus(ApplicationStatus.WITHDRAWN);
     }
 
-    // Throws an exception if the given application is no longer PENDING.
+    // error if not pending anymore
     private void requirePending(Application application) {
         if (application.getStatus() != ApplicationStatus.PENDING) {
             throw new IllegalStateException("Application is already " + application.getStatus() + ".");
         }
     }
 
-    // Returns the items of the given list that have the given status, or all of them if status is null.
+    // filter by status, null = all
     private List<Application> withStatus(List<Application> list, ApplicationStatus status) {
         List<Application> matches = new ArrayList<>();
         for (Application application : list) {
@@ -108,32 +108,32 @@ public class ApplicationService {
         return matches;
     }
 
-    // Returns every application.
+    // all applications
     public List<Application> all() {
         return applications.findAll();
     }
 
-    // Returns the applications with the given status, or all if status is null.
+    // applications by status, null = all
     public List<Application> all(ApplicationStatus status) {
         return withStatus(applications.findAll(), status);
     }
 
-    // Returns the applications made to the given company.
+    // applications of company
     public List<Application> forCompany(Company company) {
         return applications.findByCompany(company);
     }
 
-    // Returns the applications made to the given company with the given status, or all if status is null.
+    // applications of company by status, null = all
     public List<Application> forCompany(Company company, ApplicationStatus status) {
         return withStatus(applications.findByCompany(company), status);
     }
 
-    // Returns the applications of the student with the given id.
+    // applications of one student
     public List<Application> forStudent(int studentId) {
         return applications.findByStudentId(studentId);
     }
 
-    // Returns the PENDING applications of the given company.
+    // pending applications of company
     public List<Application> pendingForCompany(Company company) {
         return withStatus(applications.findByCompany(company), ApplicationStatus.PENDING);
     }

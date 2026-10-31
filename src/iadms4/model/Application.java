@@ -1,8 +1,8 @@
 package iadms4.model;
 
 /*
- * MODEL. A coordinator's endorsement of one Student to one Opening.
- * It starts as PENDING, then the company approves or rejects it, or a coordinator withdraws it.
+ * MODEL. coordinator endorses a student to an opening, thats an application
+ * starts PENDING then gets approved, rejected or withdrawn
  */
 public class Application {
     private final int id;
@@ -11,7 +11,7 @@ public class Application {
     private final Coordinator coordinator;
     private ApplicationStatus status;
 
-    // Creates an application with the given id, student, opening, coordinator and status.
+    // constructor
     public Application(int id, Student student, Opening opening, Coordinator coordinator, ApplicationStatus status) {
         this.id = id;
         this.student = student;
@@ -20,32 +20,32 @@ public class Application {
         this.status = status;
     }
 
-    // Returns the application id.
+    // getter
     public int getId() {
         return id;
     }
 
-    // Returns the student who was endorsed.
+    // endorsed student
     public Student getStudent() {
         return student;
     }
 
-    // Returns the opening the student was endorsed to.
+    // which opening
     public Opening getOpening() {
         return opening;
     }
 
-    // Returns the coordinator who made the endorsement.
+    // who endorsed
     public Coordinator getCoordinator() {
         return coordinator;
     }
 
-    // Returns the current status.
+    // getter
     public ApplicationStatus getStatus() {
         return status;
     }
 
-    // Changes the status to the given status.
+    // setter
     public void setStatus(ApplicationStatus status) {
         this.status = status;
     }

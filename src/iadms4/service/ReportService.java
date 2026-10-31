@@ -19,8 +19,8 @@ import iadms4.repository.OpeningRepository;
 import iadms4.repository.PersonRepository;
 
 /*
- * SERVICE. Builds summary reports.
- * The same numbers can be computed for the whole system or for one company.
+ * SERVICE. builds the reports
+ * same code for whole system or one company
  */
 public class ReportService {
     private final PersonRepository persons;
@@ -29,7 +29,7 @@ public class ReportService {
     private final ApplicationRepository applications;
     private final EvaluationRepository evaluations;
 
-    // Creates the service using the given repositories.
+    // constructor
     public ReportService(PersonRepository persons, CompanyRepository companies, OpeningRepository openings,
             ApplicationRepository applications, EvaluationRepository evaluations) {
         this.persons = persons;
@@ -39,17 +39,17 @@ public class ReportService {
         this.evaluations = evaluations;
     }
 
-    // Returns the report for the whole system.
+    // whole system
     public Summary system() {
         return build(null);
     }
 
-    // Returns the report for the given company.
+    // one company
     public Summary forCompany(Company company) {
         return build(company);
     }
 
-    // Returns one report per company, in the same order as the list of companies.
+    // one report per company, same order as companies list
     public List<Summary> perCompany() {
         List<Summary> summaries = new ArrayList<>();
         for (Company company : companies.findAll()) {
@@ -58,7 +58,7 @@ public class ReportService {
         return summaries;
     }
 
-    // Does the counting for the given company, or for the whole system if company is null.
+    // the actual counting. company null = whole system
     private Summary build(Company company) {
         int interns = 0;
         int active = 0;
@@ -116,7 +116,7 @@ public class ReportService {
                 recorded, required, evals.size(), average);
     }
 
-    // Returns how many of the given applications have the given status.
+    // count apps by status
     private int countApplications(List<Application> apps, ApplicationStatus status) {
         int count = 0;
         for (Application application : apps) {

@@ -8,22 +8,22 @@ import iadms4.repository.PersonRepository;
 import iadms4.repository.PositionRepository;
 
 /*
- * SERVICE. Business rules for companies.
- * Company names must be unique, and a company can only be deleted when nothing depends on it.
+ * SERVICE. company rules
+ * names unique, cant delete if something depends on it
  */
 public class CompanyService {
     private final CompanyRepository companies;
     private final PersonRepository persons;
     private final PositionRepository positions;
 
-    // Creates the service using the given repositories.
+    // constructor
     public CompanyService(CompanyRepository companies, PersonRepository persons, PositionRepository positions) {
         this.companies = companies;
         this.persons = persons;
         this.positions = positions;
     }
 
-    // Creates a company with the given name.
+    // new company
     public void create(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Company name is required.");
@@ -34,7 +34,7 @@ public class CompanyService {
         companies.save(new Company(companies.nextId(), name.trim()));
     }
 
-    // Changes the name of the given company.
+    // rename
     public void rename(Company company, String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Company name is required.");
@@ -45,7 +45,7 @@ public class CompanyService {
         company.setName(name.trim());
     }
 
-    // Deletes the given company if it has no representatives and no positions.
+    // delete, only if no reps and no positions
     public void delete(Company company) {
         if (!persons.findRepresentatives(company).isEmpty()) {
             throw new IllegalStateException("Remove the company representatives first.");
@@ -56,7 +56,7 @@ public class CompanyService {
         companies.remove(company.getId());
     }
 
-    // Returns every company.
+    // all companies
     public List<Company> all() {
         return companies.findAll();
     }

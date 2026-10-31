@@ -7,16 +7,16 @@ import iadms4.model.Company;
 import iadms4.model.Evaluation;
 
 /*
- * REPOSITORY. Stores Evaluation objects and can find them by intern or by company.
+ * REPOSITORY. stores evaluations
  */
 public class EvaluationRepository extends Repository<Evaluation> {
-    // Returns the id of the given evaluation.
+    // id of evaluation
     @Override
     protected int idOf(Evaluation item) {
         return item.getId();
     }
 
-    // Returns the evaluation of the intern with the given id, or null if there is none yet.
+    // evaluation of one intern, null if none yet
     public Evaluation findByInternId(int internId) {
         for (Evaluation evaluation : findAll()) {
             if (evaluation.getIntern().getId() == internId) {
@@ -26,7 +26,7 @@ public class EvaluationRepository extends Repository<Evaluation> {
         return null;
     }
 
-    // Returns the evaluations of the interns who belong to the given company.
+    // evaluations of one company
     public List<Evaluation> findByCompany(Company company) {
         List<Evaluation> matches = new ArrayList<>();
         for (Evaluation evaluation : findAll()) {

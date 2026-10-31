@@ -3,16 +3,16 @@ package iadms4.repository;
 import iadms4.model.Company;
 
 /*
- * REPOSITORY. Stores Company objects and can check for duplicate names.
+ * REPOSITORY. stores companies, checks duplicate names
  */
 public class CompanyRepository extends Repository<Company> {
-    // Returns the id of the given company.
+    // id of company
     @Override
     protected int idOf(Company item) {
         return item.getId();
     }
 
-    // Returns true if a company already uses the given name, ignoring capital letters and outer spaces.
+    // true if name is taken. ignores caps n spaces
     public boolean existsByName(String name) {
         for (Company company : findAll()) {
             if (company.getName().equalsIgnoreCase(name.trim())) {

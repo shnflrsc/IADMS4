@@ -7,16 +7,16 @@ import iadms4.model.Application;
 import iadms4.model.Company;
 
 /*
- * REPOSITORY. Stores Application objects and can filter them by student or by company.
+ * REPOSITORY. stores applications, filter by student or company
  */
 public class ApplicationRepository extends Repository<Application> {
-    // Returns the id of the given application.
+    // id of application
     @Override
     protected int idOf(Application item) {
         return item.getId();
     }
 
-    // Returns the applications of the student with the given id.
+    // applications of one student
     public List<Application> findByStudentId(int studentId) {
         List<Application> matches = new ArrayList<>();
         for (Application application : findAll()) {
@@ -27,7 +27,7 @@ public class ApplicationRepository extends Repository<Application> {
         return matches;
     }
 
-    // Returns the applications made to the openings of the given company.
+    // applications of one company
     public List<Application> findByCompany(Company company) {
         List<Application> matches = new ArrayList<>();
         for (Application application : findAll()) {

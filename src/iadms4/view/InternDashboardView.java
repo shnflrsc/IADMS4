@@ -9,28 +9,27 @@ import iadms4.model.Evaluation;
 import iadms4.model.Intern;
 
 /*
- * VIEW. The Intern dashboard.
- * The intern can view deployment details, log hours, and read their own logs and evaluation.
+ * VIEW. intern dashboard
  */
 public class InternDashboardView extends Menu {
     private final InternController controller;
     private final AccountSettingsView settings;
 
-    // Creates the view using the given console, controller and account settings screen.
+    // constructor
     public InternDashboardView(Console console, InternController controller, AccountSettingsView settings) {
         super(console);
         this.controller = controller;
         this.settings = settings;
     }
 
-    // Shows the intern menu until the intern logs out.
+    // intern menu, stays here til logout
     public void show() {
         String[] items = { "View deployment details", "Log hours", "View my daily logs", "View my evaluation",
                 "Account settings" };
         run("Intern Dashboard - " + controller.me().getName(), items, "Log out");
     }
 
-    // Runs the menu item with the given number.
+    // what each number does
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -42,7 +41,7 @@ public class InternDashboardView extends Menu {
         }
     }
 
-    // Prints the company, position, hours progress and status of the intern.
+    // deployment details
     private void deployment() {
         Intern me = controller.me();
         int required = me.getPosition().getRequiredHours();
@@ -53,7 +52,7 @@ public class InternDashboardView extends Menu {
         console.println("  Status:    " + me.getStatus());
     }
 
-    // Asks for the hours and a description, logs them, and reports how many hours remain.
+    // log hours screen
     private void logHours() {
         int hours = console.readInt("Hours to log", 1, 24);
         String description = console.readRequired("Daily log (what did you do today?)");
@@ -65,7 +64,7 @@ public class InternDashboardView extends Menu {
         }
     }
 
-    // Prints a table of the intern's daily logs. Logs can never be edited or deleted once saved.
+    // logs table. no edit or delete on logs, by design
     private void viewLogs() {
         List<String[]> rows = new ArrayList<>();
         for (DailyLog log : controller.myLogs()) {
@@ -75,7 +74,7 @@ public class InternDashboardView extends Menu {
         console.table(new String[] { "ID", "Date", "Hours", "Description" }, rows);
     }
 
-    // Prints the intern's evaluation, or a message if there is none yet.
+    // shows evaluation if theres one
     private void viewEvaluation() {
         Evaluation evaluation = controller.myEvaluation();
         if (evaluation == null) {

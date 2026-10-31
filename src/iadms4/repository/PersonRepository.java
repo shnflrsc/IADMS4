@@ -11,17 +11,17 @@ import iadms4.model.Person;
 import iadms4.model.Student;
 
 /*
- * REPOSITORY. Stores every Person in one place because they all share one id space.
- * The find methods use instanceof to pick out the people of one subclass.
+ * REPOSITORY. all people in one place bc they share ids
+ * instanceof picks out each type
  */
 public class PersonRepository extends Repository<Person> {
-    // Returns the id of the given person.
+    // id of person
     @Override
     protected int idOf(Person item) {
         return item.getId();
     }
 
-    // Returns all students, including interns because an Intern is also a Student.
+    // all students. interns count too bc Intern extends Student
     public List<Student> findStudents() {
         List<Student> students = new ArrayList<>();
         for (Person person : findAll()) {
@@ -32,7 +32,7 @@ public class PersonRepository extends Repository<Person> {
         return students;
     }
 
-    // Returns only the interns.
+    // interns only
     public List<Intern> findInterns() {
         List<Intern> interns = new ArrayList<>();
         for (Person person : findAll()) {
@@ -43,7 +43,7 @@ public class PersonRepository extends Repository<Person> {
         return interns;
     }
 
-    // Returns all coordinators.
+    // all coordinators
     public List<Coordinator> findCoordinators() {
         List<Coordinator> coordinators = new ArrayList<>();
         for (Person person : findAll()) {
@@ -54,7 +54,7 @@ public class PersonRepository extends Repository<Person> {
         return coordinators;
     }
 
-    // Returns the representatives of every company.
+    // all reps
     public List<CompanyRepresentative> findRepresentatives() {
         List<CompanyRepresentative> representatives = new ArrayList<>();
         for (Person person : findAll()) {
@@ -65,7 +65,7 @@ public class PersonRepository extends Repository<Person> {
         return representatives;
     }
 
-    // Returns the representatives who work for the given company.
+    // reps of one company
     public List<CompanyRepresentative> findRepresentatives(Company company) {
         List<CompanyRepresentative> matches = new ArrayList<>();
         for (CompanyRepresentative representative : findRepresentatives()) {

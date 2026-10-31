@@ -10,26 +10,26 @@ import iadms4.model.Gender;
 import iadms4.model.InternStatus;
 
 /*
- * VIEW helper. The only class that touches System.in and System.out.
- * Every screen uses it to print text, read validated input, pick from a list and draw tables.
+ * VIEW helper. ONLY class that uses System.in / System.out
+ * all printing and reading goes here
  */
 public class Console {
     private static final String RULE = "=".repeat(60);
 
     private final Scanner in = new Scanner(System.in);
 
-    // Prints the given text on its own line.
+    // shortcut for println
     public void println(String text) {
         System.out.println(text);
     }
 
-    // Clears the terminal using ANSI codes (erase the screen and scrollback, move the cursor home).
+    // clears terminal w/ ansi codes. they work dont touch
     public void clear() {
         System.out.print("\033[H\033[2J\033[3J");
         System.out.flush();
     }
 
-    // Clears the terminal and prints a banner with the given title.
+    // clear + title banner
     public void header(String title) {
         clear();
         println(RULE);
@@ -37,14 +37,14 @@ public class Console {
         println(RULE);
     }
 
-    // Shows the given prompt and returns the typed line without outer spaces (it may be empty).
+    // reads a line, trimmed, can be empty
     public String readLine(String prompt) {
         System.out.print(prompt + ": ");
         System.out.flush();
         return in.nextLine().trim();
     }
 
-    // Shows the given prompt until the user types something, then returns it.
+    // same but wont accept empty
     public String readRequired(String prompt) {
         while (true) {
             String value = readLine(prompt);
@@ -55,7 +55,7 @@ public class Console {
         }
     }
 
-    // Shows the given prompt until the user types a whole number from min to max, then returns it.
+    // keeps asking til valid number between min and max
     public int readInt(String prompt, int min, int max) {
         while (true) {
             String raw = readLine(prompt);
@@ -65,13 +65,13 @@ public class Console {
                     return value;
                 }
             } catch (NumberFormatException e) {
-                // Not a number, so the message below is shown.
+                // not a number, message below handles it
             }
             println("  ! Enter a number between " + min + " and " + max + ".");
         }
     }
 
-    // Shows the given prompt until the user types a date in the format yyyy-mm-dd, then returns it.
+    // keeps asking til valid date yyyy-mm-dd
     public LocalDate readDate(String prompt) {
         while (true) {
             String raw = readLine(prompt + " (yyyy-mm-dd)");
@@ -83,7 +83,7 @@ public class Console {
         }
     }
 
-    // Works like readDate, but returns null if the answer is blank.
+    // readDate but blank = null
     public LocalDate readOptionalDate(String prompt) {
         while (true) {
             String raw = readLine(prompt + " (yyyy-mm-dd, blank = keep)");
@@ -98,7 +98,7 @@ public class Console {
         }
     }
 
-    // Lets the user pick an intern status to filter by and returns it, or null for "All".
+    // intern status filter, null = All
     public InternStatus chooseInternStatus() {
         InternStatus[] values = InternStatus.values();
         println("  [0] All");
@@ -112,7 +112,7 @@ public class Console {
         return values[choice - 1];
     }
 
-    // Lets the user pick an application status to filter by and returns it, or null for "All".
+    // application status filter, null = All. basically same as above
     public ApplicationStatus chooseApplicationStatus() {
         ApplicationStatus[] values = ApplicationStatus.values();
         println("  [0] All");
@@ -126,7 +126,7 @@ public class Console {
         return values[choice - 1];
     }
 
-    // Shows the genders as a numbered list and returns the one chosen.
+    // pick gender
     public Gender readGender() {
         Gender[] values = Gender.values();
         for (int i = 0; i < values.length; i++) {
@@ -135,12 +135,12 @@ public class Console {
         return values[readInt("Gender", 1, values.length) - 1];
     }
 
-    // Waits for the user to press Enter so that the output stays visible.
+    // wait for enter or the screen clears too fast
     public void pause() {
         readLine("Press Enter to continue");
     }
 
-    // Shows the given labels as a numbered list and returns the index picked, or -1 if cancelled or empty.
+    // numbered list, returns index. -1 = cancelled or empty list
     public int choose(String prompt, List<String> labels) {
         if (labels.isEmpty()) {
             println("  (nothing to choose from)");
@@ -152,7 +152,7 @@ public class Console {
         return readInt(prompt + " (0 to cancel)", 0, labels.size()) - 1;
     }
 
-    // Prints a table with the given headers and rows. Each column is as wide as its longest cell.
+    // prints a table, columns fit the longest cell
     public void table(String[] headers, List<String[]> rows) {
         if (rows.isEmpty()) {
             println("  (none)");
@@ -176,7 +176,7 @@ public class Console {
         }
     }
 
-    // Prints one table row with every cell padded to its column width.
+    // one row, with padding
     private void printRow(String[] cells, int[] widths) {
         String line = "  ";
         for (int c = 0; c < cells.length; c++) {

@@ -3,8 +3,8 @@ package iadms4.model;
 import java.time.LocalDate;
 
 /*
- * MODEL. One entry written by an Intern every time they log hours.
- * Every field is final, so a log cannot be changed after it is created.
+ * MODEL. one log entry from an intern
+ * everything is final so logs cant be changed
  */
 public class DailyLog {
     private final int id;
@@ -13,7 +13,7 @@ public class DailyLog {
     private final int hours;
     private final String description;
 
-    // Creates a log entry with the given id, intern, date, credited hours and description.
+    // constructor
     public DailyLog(int id, Intern intern, LocalDate date, int hours, String description) {
         this.id = id;
         this.intern = intern;
@@ -22,27 +22,27 @@ public class DailyLog {
         this.description = description;
     }
 
-    // Returns the log id.
+    // getter
     public int getId() {
         return id;
     }
 
-    // Returns the intern who wrote this log.
+    // getter
     public Intern getIntern() {
         return intern;
     }
 
-    // Returns the day the work was done.
+    // getter
     public LocalDate getDate() {
         return date;
     }
 
-    // Returns the hours credited for that day.
+    // getter
     public int getHours() {
         return hours;
     }
 
-    // Returns the description of the work done.
+    // getter
     public String getDescription() {
         return description;
     }

@@ -7,16 +7,16 @@ import iadms4.model.Company;
 import iadms4.model.Position;
 
 /*
- * REPOSITORY. Stores Position objects and can list the positions of one company.
+ * REPOSITORY. stores positions
  */
 public class PositionRepository extends Repository<Position> {
-    // Returns the id of the given position.
+    // id of position
     @Override
     protected int idOf(Position item) {
         return item.getId();
     }
 
-    // Returns the positions offered by the given company.
+    // positions of one company
     public List<Position> findByCompany(Company company) {
         List<Position> matches = new ArrayList<>();
         for (Position position : findAll()) {

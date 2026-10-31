@@ -3,8 +3,8 @@ package iadms4.model;
 import java.time.LocalDate;
 
 /*
- * MODEL. A representative's review of a COMPLETED Intern.
- * It is created once per intern and never edited.
+ * MODEL. rep's review of a COMPLETED intern
+ * once per intern, never edited
  */
 public class Evaluation {
     private final int id;
@@ -14,7 +14,7 @@ public class Evaluation {
     private final String comments;
     private final LocalDate date;
 
-    // Creates an evaluation with the given id, intern, evaluator, rating, comments and date.
+    // constructor
     public Evaluation(int id, Intern intern, CompanyRepresentative evaluator, int rating, String comments,
             LocalDate date) {
         this.id = id;
@@ -25,32 +25,32 @@ public class Evaluation {
         this.date = date;
     }
 
-    // Returns the evaluation id.
+    // getter
     public int getId() {
         return id;
     }
 
-    // Returns the intern who was evaluated.
+    // getter
     public Intern getIntern() {
         return intern;
     }
 
-    // Returns the representative who wrote the evaluation.
+    // getter
     public CompanyRepresentative getEvaluator() {
         return evaluator;
     }
 
-    // Returns the score from 1 to 5.
+    // getter, 1 to 5
     public int getRating() {
         return rating;
     }
 
-    // Returns the written feedback.
+    // getter
     public String getComments() {
         return comments;
     }
 
-    // Returns the date the evaluation was written.
+    // getter
     public LocalDate getDate() {
         return date;
     }

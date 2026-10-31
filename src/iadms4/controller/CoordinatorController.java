@@ -27,8 +27,8 @@ import iadms4.service.PersonService;
 import iadms4.service.ReportService;
 
 /*
- * CONTROLLER. Handles everything the Coordinator dashboard can do.
- * Each public method matches one menu action and passes the request to a service.
+ * CONTROLLER. everything the coordinator dashboard does
+ * basically 1 method per menu item, this class is long sorry
  */
 public class CoordinatorController {
     private final PersonService persons;
@@ -39,7 +39,7 @@ public class CoordinatorController {
     private final AuthService auth;
     private final ReportService reports;
 
-    // Creates the controller using the given services.
+    // constructor, just saves the services
     public CoordinatorController(PersonService persons, CompanyService companies, OpeningService openings,
             ApplicationService applications, EvaluationService evaluations, AuthService auth,
             ReportService reports) {
@@ -52,108 +52,108 @@ public class CoordinatorController {
         this.reports = reports;
     }
 
-    // Returns the logged-in coordinator.
+    // the coordinator thats logged in
     private Coordinator me() {
         return (Coordinator) Session.getInstance().getPerson();
     }
 
-    // Returns all students, including interns.
+    // all students (interns included)
     public List<Student> students() {
         return persons.students();
     }
 
-    // Returns the students and interns that match the given keyword.
+    // search students n interns
     public List<Student> searchStudents(String keyword) {
         return persons.searchStudents(keyword);
     }
 
-    // Registers a new student with a login account.
+    // register student + account
     public void registerStudent(String name, Gender gender, LocalDate birthdate, String studentId, String section,
             String email, String password) {
         persons.registerStudent(name, gender, birthdate, studentId, section, email, password);
     }
 
-    // Returns all interns.
+    // all interns
     public List<Intern> interns() {
         return persons.interns();
     }
 
-    // Returns the interns with the given status, or all if status is null.
+    // interns by status, null = all
     public List<Intern> interns(InternStatus status) {
         return persons.interns(status);
     }
 
-    // Returns every evaluation.
+    // all evaluations
     public List<Evaluation> evaluations() {
         return evaluations.all();
     }
 
-    // Returns every opening.
+    // all openings
     public List<Opening> allOpenings() {
         return openings.allOpenings();
     }
 
-    // Returns the openings that accept endorsements.
+    // open openings only (yes "open openings" lol)
     public List<Opening> openOpenings() {
         return openings.openOpenings();
     }
 
-    // Endorses the given student to the given opening.
+    // endorse student to opening
     public void endorse(Student student, Opening opening) {
         applications.endorse(me(), student, opening);
     }
 
-    // Returns every application.
+    // all applications
     public List<Application> applications() {
         return applications.all();
     }
 
-    // Returns the applications with the given status, or all if status is null.
+    // applications by status, null = all
     public List<Application> applications(ApplicationStatus status) {
         return applications.all(status);
     }
 
-    // Returns the PENDING applications.
+    // pending ones
     public List<Application> pendingApplications() {
         return applications.all(ApplicationStatus.PENDING);
     }
 
-    // Withdraws the given pending application.
+    // withdraw it
     public void withdraw(Application application) {
         applications.withdraw(application);
     }
 
-    // Returns every company.
+    // all companies
     public List<Company> companies() {
         return companies.all();
     }
 
-    // Adds a company with the given name.
+    // add company
     public void addCompany(String name) {
         companies.create(name);
     }
 
-    // Renames the given company.
+    // rename company
     public void renameCompany(Company company, String name) {
         companies.rename(company, name);
     }
 
-    // Deletes the given company.
+    // delete company
     public void deleteCompany(Company company) {
         companies.delete(company);
     }
 
-    // Returns all company representatives.
+    // all reps
     public List<CompanyRepresentative> representatives() {
         return persons.representatives();
     }
 
-    // Returns all coordinators.
+    // all coordinators
     public List<Coordinator> coordinators() {
         return persons.coordinators();
     }
 
-    // Returns everyone with a login: students and interns, then representatives, then coordinators.
+    // everyone w/ a login. students first, then reps, then coordinators
     public List<Person> everyone() {
         List<Person> all = new ArrayList<>();
         all.addAll(persons.students());
@@ -162,44 +162,44 @@ public class CoordinatorController {
         return all;
     }
 
-    // Adds a company representative account for the given company.
+    // add rep account
     public void addRepresentative(String name, Gender gender, LocalDate birthdate, Company company, String email,
             String password) {
         persons.registerRepresentative(name, gender, birthdate, company, email, password);
     }
 
-    // Adds a coordinator account.
+    // add coordinator account
     public void addCoordinator(String name, Gender gender, LocalDate birthdate, String employeeId, String email,
             String password) {
         persons.registerCoordinator(name, gender, birthdate, employeeId, email, password);
     }
 
-    // Edits the details of the given person. The section is only used for students.
+    // edit person, section is for students only
     public void updatePerson(Person person, String name, Gender gender, LocalDate birthdate, String section) {
         persons.updateDetails(person, name, gender, birthdate, section);
     }
 
-    // Deletes the given person on behalf of the logged-in coordinator.
+    // delete person, me() is whoever is deleting
     public void deletePerson(Person person) {
         persons.delete(me(), person);
     }
 
-    // Sets a new password for the given person.
+    // reset someones password
     public void resetPassword(Person person, String newPassword) {
         auth.resetPassword(person, newPassword);
     }
 
-    // Returns the login email of the given person, or "-" if there is none.
+    // their email or "-" if none
     public String emailOf(Person person) {
         return persons.emailOf(person);
     }
 
-    // Returns the whole-system summary report.
+    // report for the whole system
     public Summary report() {
         return reports.system();
     }
 
-    // Returns one summary report per company, in the same order as companies().
+    // one report per company, same order as companies() dont mess this up
     public List<Summary> reportPerCompany() {
         return reports.perCompany();
     }

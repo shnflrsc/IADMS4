@@ -1,31 +1,30 @@
 package iadms4.model;
 
 /*
- * MODEL. Remembers which account is currently logged in.
- * There is only ever one session, so this class is a singleton: the constructor is private and
- * every other class calls Session.getInstance().
+ * MODEL. remembers who is logged in
+ * singleton, only 1 session ever. use Session.getInstance()
  */
 public class Session {
     private static final Session INSTANCE = new Session();
 
-    // The logged-in account, or null when nobody is logged in.
+    // null = nobody logged in
     private Account account;
 
-    // Private so that no other class can create a second Session.
+    // private so nobody makes a 2nd session (singleton)
     private Session() {
     }
 
-    // Returns the one and only Session object.
+    // the one session
     public static Session getInstance() {
         return INSTANCE;
     }
 
-    // Returns the logged-in account, or null if nobody is logged in.
+    // logged in account, null if none
     public Account getAccount() {
         return account;
     }
 
-    // Returns the owner of the logged-in account, or null if nobody is logged in.
+    // person of the logged in account, null if none
     public Person getPerson() {
         if (account == null) {
             return null;
@@ -33,17 +32,17 @@ public class Session {
         return account.getPerson();
     }
 
-    // Returns true if someone is logged in.
+    // true if someone is logged in
     public boolean isLoggedIn() {
         return account != null;
     }
 
-    // Starts a session for the given account.
+    // start session
     public void login(Account account) {
         this.account = account;
     }
 
-    // Ends the session so that nobody is logged in.
+    // end session
     public void logout() {
         account = null;
     }

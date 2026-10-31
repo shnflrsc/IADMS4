@@ -1,23 +1,22 @@
 package iadms4.view;
 
 /*
- * VIEW (base class). A screen that shows a numbered menu.
- * Each dashboard extends this class and writes runItem(), which decides what each number does.
- * Errors thrown by the services are caught here and shown to the user, so a broken rule never
- * crashes the program.
+ * VIEW base class. numbered menu
+ * dashboards extend this and write runItem()
+ * service errors get caught here so the program doesnt crash
  */
 public abstract class Menu {
     protected final Console console;
 
-    // Creates the menu using the given console for input and output.
+    // constructor
     public Menu(Console console) {
         this.console = console;
     }
 
-    // Runs the menu item with the given number. Each dashboard writes its own version.
+    // every dashboard has to write this
     protected abstract void runItem(int choice);
 
-    // Shows the menu with the given title and items again and again until the user picks 0 (exitLabel).
+    // the menu loop. runs til user picks 0
     protected void run(String title, String[] items, String exitLabel) {
         while (true) {
             console.header(title);

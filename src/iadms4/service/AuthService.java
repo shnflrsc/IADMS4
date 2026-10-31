@@ -6,23 +6,23 @@ import iadms4.model.Session;
 import iadms4.repository.AccountRepository;
 
 /*
- * SERVICE. Business rules for logging in and out and for account credentials.
- * Broken rules are reported by throwing an exception with a user-friendly message.
+ * SERVICE. login, logout, passwords, emails
+ * breaks a rule = throws exception w/ a message for the user
  */
 public class AuthService {
     private final AccountRepository accounts;
 
-    // Creates the service using the given account repository.
+    // constructor
     public AuthService(AccountRepository accounts) {
         this.accounts = accounts;
     }
 
-    // Returns true if no account exists yet, so the first coordinator still has to be created.
+    // true if no accounts yet, need first coordinator
     public boolean needsSetup() {
         return accounts.isEmpty();
     }
 
-    // Logs in with the given email and password. Both mistakes give the same message, so emails stay private.
+    // login. same error for both so u cant guess emails
     public void login(String email, String password) {
         Account account = accounts.findByEmail(email);
         if (account == null || !account.getPassword().equals(password)) {
@@ -31,12 +31,12 @@ public class AuthService {
         Session.getInstance().login(account);
     }
 
-    // Starts a session for the given account without asking for a password (used after first-time setup).
+    // login w/o password, only for after first setup
     public void startSession(Account account) {
         Session.getInstance().login(account);
     }
 
-    // Changes the logged-in user's password. They must give the current one and confirm the new one.
+    // change password, needs current one + confirm
     public void changePassword(String current, String newPassword, String confirm) {
         Account account = Session.getInstance().getAccount();
         if (!account.getPassword().equals(current)) {
@@ -49,7 +49,7 @@ public class AuthService {
         account.setPassword(newPassword);
     }
 
-    // Changes the logged-in user's email to newEmail. They must give their password and the email must be unused.
+    // change email, needs password, email cant be taken
     public void changeEmail(String password, String newEmail) {
         Account account = Session.getInstance().getAccount();
         if (!account.getPassword().equals(password)) {
@@ -66,7 +66,7 @@ public class AuthService {
         accounts.save(account);
     }
 
-    // Lets a coordinator set newPassword for the given person.
+    // coordinator resets someones password
     public void resetPassword(Person person, String newPassword) {
         requireValidPassword(newPassword);
         Account account = accounts.findByPersonId(person.getId());
@@ -76,14 +76,14 @@ public class AuthService {
         account.setPassword(newPassword);
     }
 
-    // Throws an exception if the given password is shorter than 4 characters.
+    // min 4 chars
     private void requireValidPassword(String password) {
         if (password == null || password.length() < 4) {
             throw new IllegalArgumentException("Password must be at least 4 characters.");
         }
     }
 
-    // Logs the current user out.
+    // logout
     public void logout() {
         Session.getInstance().logout();
     }

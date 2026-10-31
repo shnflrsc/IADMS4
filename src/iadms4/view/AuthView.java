@@ -6,19 +6,19 @@ import iadms4.controller.AuthController;
 import iadms4.model.Gender;
 
 /*
- * VIEW. The screens shown before anyone is logged in: first-time setup and login.
+ * VIEW. stuff before login: first time setup + login screen
  */
 public class AuthView {
     private final Console console;
     private final AuthController controller;
 
-    // Creates the view using the given console and controller.
+    // constructor
     public AuthView(Console console, AuthController controller) {
         this.console = console;
         this.controller = controller;
     }
 
-    // Keeps asking for details until the first coordinator account has been created.
+    // loops until first coordinator is made
     public void setup() {
         console.header("IADMS - First Time Setup");
         console.println("  No accounts exist yet. Create the first Coordinator account.");
@@ -38,7 +38,7 @@ public class AuthView {
         }
     }
 
-    // Shows the login screen. Returns false if the user chooses to exit, otherwise true.
+    // login screen. false = user picked exit
     public boolean login() {
         console.header("IADMS - Internship Application & Deployment Monitoring");
         console.println("  [1] Log in");

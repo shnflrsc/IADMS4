@@ -10,34 +10,34 @@ import iadms4.service.EvaluationService;
 import iadms4.service.InternService;
 
 /*
- * CONTROLLER. Handles the actions of the Intern dashboard.
+ * CONTROLLER. intern dashboard stuff
  */
 public class InternController {
     private final InternService interns;
     private final EvaluationService evaluations;
 
-    // Creates the controller using the given services.
+    // constructor, just saves the services
     public InternController(InternService interns, EvaluationService evaluations) {
         this.interns = interns;
         this.evaluations = evaluations;
     }
 
-    // Returns the logged-in intern.
+    // the intern thats logged in
     public Intern me() {
         return (Intern) Session.getInstance().getPerson();
     }
 
-    // Returns the intern's own daily logs.
+    // my logs
     public List<DailyLog> myLogs() {
         return interns.logsOf(me());
     }
 
-    // Returns the intern's evaluation, or null if there is none yet.
+    // my evaluation, null if none yet
     public Evaluation myEvaluation() {
         return evaluations.forIntern(me());
     }
 
-    // Logs hours with a description and returns the hours remaining.
+    // log hours, gives back hours left
     public int logHours(int hours, String description) {
         return interns.logHours(me(), hours, description);
     }

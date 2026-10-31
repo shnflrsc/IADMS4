@@ -1,30 +1,30 @@
 package iadms4.model;
 
 /*
- * MODEL. A company that offers internships.
- * Representatives and positions point back to their company.
+ * MODEL. a company w/ internships
+ * reps and positions point to this
  */
 public class Company {
     private final int id;
     private String name;
 
-    // Creates a company with the given id and name.
+    // constructor
     public Company(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // Returns the company id.
+    // getter
     public int getId() {
         return id;
     }
 
-    // Returns the company name.
+    // getter
     public String getName() {
         return name;
     }
 
-    // Changes the company name to the given name.
+    // setter
     public void setName(String name) {
         this.name = name;
     }

@@ -1,8 +1,8 @@
 package iadms4.model;
 
 /*
- * MODEL. One summary report: a plain bundle of numbers built by ReportService.
- * The numbers cover either the whole system or one company.
+ * MODEL. just a bunch of numbers for reports
+ * ReportService fills this in
  */
 public class Summary {
     private final int students;
@@ -21,7 +21,7 @@ public class Summary {
     private final int evaluations;
     private final double averageRating;
 
-    // Creates a report from all of its numbers.
+    // constructor, yes its 15 params, sorry
     public Summary(int students, int interns, int active, int deactivated, int completed, int openOpenings,
             int closedOpenings, int pending, int approved, int rejected, int withdrawn, int recordedHours,
             int requiredHours, int evaluations, double averageRating) {
@@ -42,82 +42,82 @@ public class Summary {
         this.averageRating = averageRating;
     }
 
-    // Returns the number of students who are not interns yet.
+    // students not interns yet
     public int getStudents() {
         return students;
     }
 
-    // Returns the total number of interns.
+    // total interns
     public int getInterns() {
         return interns;
     }
 
-    // Returns the number of ACTIVE interns.
+    // ACTIVE count
     public int getActive() {
         return active;
     }
 
-    // Returns the number of DEACTIVATED interns.
+    // DEACTIVATED count
     public int getDeactivated() {
         return deactivated;
     }
 
-    // Returns the number of COMPLETED interns.
+    // COMPLETED count
     public int getCompleted() {
         return completed;
     }
 
-    // Returns the number of OPEN openings.
+    // OPEN count
     public int getOpenOpenings() {
         return openOpenings;
     }
 
-    // Returns the number of CLOSED openings.
+    // CLOSED count
     public int getClosedOpenings() {
         return closedOpenings;
     }
 
-    // Returns the number of PENDING applications.
+    // PENDING count
     public int getPending() {
         return pending;
     }
 
-    // Returns the number of APPROVED applications.
+    // APPROVED count
     public int getApproved() {
         return approved;
     }
 
-    // Returns the number of REJECTED applications.
+    // REJECTED count
     public int getRejected() {
         return rejected;
     }
 
-    // Returns the number of WITHDRAWN applications.
+    // WITHDRAWN count
     public int getWithdrawn() {
         return withdrawn;
     }
 
-    // Returns the total hours logged by the interns.
+    // total hours logged
     public int getRecordedHours() {
         return recordedHours;
     }
 
-    // Returns the total hours the interns must complete.
+    // total hours required
     public int getRequiredHours() {
         return requiredHours;
     }
 
-    // Returns the number of evaluations.
+    // evaluation count
     public int getEvaluations() {
         return evaluations;
     }
 
-    // Returns the average rating of the evaluations, or 0 when there are none.
+    // avg rating, 0 if none
     public double getAverageRating() {
         return averageRating;
     }
 
-    // Returns the percentage of required hours already recorded, or 0 when no hours are required.
+    // progress %, 0 if no required hours so we dont divide by 0
     public int getProgressPercent() {
         if (requiredHours == 0) {
             return 0;

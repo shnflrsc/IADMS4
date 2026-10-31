@@ -7,11 +7,11 @@ import iadms4.model.Company;
 import iadms4.model.Summary;
 
 /*
- * VIEW helper. Prints summary reports so that the coordinator and representative dashboards
- * show the same layout. All methods are static.
+ * VIEW helper. prints reports so coordinator n rep screens look the same
+ * all static
  */
 class Reports {
-    // Prints one summary with the given title. showStudents adds the count of students not yet deployed.
+    // prints a summary. showStudents = also show undeployed students
     static void print(Console console, String title, Summary s, boolean showStudents) {
         console.println("  " + title);
         if (showStudents) {
@@ -31,7 +31,7 @@ class Reports {
         console.println(evaluations);
     }
 
-    // Prints a table with one row per company. The summaries must be in the same order as the companies.
+    // per company table. both lists MUST be same order
     static void printCompanies(Console console, List<Company> companies, List<Summary> summaries) {
         List<String[]> rows = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {

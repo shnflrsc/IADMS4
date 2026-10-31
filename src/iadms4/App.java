@@ -38,12 +38,9 @@ import iadms4.view.InternDashboardView;
 import iadms4.view.StudentDashboardView;
 
 /*
- * Entry point of the program. It creates every object, connects them, and runs the main loop.
- *
- *   View  ->  Controller  ->  Service  ->  Repository  ->  Model
- *   (TUI)     (routes)        (rules)      (storage)       (data)
- *
- * A request from the user travels down these layers and the result travels back up.
+ * main class. makes all the objects, connects them, runs the loop
+ * | View -> Controller -> Service -> Repository -> Model
+ * | user request goes down, result comes back up. thats the whole system
  */
 public class App {
     private final AuthController auth;
@@ -53,7 +50,7 @@ public class App {
     private final StudentDashboardView studentView;
     private final InternDashboardView internView;
 
-    // Builds the application from the bottom layer up: repositories, services, controllers, then views.
+    // makes everything. repos first then services then controllers then views, order matters dont move stuff
     public App() {
         AccountRepository accountRepo = new AccountRepository();
         PersonRepository personRepo = new PersonRepository();
@@ -92,7 +89,7 @@ public class App {
                 settings);
     }
 
-    // Main loop: setup, then login, then the dashboard, then logout. It ends when the user exits at login.
+    // main loop. setup > login > dashboard > logout > repeat. only stops if u pick exit at login
     public void run() {
         while (true) {
             if (auth.needsSetup()) {
@@ -108,7 +105,7 @@ public class App {
         }
     }
 
-    // Shows the dashboard for the type of the given person. Intern is checked before Student on purpose.
+    // picks dashboard based on who logged in. intern HAS to be before student bc intern is also a student
     private void showDashboard(Person person) {
         if (person instanceof Coordinator) {
             coordinatorView.show(person.getName());
@@ -121,12 +118,12 @@ public class App {
         }
     }
 
-    // Starts the program. If the input is closed (for example with Ctrl+D), it exits quietly.
+    // start here. ctrl+d closes input so we just quit
     public static void main(String[] args) {
         try {
             new App().run();
         } catch (NoSuchElementException e) {
-            // Nothing more can be read, so the program just ends.
+            // no more input, nothing to do, just end
         }
         System.out.println("Goodbye.");
     }

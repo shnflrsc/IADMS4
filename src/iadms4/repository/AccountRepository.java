@@ -6,19 +6,19 @@ import java.util.List;
 import iadms4.model.Account;
 
 /*
- * REPOSITORY. Stores Accounts.
- * It does not extend Repository because accounts are identified by email instead of a number.
- * Emails are compared without capital letters or outer spaces.
+ * REPOSITORY. stores accounts
+ * doesnt extend Repository bc accounts use email not an int id
+ * emails ignore caps n spaces
  */
 public class AccountRepository {
     private final List<Account> accounts = new ArrayList<>();
 
-    // Returns the given email trimmed and in lower case, which is the form used for comparing.
+    // trim + lowercase so emails compare properly
     private String normalize(String email) {
         return email.trim().toLowerCase();
     }
 
-    // Stores the given account and returns it. An account with the same email is replaced in the same place.
+    // save account. same email = replace it, dont add a new one
     public Account save(Account account) {
         for (int i = 0; i < accounts.size(); i++) {
             if (normalize(accounts.get(i).getEmail()).equals(normalize(account.getEmail()))) {
@@ -30,7 +30,7 @@ public class AccountRepository {
         return account;
     }
 
-    // Removes the account that uses the same email as the given account.
+    // remove account w/ same email
     public void remove(Account account) {
         Account stored = findByEmail(account.getEmail());
         if (stored != null) {
@@ -38,7 +38,7 @@ public class AccountRepository {
         }
     }
 
-    // Returns the account with the given email, or null if there is none.
+    // find by email, null if none
     public Account findByEmail(String email) {
         for (Account account : accounts) {
             if (normalize(account.getEmail()).equals(normalize(email))) {
@@ -48,7 +48,7 @@ public class AccountRepository {
         return null;
     }
 
-    // Returns the account owned by the person with the given id, or null if there is none.
+    // find by person id, null if none
     public Account findByPersonId(int personId) {
         for (Account account : accounts) {
             if (account.getPerson().getId() == personId) {
@@ -58,12 +58,12 @@ public class AccountRepository {
         return null;
     }
 
-    // Returns true if an account already uses the given email.
+    // true if email is taken
     public boolean existsByEmail(String email) {
         return findByEmail(email) != null;
     }
 
-    // Returns true if there are no accounts yet (the very first run of the program).
+    // true on the very first run
     public boolean isEmpty() {
         return accounts.isEmpty();
     }
