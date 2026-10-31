@@ -10,13 +10,13 @@ import iadms4.model.Position;
  * REPOSITORY. stores positions
  */
 public class PositionRepository extends Repository<Position> {
-    // id of position
+    // tells the base class how to get a position's id
     @Override
     protected int idOf(Position item) {
         return item.getId();
     }
 
-    // positions of one company
+    // goes through all positions and keeps the ones of this company
     public List<Position> findByCompany(Company company) {
         List<Position> matches = new ArrayList<>();
         for (Position position : findAll()) {

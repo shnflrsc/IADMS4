@@ -36,23 +36,23 @@ public class CoordinatorDashboardView extends Menu {
     // coordinator menu, grouped by topic bc it was a mess before
     public void show(String coordinatorName) {
         String[] items = {
-                // students n interns
+                // items 1-6 are about students n interns
                 "View students", "Search students & interns", "Register student", "View interns (with status)",
                 "Filter interns by status", "View intern evaluations",
-                // openings n applications
+                // items 7-11 are about openings n applications
                 "View openings", "Endorse student to an opening", "View applications",
                 "Filter applications by status", "Withdraw a pending application",
-                // companies
+                // items 12-15 are about companies
                 "View companies", "Add company", "Rename a company", "Delete a company",
-                // users n accounts
+                // items 16-22 are about users n accounts
                 "View company representatives", "View coordinators", "Add company representative account",
                 "Add coordinator account", "Edit a person's details", "Delete a person", "Reset a user's password",
-                // reports n settings
+                // items 23-24 are the report and settings
                 "System summary report", "Account settings" };
         run("Coordinator Dashboard - " + coordinatorName, items, "Log out");
     }
 
-    // what each number does
+    // runs whatever the coordinator picked, numbers match the items array
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -97,13 +97,13 @@ public class CoordinatorDashboardView extends Menu {
         console.table(new String[] { "ID", "Student No.", "Name", "Section", "Email", "Status" }, rows);
     }
 
-    // search screen
+    // asks for a keyword and prints the students and interns that match
     private void searchStudents() {
         String keyword = console.readLine("Search (name, student no., section or email; blank = all)");
         printStudents(controller.searchStudents(keyword));
     }
 
-    // register student screen
+    // asks for all the student details then registers them w/ an account
     private void registerStudent() {
         String name = console.readRequired("Full name");
         Gender gender = console.readGender();
@@ -116,7 +116,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Student registered.");
     }
 
-    // interns table
+    // prints a table of the interns u pass in, w/ company and email
     private void printInterns(List<Intern> interns) {
         List<String[]> rows = new ArrayList<>();
         for (Intern i : interns) {
@@ -129,7 +129,7 @@ public class CoordinatorDashboardView extends Menu {
                 rows);
     }
 
-    // evaluations table
+    // prints a table of every evaluation in the system
     private void viewEvaluations() {
         List<String[]> rows = new ArrayList<>();
         for (Evaluation e : controller.evaluations()) {
@@ -141,7 +141,7 @@ public class CoordinatorDashboardView extends Menu {
                 rows);
     }
 
-    // openings table
+    // prints a table of the openings of every company
     private void viewOpenings() {
         List<String[]> rows = new ArrayList<>();
         for (Opening o : controller.allOpenings()) {
@@ -170,7 +170,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  " + student.getName() + " endorsed to " + opening.getPosition().getTitle() + ".");
     }
 
-    // applications table
+    // prints a table of whatever applications u pass in
     private void printApplications(List<Application> applications) {
         List<String[]> rows = new ArrayList<>();
         for (Application a : applications) {
@@ -181,7 +181,7 @@ public class CoordinatorDashboardView extends Menu {
         console.table(new String[] { "ID", "Student", "Company", "Position", "Endorsed by", "Status" }, rows);
     }
 
-    // withdraw screen
+    // coordinator picks a pending application and it gets withdrawn
     private void withdraw() {
         List<Application> pending = controller.pendingApplications();
         int index = console.choose("Pending application to withdraw", Formatters.applications(pending));
@@ -192,7 +192,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Application withdrawn. The student can be endorsed again.");
     }
 
-    // companies table
+    // prints a table of all the companies
     private void viewCompanies() {
         List<String[]> rows = new ArrayList<>();
         for (Company c : controller.companies()) {
@@ -201,13 +201,13 @@ public class CoordinatorDashboardView extends Menu {
         console.table(new String[] { "ID", "Company" }, rows);
     }
 
-    // add company screen
+    // asks for a company name and adds it
     private void addCompany() {
         controller.addCompany(console.readRequired("Company name"));
         console.println("  Company added.");
     }
 
-    // rename company screen
+    // coordinator picks a company and types the new name
     private void renameCompany() {
         List<Company> companies = controller.companies();
         int index = console.choose("Company", Formatters.companies(companies));
@@ -218,7 +218,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Company renamed.");
     }
 
-    // delete company screen
+    // coordinator picks a company and it gets deleted
     private void deleteCompany() {
         List<Company> companies = controller.companies();
         int index = console.choose("Company to delete", Formatters.companies(companies));
@@ -229,7 +229,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Company deleted.");
     }
 
-    // reps table
+    // prints a table of all the company reps
     private void viewRepresentatives() {
         List<String[]> rows = new ArrayList<>();
         for (CompanyRepresentative r : controller.representatives()) {
@@ -239,7 +239,7 @@ public class CoordinatorDashboardView extends Menu {
         console.table(new String[] { "ID", "Name", "Company", "Email" }, rows);
     }
 
-    // coordinators table
+    // prints a table of all the coordinators
     private void viewCoordinators() {
         List<String[]> rows = new ArrayList<>();
         for (Coordinator c : controller.coordinators()) {
@@ -248,7 +248,7 @@ public class CoordinatorDashboardView extends Menu {
         console.table(new String[] { "ID", "Employee ID", "Name", "Email" }, rows);
     }
 
-    // add rep screen
+    // picks the company first then asks for the rep's details
     private void addRepresentative() {
         List<Company> companies = controller.companies();
         int index = console.choose("Company", Formatters.companies(companies));
@@ -266,7 +266,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Representative account created for " + company.getName() + ".");
     }
 
-    // add coordinator screen
+    // asks for the new coordinator's details and makes the account
     private void addCoordinator() {
         String name = console.readRequired("Full name");
         Gender gender = console.readGender();
@@ -327,7 +327,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Deleted.");
     }
 
-    // reset password screen
+    // coordinator picks a person and types their new password
     private void resetPassword() {
         List<Person> people = controller.everyone();
         int index = console.choose("Person", Formatters.people(people));

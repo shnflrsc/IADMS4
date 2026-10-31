@@ -30,7 +30,7 @@ public class AccountRepository {
         return account;
     }
 
-    // remove account w/ same email
+    // finds the account w/ the same email and removes it from the list
     public void remove(Account account) {
         Account stored = findByEmail(account.getEmail());
         if (stored != null) {
@@ -58,7 +58,7 @@ public class AccountRepository {
         return null;
     }
 
-    // true if email is taken
+    // checks if the email is taken, returns true if it is
     public boolean existsByEmail(String email) {
         return findByEmail(email) != null;
     }

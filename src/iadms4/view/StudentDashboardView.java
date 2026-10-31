@@ -28,7 +28,7 @@ public class StudentDashboardView extends Menu {
         run("Student Dashboard - " + controller.me().getName(), items, "Log out");
     }
 
-    // what each number does
+    // runs whatever the student picked, numbers match the items array
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -38,7 +38,7 @@ public class StudentDashboardView extends Menu {
         }
     }
 
-    // profile
+    // prints the student's name, number, section, email and birthdate
     private void profile() {
         Student me = controller.me();
         console.println("  Name:        " + me.getName());
@@ -48,7 +48,7 @@ public class StudentDashboardView extends Menu {
         console.println("  Birthdate:   " + me.getBirthdate());
     }
 
-    // my applications table
+    // prints a table of the student's own applications
     private void applications() {
         List<String[]> rows = new ArrayList<>();
         for (Application a : controller.myApplications()) {

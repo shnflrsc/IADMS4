@@ -6,7 +6,7 @@ import iadms4.model.Company;
  * REPOSITORY. stores companies, checks duplicate names
  */
 public class CompanyRepository extends Repository<Company> {
-    // id of company
+    // tells the base class how to get a company's id
     @Override
     protected int idOf(Company item) {
         return item.getId();

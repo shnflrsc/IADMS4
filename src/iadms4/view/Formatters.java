@@ -41,7 +41,7 @@ class Formatters {
         return "Person";
     }
 
-    // labels for positions
+    // makes a label for each position w/ title, company, hours
     static List<String> positions(List<Position> positions) {
         List<String> labels = new ArrayList<>();
         for (Position p : positions) {
@@ -50,7 +50,7 @@ class Formatters {
         return labels;
     }
 
-    // titles only
+    // makes a list of just the position titles
     static List<String> positionTitles(List<Position> positions) {
         List<String> labels = new ArrayList<>();
         for (Position p : positions) {
@@ -59,7 +59,7 @@ class Formatters {
         return labels;
     }
 
-    // labels for openings
+    // makes a label for each opening w/ id, position, status
     static List<String> openings(List<Opening> openings) {
         List<String> labels = new ArrayList<>();
         for (Opening o : openings) {
@@ -68,7 +68,7 @@ class Formatters {
         return labels;
     }
 
-    // labels for applications
+    // makes a label for each application w/ id, student, position, status
     static List<String> applications(List<Application> applications) {
         List<String> labels = new ArrayList<>();
         for (Application a : applications) {
@@ -78,7 +78,7 @@ class Formatters {
         return labels;
     }
 
-    // labels for interns
+    // makes a label for each intern w/ name, position, hours, status
     static List<String> interns(List<Intern> interns) {
         List<String> labels = new ArrayList<>();
         for (Intern i : interns) {
@@ -88,7 +88,7 @@ class Formatters {
         return labels;
     }
 
-    // labels for people
+    // makes a label for each person like "Student: Ben Reyes"
     static List<String> people(List<Person> people) {
         List<String> labels = new ArrayList<>();
         for (Person p : people) {
@@ -97,7 +97,7 @@ class Formatters {
         return labels;
     }
 
-    // labels for students
+    // makes a label for each student w/ number, name, kind
     static List<String> students(List<Student> students) {
         List<String> labels = new ArrayList<>();
         for (Student s : students) {
@@ -106,7 +106,7 @@ class Formatters {
         return labels;
     }
 
-    // company names
+    // makes a list of just the company names
     static List<String> companies(List<Company> companies) {
         List<String> labels = new ArrayList<>();
         for (Company c : companies) {
@@ -115,7 +115,7 @@ class Formatters {
         return labels;
     }
 
-    // intern status names
+    // makes a list of the intern status names for picking one
     static List<String> internStatuses() {
         List<String> labels = new ArrayList<>();
         for (InternStatus status : InternStatus.values()) {

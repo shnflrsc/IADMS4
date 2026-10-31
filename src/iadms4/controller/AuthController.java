@@ -45,12 +45,12 @@ public class AuthController {
         auth.startSession(account);
     }
 
-    // login
+    // tries to log in w/ the typed email and password, service throws if its wrong
     public void login(String email, String password) {
         auth.login(email, password);
     }
 
-    // logout
+    // logs out whoever is logged in right now
     public void logout() {
         auth.logout();
     }

@@ -21,17 +21,17 @@ public class StudentController {
         this.persons = persons;
     }
 
-    // the student thats logged in
+    // gets the logged in student from Session, cast is safe bc only students get here
     public Student me() {
         return (Student) Session.getInstance().getPerson();
     }
 
-    // my email
+    // gets the login email of the logged in student
     public String email() {
         return persons.emailOf(me());
     }
 
-    // my applications
+    // gets the applications of the logged in student
     public List<Application> myApplications() {
         return applications.forStudent(me().getId());
     }

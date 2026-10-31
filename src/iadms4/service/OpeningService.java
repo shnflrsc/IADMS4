@@ -32,7 +32,7 @@ public class OpeningService {
         this.applications = applications;
     }
 
-    // new position
+    // makes a new position for the company after checking title and hours
     public void createPosition(Company company, String title, int requiredHours) {
         requireValidDetails(title, requiredHours);
         positions.save(new Position(positions.nextId(), company, title.trim(), requiredHours));
@@ -90,32 +90,32 @@ public class OpeningService {
         }
     }
 
-    // new OPEN opening
+    // publishes the position as a new opening, always starts OPEN
     public void createOpening(Position position) {
         openings.save(new Opening(openings.nextId(), position, OpeningStatus.OPEN));
     }
 
-    // set status
+    // sets the opening to whatever status is passed in
     public void setStatus(Opening opening, OpeningStatus status) {
         opening.setStatus(status);
     }
 
-    // positions of company
+    // gets all the positions of this company
     public List<Position> positionsOf(Company company) {
         return positions.findByCompany(company);
     }
 
-    // openings of company
+    // gets all the openings of this company
     public List<Opening> openingsOf(Company company) {
         return openings.findByCompany(company);
     }
 
-    // all openings
+    // gets every opening, open or closed
     public List<Opening> allOpenings() {
         return openings.findAll();
     }
 
-    // OPEN ones only
+    // gets only the OPEN ones, these are the ones u can endorse to
     public List<Opening> openOpenings() {
         return openings.findByStatus(OpeningStatus.OPEN);
     }

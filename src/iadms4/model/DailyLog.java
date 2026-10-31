@@ -22,27 +22,27 @@ public class DailyLog {
         this.description = description;
     }
 
-    // gets id (int)
+    // gets the unique id of this log (int)
     public int getId() {
         return id;
     }
 
-    // gets intern (Intern)
+    // gets the intern who wrote this log (Intern)
     public Intern getIntern() {
         return intern;
     }
 
-    // gets date (LocalDate)
+    // gets the day this log was saved (LocalDate)
     public LocalDate getDate() {
         return date;
     }
 
-    // gets hours (int)
+    // gets how many hours were actually credited (int)
     public int getHours() {
         return hours;
     }
 
-    // gets description (String)
+    // gets what the intern said they did (String)
     public String getDescription() {
         return description;
     }

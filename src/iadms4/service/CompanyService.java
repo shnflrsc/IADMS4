@@ -23,7 +23,7 @@ public class CompanyService {
         this.positions = positions;
     }
 
-    // new company
+    // makes a new company, name cant be blank or taken
     public void create(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Company name is required.");
@@ -34,7 +34,7 @@ public class CompanyService {
         companies.save(new Company(companies.nextId(), name.trim()));
     }
 
-    // rename
+    // renames the company, same rules as making a new one
     public void rename(Company company, String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Company name is required.");
@@ -56,7 +56,7 @@ public class CompanyService {
         companies.remove(company.getId());
     }
 
-    // all companies
+    // gets the list of every company
     public List<Company> all() {
         return companies.findAll();
     }

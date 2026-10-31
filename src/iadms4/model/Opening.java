@@ -16,17 +16,17 @@ public class Opening {
         this.status = status;
     }
 
-    // gets id (int)
+    // gets the unique id of this opening (int)
     public int getId() {
         return id;
     }
 
-    // gets position (Position)
+    // gets the position being offered here (Position)
     public Position getPosition() {
         return position;
     }
 
-    // OPEN or CLOSED
+    // gets if its OPEN or CLOSED right now (OpeningStatus)
     public OpeningStatus getStatus() {
         return status;
     }

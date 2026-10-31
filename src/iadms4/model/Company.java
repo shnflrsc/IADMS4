@@ -14,12 +14,12 @@ public class Company {
         this.name = name;
     }
 
-    // gets id (int)
+    // gets the unique id of this company (int)
     public int getId() {
         return id;
     }
 
-    // gets name (String)
+    // gets the name shown for this company (String)
     public String getName() {
         return name;
     }

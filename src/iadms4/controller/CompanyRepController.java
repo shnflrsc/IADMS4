@@ -42,27 +42,27 @@ public class CompanyRepController {
         this.reports = reports;
     }
 
-    // the rep thats logged in
+    // gets the logged in rep from Session, cast is safe bc only reps get this dashboard
     private CompanyRepresentative me() {
         return (CompanyRepresentative) Session.getInstance().getPerson();
     }
 
-    // the logged in rep's company
+    // gets the logged in rep's company, used to limit everything to their company
     public Company company() {
         return me().getCompany();
     }
 
-    // positions of this company
+    // gets the list of positions this company offers
     public List<Position> positions() {
         return openings.positionsOf(company());
     }
 
-    // openings of this company
+    // gets the list of openings this company published
     public List<Opening> openings() {
         return openings.openingsOf(company());
     }
 
-    // all applications for this company
+    // gets every application sent to this company, any status
     public List<Application> applications() {
         return applications.forCompany(company());
     }
@@ -72,12 +72,12 @@ public class CompanyRepController {
         return applications.forCompany(company(), status);
     }
 
-    // pending ones only
+    // gets only the applications still waiting for this company's decision
     public List<Application> pendingApplications() {
         return applications.pendingForCompany(company());
     }
 
-    // all interns of this company
+    // gets every intern deployed to this company, any status
     public List<Intern> interns() {
         return interns.internsOf(company(), null);
     }
@@ -87,7 +87,7 @@ public class CompanyRepController {
         return interns.internsOf(company(), status);
     }
 
-    // daily logs of this intern
+    // gets all the daily logs written by the intern u pass in
     public List<DailyLog> dailyLogs(Intern intern) {
         return interns.logsOf(intern);
     }
@@ -97,27 +97,27 @@ public class CompanyRepController {
         return evaluations.awaitingEvaluation(company());
     }
 
-    // evaluations for this company
+    // gets the evaluations written for interns of this company
     public List<Evaluation> evaluations() {
         return evaluations.forCompany(company());
     }
 
-    // company report
+    // builds the summary report for this company only
     public Summary report() {
         return reports.forCompany(company());
     }
 
-    // add position
+    // adds a new position to this company using the title and hours
     public void addPosition(String title, int requiredHours) {
         openings.createPosition(company(), title, requiredHours);
     }
 
-    // edit position
+    // changes the title and hours of one of this company's positions
     public void editPosition(Position position, String title, int requiredHours) {
         openings.updatePosition(company(), position, title, requiredHours);
     }
 
-    // delete position
+    // deletes one of this company's positions if nothing is using it
     public void deletePosition(Position position) {
         openings.deletePosition(company(), position);
     }
@@ -127,12 +127,12 @@ public class CompanyRepController {
         openings.createOpening(position);
     }
 
-    // delete opening
+    // deletes one of this company's openings if nobody was endorsed to it
     public void deleteOpening(Opening opening) {
         openings.deleteOpening(company(), opening);
     }
 
-    // OPEN <-> CLOSED
+    // flips the opening, OPEN becomes CLOSED and CLOSED becomes OPEN
     public void toggleOpening(Opening opening) {
         if (opening.getStatus() == OpeningStatus.OPEN) {
             openings.setStatus(opening, OpeningStatus.CLOSED);
@@ -146,12 +146,12 @@ public class CompanyRepController {
         return applications.approve(application);
     }
 
-    // deny
+    // rejects the application u pass in, student stays a student
     public void deny(Application application) {
         applications.reject(application);
     }
 
-    // change intern status
+    // sets the intern to the new status, service blocks the invalid ones
     public void changeInternStatus(Intern intern, InternStatus status) {
         interns.changeStatus(intern, status);
     }

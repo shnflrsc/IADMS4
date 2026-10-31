@@ -10,7 +10,7 @@ import iadms4.model.Evaluation;
  * REPOSITORY. stores evaluations
  */
 public class EvaluationRepository extends Repository<Evaluation> {
-    // id of evaluation
+    // tells the base class how to get an evaluation's id
     @Override
     protected int idOf(Evaluation item) {
         return item.getId();
@@ -26,7 +26,7 @@ public class EvaluationRepository extends Repository<Evaluation> {
         return null;
     }
 
-    // evaluations of one company
+    // goes through all evaluations and keeps the ones for this company
     public List<Evaluation> findByCompany(Company company) {
         List<Evaluation> matches = new ArrayList<>();
         for (Evaluation evaluation : findAll()) {

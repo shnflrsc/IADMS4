@@ -15,7 +15,7 @@ import iadms4.model.Student;
  * instanceof picks out each type
  */
 public class PersonRepository extends Repository<Person> {
-    // id of person
+    // tells the base class how to get a person's id
     @Override
     protected int idOf(Person item) {
         return item.getId();
@@ -32,7 +32,7 @@ public class PersonRepository extends Repository<Person> {
         return students;
     }
 
-    // interns only
+    // goes through everyone and keeps only the interns
     public List<Intern> findInterns() {
         List<Intern> interns = new ArrayList<>();
         for (Person person : findAll()) {
@@ -43,7 +43,7 @@ public class PersonRepository extends Repository<Person> {
         return interns;
     }
 
-    // all coordinators
+    // goes through everyone and keeps only the coordinators
     public List<Coordinator> findCoordinators() {
         List<Coordinator> coordinators = new ArrayList<>();
         for (Person person : findAll()) {
@@ -54,7 +54,7 @@ public class PersonRepository extends Repository<Person> {
         return coordinators;
     }
 
-    // all reps
+    // goes through everyone and keeps only the company reps
     public List<CompanyRepresentative> findRepresentatives() {
         List<CompanyRepresentative> representatives = new ArrayList<>();
         for (Person person : findAll()) {
@@ -65,7 +65,7 @@ public class PersonRepository extends Repository<Person> {
         return representatives;
     }
 
-    // reps of one company
+    // takes all the reps and keeps the ones of this company
     public List<CompanyRepresentative> findRepresentatives(Company company) {
         List<CompanyRepresentative> matches = new ArrayList<>();
         for (CompanyRepresentative representative : findRepresentatives()) {

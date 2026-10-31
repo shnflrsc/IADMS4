@@ -18,7 +18,7 @@ public class Console {
 
     private final Scanner in = new Scanner(System.in);
 
-    // shortcut for println
+    // prints text on its own line, shorter than System.out.println
     public void println(String text) {
         System.out.println(text);
     }
@@ -29,7 +29,7 @@ public class Console {
         System.out.flush();
     }
 
-    // clear + title banner
+    // clears the screen then prints the title between two lines
     public void header(String title) {
         clear();
         println(RULE);
@@ -44,7 +44,7 @@ public class Console {
         return in.nextLine().trim();
     }
 
-    // same but wont accept empty
+    // same as readLine but keeps asking if the answer is empty
     public String readRequired(String prompt) {
         while (true) {
             String value = readLine(prompt);
@@ -83,7 +83,7 @@ public class Console {
         }
     }
 
-    // readDate but blank = null
+    // same as readDate but blank is allowed and returns null
     public LocalDate readOptionalDate(String prompt) {
         while (true) {
             String raw = readLine(prompt + " (yyyy-mm-dd, blank = keep)");
@@ -126,7 +126,7 @@ public class Console {
         return values[choice - 1];
     }
 
-    // pick gender
+    // shows the genders as a list and returns the one picked
     public Gender readGender() {
         Gender[] values = Gender.values();
         for (int i = 0; i < values.length; i++) {
@@ -176,7 +176,7 @@ public class Console {
         }
     }
 
-    // one row, with padding
+    // prints one row, each cell gets padded to its column width
     private void printRow(String[] cells, int[] widths) {
         String line = "  ";
         for (int c = 0; c < cells.length; c++) {

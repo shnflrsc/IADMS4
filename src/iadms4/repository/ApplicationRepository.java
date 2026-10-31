@@ -10,13 +10,13 @@ import iadms4.model.Company;
  * REPOSITORY. stores applications, filter by student or company
  */
 public class ApplicationRepository extends Repository<Application> {
-    // id of application
+    // tells the base class how to get an application's id
     @Override
     protected int idOf(Application item) {
         return item.getId();
     }
 
-    // applications of one student
+    // goes through all applications and keeps the ones of this student
     public List<Application> findByStudentId(int studentId) {
         List<Application> matches = new ArrayList<>();
         for (Application application : findAll()) {
@@ -27,7 +27,7 @@ public class ApplicationRepository extends Repository<Application> {
         return matches;
     }
 
-    // applications of one company
+    // goes through all applications and keeps the ones for this company
     public List<Application> findByCompany(Company company) {
         List<Application> matches = new ArrayList<>();
         for (Application application : findAll()) {

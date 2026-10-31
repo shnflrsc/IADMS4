@@ -12,7 +12,7 @@ import iadms4.repository.AccountRepository;
 public class AuthService {
     private final AccountRepository accounts;
 
-    // makes the service, takes accounts
+    // makes the service, takes the accounts repo and saves it
     public AuthService(AccountRepository accounts) {
         this.accounts = accounts;
     }
@@ -66,7 +66,7 @@ public class AuthService {
         accounts.save(account);
     }
 
-    // coordinator resets someones password
+    // coordinator sets newPassword for someone, min 4 chars still applies
     public void resetPassword(Person person, String newPassword) {
         requireValidPassword(newPassword);
         Account account = accounts.findByPersonId(person.getId());
@@ -76,14 +76,14 @@ public class AuthService {
         account.setPassword(newPassword);
     }
 
-    // min 4 chars
+    // throws an error if the password is under 4 chars
     private void requireValidPassword(String password) {
         if (password == null || password.length() < 4) {
             throw new IllegalArgumentException("Password must be at least 4 characters.");
         }
     }
 
-    // logout
+    // clears the session so nobody is logged in anymore
     public void logout() {
         Session.getInstance().logout();
     }

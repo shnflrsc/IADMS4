@@ -39,12 +39,12 @@ public class ReportService {
         this.evaluations = evaluations;
     }
 
-    // whole system
+    // builds the report for the whole system, for coordinators
     public Summary system() {
         return build(null);
     }
 
-    // one company
+    // builds the report for one company, for that company's rep
     public Summary forCompany(Company company) {
         return build(company);
     }
@@ -116,7 +116,7 @@ public class ReportService {
                 recorded, required, evals.size(), average);
     }
 
-    // count apps by status
+    // counts how many of these applications have this status
     private int countApplications(List<Application> apps, ApplicationStatus status) {
         int count = 0;
         for (Application application : apps) {

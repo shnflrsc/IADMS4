@@ -17,12 +17,12 @@ public class Student extends Person {
         this.section = section;
     }
 
-    // gets student id (String)
+    // gets the student number from the school (String)
     public String getStudentId() {
         return studentId;
     }
 
-    // gets section (String)
+    // gets the class section of the student (String)
     public String getSection() {
         return section;
     }

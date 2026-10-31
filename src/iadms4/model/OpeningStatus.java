@@ -5,8 +5,8 @@ package iadms4.model;
  * rep can switch between these 2
  */
 public enum OpeningStatus {
-    // accepting endorsements
+    // coordinators can still endorse students to this one
     OPEN,
-    // not accepting anymore
+    // closed, no more endorsements for this one
     CLOSED
 }

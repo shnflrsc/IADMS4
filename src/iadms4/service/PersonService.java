@@ -89,7 +89,7 @@ public class PersonService {
         accounts.save(new Account(student, email.trim(), password));
     }
 
-    // new rep + account
+    // makes a new rep and their account, company is required
     public void registerRepresentative(String name, Gender gender, LocalDate birthdate, Company company,
             String email, String password) {
         validate(name, email, password);
@@ -168,7 +168,7 @@ public class PersonService {
         return false;
     }
 
-    // true if they endorsed someone
+    // checks if this person endorsed at least one student
     private boolean endorsedStudents(Person person) {
         for (Application application : applications.findAll()) {
             if (application.getCoordinator().getId() == person.getId()) {
@@ -213,22 +213,22 @@ public class PersonService {
         return account.getEmail();
     }
 
-    // all students (interns included)
+    // gets all students, interns included
     public List<Student> students() {
         return persons.findStudents();
     }
 
-    // all interns
+    // gets every intern from every company
     public List<Intern> interns() {
         return persons.findInterns();
     }
 
-    // all coordinators
+    // gets the list of every coordinator
     public List<Coordinator> coordinators() {
         return persons.findCoordinators();
     }
 
-    // all reps
+    // gets the reps of every company
     public List<CompanyRepresentative> representatives() {
         return persons.findRepresentatives();
     }

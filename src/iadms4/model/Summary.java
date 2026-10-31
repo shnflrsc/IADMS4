@@ -42,77 +42,77 @@ public class Summary {
         this.averageRating = averageRating;
     }
 
-    // students not interns yet
+    // how many students havent been deployed as interns yet
     public int getStudents() {
         return students;
     }
 
-    // total interns
+    // how many interns there are in total
     public int getInterns() {
         return interns;
     }
 
-    // ACTIVE count
+    // how many interns are ACTIVE right now
     public int getActive() {
         return active;
     }
 
-    // DEACTIVATED count
+    // how many interns are DEACTIVATED right now
     public int getDeactivated() {
         return deactivated;
     }
 
-    // COMPLETED count
+    // how many interns already COMPLETED their internship
     public int getCompleted() {
         return completed;
     }
 
-    // OPEN count
+    // how many openings are still OPEN
     public int getOpenOpenings() {
         return openOpenings;
     }
 
-    // CLOSED count
+    // how many openings are CLOSED already
     public int getClosedOpenings() {
         return closedOpenings;
     }
 
-    // PENDING count
+    // how many applications are still PENDING
     public int getPending() {
         return pending;
     }
 
-    // APPROVED count
+    // how many applications got APPROVED
     public int getApproved() {
         return approved;
     }
 
-    // REJECTED count
+    // how many applications got REJECTED
     public int getRejected() {
         return rejected;
     }
 
-    // WITHDRAWN count
+    // how many applications got WITHDRAWN
     public int getWithdrawn() {
         return withdrawn;
     }
 
-    // total hours logged
+    // total hours logged by all the interns counted here
     public int getRecordedHours() {
         return recordedHours;
     }
 
-    // total hours required
+    // total hours all the interns counted here need to finish
     public int getRequiredHours() {
         return requiredHours;
     }
 
-    // evaluation count
+    // how many evaluations were written so far
     public int getEvaluations() {
         return evaluations;
     }
 
-    // avg rating, 0 if none
+    // average rating of the evaluations, stays 0 if theres none
     public double getAverageRating() {
         return averageRating;
     }

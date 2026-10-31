@@ -9,13 +9,13 @@ import iadms4.model.DailyLog;
  * REPOSITORY. stores daily logs
  */
 public class DailyLogRepository extends Repository<DailyLog> {
-    // id of log
+    // tells the base class how to get a log's id
     @Override
     protected int idOf(DailyLog item) {
         return item.getId();
     }
 
-    // logs of one intern
+    // goes through all logs and keeps the ones of this intern
     public List<DailyLog> findByInternId(int internId) {
         List<DailyLog> matches = new ArrayList<>();
         for (DailyLog log : findAll()) {

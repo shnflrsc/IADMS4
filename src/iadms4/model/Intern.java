@@ -20,12 +20,12 @@ public class Intern extends Student {
         this.status = status;
     }
 
-    // gets position (Position)
+    // gets the position this intern is deployed to (Position)
     public Position getPosition() {
         return position;
     }
 
-    // gets recorded hours (int)
+    // gets the total hours logged so far (int)
     public int getRecordedHours() {
         return recordedHours;
     }
@@ -35,7 +35,7 @@ public class Intern extends Student {
         this.recordedHours = recordedHours;
     }
 
-    // gets status (InternStatus)
+    // gets the current internship status (InternStatus)
     public InternStatus getStatus() {
         return status;
     }

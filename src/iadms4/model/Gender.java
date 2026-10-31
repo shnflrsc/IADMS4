@@ -5,8 +5,8 @@ package iadms4.model;
  * enum not String so nobody can type "Mael" lol
  */
 public enum Gender {
-    // male
+    // the male option when picking a gender
     MALE,
-    // female
+    // the female option when picking a gender
     FEMALE
 }

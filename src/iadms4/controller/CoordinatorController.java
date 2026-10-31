@@ -52,28 +52,28 @@ public class CoordinatorController {
         this.reports = reports;
     }
 
-    // the coordinator thats logged in
+    // gets the logged in coordinator from Session, used when endorsing and deleting
     private Coordinator me() {
         return (Coordinator) Session.getInstance().getPerson();
     }
 
-    // all students (interns included)
+    // gets all students, interns are included bc Intern extends Student
     public List<Student> students() {
         return persons.students();
     }
 
-    // search students n interns
+    // searches students and interns using the typed keyword
     public List<Student> searchStudents(String keyword) {
         return persons.searchStudents(keyword);
     }
 
-    // register student + account
+    // registers a new student and makes their login account too
     public void registerStudent(String name, Gender gender, LocalDate birthdate, String studentId, String section,
             String email, String password) {
         persons.registerStudent(name, gender, birthdate, studentId, section, email, password);
     }
 
-    // all interns
+    // gets every intern from every company
     public List<Intern> interns() {
         return persons.interns();
     }
@@ -83,12 +83,12 @@ public class CoordinatorController {
         return persons.interns(status);
     }
 
-    // all evaluations
+    // gets every evaluation in the whole system
     public List<Evaluation> evaluations() {
         return evaluations.all();
     }
 
-    // all openings
+    // gets every opening, including the closed ones
     public List<Opening> allOpenings() {
         return openings.allOpenings();
     }
@@ -98,12 +98,12 @@ public class CoordinatorController {
         return openings.openOpenings();
     }
 
-    // endorse student to opening
+    // endorses the student to the opening, logged in coordinator is saved as endorser
     public void endorse(Student student, Opening opening) {
         applications.endorse(me(), student, opening);
     }
 
-    // all applications
+    // gets every application from every company
     public List<Application> applications() {
         return applications.all();
     }
@@ -113,42 +113,42 @@ public class CoordinatorController {
         return applications.all(status);
     }
 
-    // pending ones
+    // gets only the applications still waiting for a company decision
     public List<Application> pendingApplications() {
         return applications.all(ApplicationStatus.PENDING);
     }
 
-    // withdraw it
+    // withdraws a pending application so the student can be endorsed again
     public void withdraw(Application application) {
         applications.withdraw(application);
     }
 
-    // all companies
+    // gets the list of every company
     public List<Company> companies() {
         return companies.all();
     }
 
-    // add company
+    // adds a new company, name has to be unique
     public void addCompany(String name) {
         companies.create(name);
     }
 
-    // rename company
+    // renames the company u pass in, new name cant be taken
     public void renameCompany(Company company, String name) {
         companies.rename(company, name);
     }
 
-    // delete company
+    // deletes the company, blocked if it still has reps or positions
     public void deleteCompany(Company company) {
         companies.delete(company);
     }
 
-    // all reps
+    // gets the reps of every company
     public List<CompanyRepresentative> representatives() {
         return persons.representatives();
     }
 
-    // all coordinators
+    // gets the list of every coordinator
     public List<Coordinator> coordinators() {
         return persons.coordinators();
     }
@@ -162,13 +162,13 @@ public class CoordinatorController {
         return all;
     }
 
-    // add rep account
+    // makes a company rep and their login account for the given company
     public void addRepresentative(String name, Gender gender, LocalDate birthdate, Company company, String email,
             String password) {
         persons.registerRepresentative(name, gender, birthdate, company, email, password);
     }
 
-    // add coordinator account
+    // makes another coordinator and their login account
     public void addCoordinator(String name, Gender gender, LocalDate birthdate, String employeeId, String email,
             String password) {
         persons.registerCoordinator(name, gender, birthdate, employeeId, email, password);
@@ -184,7 +184,7 @@ public class CoordinatorController {
         persons.delete(me(), person);
     }
 
-    // reset someones password
+    // sets a new password for someone, for when they forget theirs
     public void resetPassword(Person person, String newPassword) {
         auth.resetPassword(person, newPassword);
     }
@@ -194,7 +194,7 @@ public class CoordinatorController {
         return persons.emailOf(person);
     }
 
-    // report for the whole system
+    // builds the summary report for the whole system
     public Summary report() {
         return reports.system();
     }

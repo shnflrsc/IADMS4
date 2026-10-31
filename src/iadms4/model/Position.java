@@ -18,17 +18,17 @@ public class Position {
         this.requiredHours = requiredHours;
     }
 
-    // gets id (int)
+    // gets the unique id of this position (int)
     public int getId() {
         return id;
     }
 
-    // gets company (Company)
+    // gets the company offering this position (Company)
     public Company getCompany() {
         return company;
     }
 
-    // gets title (String)
+    // gets the job title shown to users (String)
     public String getTitle() {
         return title;
     }
@@ -38,7 +38,7 @@ public class Position {
         this.title = title;
     }
 
-    // gets required hours (int)
+    // gets how many hours an intern has to finish (int)
     public int getRequiredHours() {
         return requiredHours;
     }

@@ -22,12 +22,12 @@ public class InternController {
         this.evaluations = evaluations;
     }
 
-    // the intern thats logged in
+    // gets the logged in intern from Session, cast is safe bc only interns get here
     public Intern me() {
         return (Intern) Session.getInstance().getPerson();
     }
 
-    // my logs
+    // gets all the daily logs of the logged in intern
     public List<DailyLog> myLogs() {
         return interns.logsOf(me());
     }

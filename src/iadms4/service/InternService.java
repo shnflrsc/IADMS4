@@ -73,7 +73,7 @@ public class InternService {
         return matches;
     }
 
-    // daily logs of this intern
+    // gets all the daily logs of this intern
     public List<DailyLog> logsOf(Intern intern) {
         return logs.findByInternId(intern.getId());
     }

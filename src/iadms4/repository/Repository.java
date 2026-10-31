@@ -15,7 +15,7 @@ public abstract class Repository<T> {
     // child classes write this bc only they know what T is
     protected abstract int idOf(T item);
 
-    // next free id
+    // gives the next free id then moves the counter up
     public int nextId() {
         int id = nextId;
         nextId++;
@@ -49,7 +49,7 @@ public abstract class Repository<T> {
         return new ArrayList<>(items);
     }
 
-    // delete by id
+    // finds the item w/ this id and removes it, does nothing if not found
     public void remove(int id) {
         for (int i = 0; i < items.size(); i++) {
             if (idOf(items.get(i)) == id) {

@@ -29,7 +29,7 @@ public class InternDashboardView extends Menu {
         run("Intern Dashboard - " + controller.me().getName(), items, "Log out");
     }
 
-    // what each number does
+    // runs whatever the intern picked, numbers match the items array
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -41,7 +41,7 @@ public class InternDashboardView extends Menu {
         }
     }
 
-    // deployment details
+    // prints the intern's company, position, hours left and status
     private void deployment() {
         Intern me = controller.me();
         int required = me.getPosition().getRequiredHours();
@@ -52,7 +52,7 @@ public class InternDashboardView extends Menu {
         console.println("  Status:    " + me.getStatus());
     }
 
-    // log hours screen
+    // asks for hours and what they did, then shows hours left
     private void logHours() {
         int hours = console.readInt("Hours to log", 1, 24);
         String description = console.readRequired("Daily log (what did you do today?)");
@@ -74,7 +74,7 @@ public class InternDashboardView extends Menu {
         console.table(new String[] { "ID", "Date", "Hours", "Description" }, rows);
     }
 
-    // shows evaluation if theres one
+    // prints the evaluation, or a message if theres none yet
     private void viewEvaluation() {
         Evaluation evaluation = controller.myEvaluation();
         if (evaluation == null) {

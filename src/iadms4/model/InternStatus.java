@@ -5,10 +5,10 @@ package iadms4.model;
  * COMPLETED is final, cant change after that
  */
 public enum InternStatus {
-    // working, can log hours
+    // currently working, this is the only status that can log hours
     ACTIVE,
-    // paused, no logging
+    // rep paused the internship so no logging hours for now
     DEACTIVATED,
-    // done. evaluation can happen now
+    // hours are done and rep closed it, evaluation can happen now
     COMPLETED
 }

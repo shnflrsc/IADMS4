@@ -15,13 +15,13 @@ public class AccountSettingsView extends Menu {
         this.controller = controller;
     }
 
-    // settings menu
+    // shows the settings menu, back goes to the dashboard
     public void show() {
         String[] items = { "Change password", "Change email" };
         run("Account Settings", items, "Back");
     }
 
-    // what each number does
+    // runs whatever the user picked in the settings menu
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -30,7 +30,7 @@ public class AccountSettingsView extends Menu {
         }
     }
 
-    // change password screen
+    // asks for current and new password then changes it
     private void changePassword() {
         String current = console.readRequired("Current password");
         String next = console.readRequired("New password (min 4 chars)");
@@ -39,7 +39,7 @@ public class AccountSettingsView extends Menu {
         console.println("  Password changed.");
     }
 
-    // change email screen
+    // shows current email, asks password and new email, then changes it
     private void changeEmail() {
         console.println("  Current email: " + controller.email());
         String password = console.readRequired("Password");

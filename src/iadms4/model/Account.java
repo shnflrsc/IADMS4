@@ -16,12 +16,12 @@ public class Account {
         this.password = password;
     }
 
-    // owner of the account
+    // gets the Person who owns this account, type decides the dashboard
     public Person getPerson() {
         return person;
     }
 
-    // gets email (String)
+    // gets the email used to log in (String)
     public String getEmail() {
         return email;
     }
@@ -31,7 +31,7 @@ public class Account {
         this.email = email;
     }
 
-    // gets password (String)
+    // gets the password, plain text for now (String)
     public String getPassword() {
         return password;
     }

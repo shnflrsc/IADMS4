@@ -64,12 +64,12 @@ public class EvaluationService {
         return evaluations.findByInternId(intern.getId());
     }
 
-    // evaluations of company
+    // gets the evaluations of this company's interns
     public List<Evaluation> forCompany(Company company) {
         return evaluations.findByCompany(company);
     }
 
-    // all evaluations
+    // gets every evaluation, this is for coordinators
     public List<Evaluation> all() {
         return evaluations.findAll();
     }

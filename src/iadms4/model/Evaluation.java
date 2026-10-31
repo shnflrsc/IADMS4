@@ -25,17 +25,17 @@ public class Evaluation {
         this.date = date;
     }
 
-    // gets id (int)
+    // gets the unique id of this evaluation (int)
     public int getId() {
         return id;
     }
 
-    // gets intern (Intern)
+    // gets the intern who got evaluated (Intern)
     public Intern getIntern() {
         return intern;
     }
 
-    // gets evaluator (CompanyRepresentative)
+    // gets the rep who wrote this evaluation (CompanyRepresentative)
     public CompanyRepresentative getEvaluator() {
         return evaluator;
     }
@@ -45,12 +45,12 @@ public class Evaluation {
         return rating;
     }
 
-    // gets comments (String)
+    // gets the written feedback from the rep (String)
     public String getComments() {
         return comments;
     }
 
-    // gets date (LocalDate)
+    // gets the day the evaluation was written (LocalDate)
     public LocalDate getDate() {
         return date;
     }

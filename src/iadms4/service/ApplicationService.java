@@ -78,7 +78,7 @@ public class ApplicationService {
         return intern;
     }
 
-    // reject
+    // rep rejects a pending application, student can be endorsed again
     public void reject(Application application) {
         requirePending(application);
         application.setStatus(ApplicationStatus.REJECTED);
@@ -90,7 +90,7 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.WITHDRAWN);
     }
 
-    // error if not pending anymore
+    // throws an error if the application isnt PENDING anymore
     private void requirePending(Application application) {
         if (application.getStatus() != ApplicationStatus.PENDING) {
             throw new IllegalStateException("Application is already " + application.getStatus() + ".");
@@ -108,7 +108,7 @@ public class ApplicationService {
         return matches;
     }
 
-    // all applications
+    // gets every application in the system
     public List<Application> all() {
         return applications.findAll();
     }
@@ -118,7 +118,7 @@ public class ApplicationService {
         return withStatus(applications.findAll(), status);
     }
 
-    // applications of company
+    // gets all the applications sent to this company
     public List<Application> forCompany(Company company) {
         return applications.findByCompany(company);
     }
@@ -128,12 +128,12 @@ public class ApplicationService {
         return withStatus(applications.findByCompany(company), status);
     }
 
-    // applications of one student
+    // gets all the applications of the student w/ this id
     public List<Application> forStudent(int studentId) {
         return applications.findByStudentId(studentId);
     }
 
-    // pending applications of company
+    // gets the applications this company still has to decide on
     public List<Application> pendingForCompany(Company company) {
         return withStatus(applications.findByCompany(company), ApplicationStatus.PENDING);
     }

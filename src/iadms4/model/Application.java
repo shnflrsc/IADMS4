@@ -20,27 +20,27 @@ public class Application {
         this.status = status;
     }
 
-    // gets id (int)
+    // gets the unique id of this application (int)
     public int getId() {
         return id;
     }
 
-    // endorsed student
+    // gets the student who got endorsed (Student)
     public Student getStudent() {
         return student;
     }
 
-    // which opening
+    // gets the opening the student was endorsed to (Opening)
     public Opening getOpening() {
         return opening;
     }
 
-    // who endorsed
+    // gets the coordinator who made the endorsement (Coordinator)
     public Coordinator getCoordinator() {
         return coordinator;
     }
 
-    // gets status (ApplicationStatus)
+    // gets where the application is right now (ApplicationStatus)
     public ApplicationStatus getStatus() {
         return status;
     }

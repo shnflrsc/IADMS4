@@ -7,14 +7,14 @@ package iadms4.model;
 public class Session {
     private static final Session INSTANCE = new Session();
 
-    // null = nobody logged in
+    // account thats logged in right now, null means nobody is
     private Account account;
 
     // private so nobody makes a 2nd session (singleton)
     private Session() {
     }
 
-    // the one session
+    // gets the one and only session, everyone has to use this
     public static Session getInstance() {
         return INSTANCE;
     }
@@ -37,12 +37,12 @@ public class Session {
         return account != null;
     }
 
-    // start session
+    // saves the account that just logged in
     public void login(Account account) {
         this.account = account;
     }
 
-    // end session
+    // clears the account so nobody is logged in anymore
     public void logout() {
         account = null;
     }

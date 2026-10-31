@@ -15,7 +15,7 @@ public class Coordinator extends Person {
         this.employeeId = employeeId;
     }
 
-    // gets employee id (String)
+    // gets the employee number from the school (String)
     public String getEmployeeId() {
         return employeeId;
     }

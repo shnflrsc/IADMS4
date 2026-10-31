@@ -5,12 +5,12 @@ package iadms4.model;
  * starts PENDING. rep approves/rejects or coordinator withdraws
  */
 public enum ApplicationStatus {
-    // waiting for company
+    // endorsed already, still waiting for the company to decide
     PENDING,
-    // rep said no
+    // the company rep said no to this application
     REJECTED,
     // rep said yes, student becomes intern
     APPROVED,
-    // coordinator cancelled it
+    // coordinator cancelled it before the company could decide
     WITHDRAWN
 }

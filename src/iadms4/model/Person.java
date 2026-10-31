@@ -20,12 +20,12 @@ public abstract class Person {
         this.birthdate = birthdate;
     }
 
-    // gets id (int)
+    // gets the unique id of this person (int)
     public int getId() {
         return id;
     }
 
-    // gets name (String)
+    // gets the full name of this person (String)
     public String getName() {
         return name;
     }
@@ -35,7 +35,7 @@ public abstract class Person {
         this.name = name;
     }
 
-    // gets gender (Gender)
+    // gets the gender of this person (Gender)
     public Gender getGender() {
         return gender;
     }
@@ -45,7 +45,7 @@ public abstract class Person {
         this.gender = gender;
     }
 
-    // gets birthdate (LocalDate)
+    // gets the date of birth of this person (LocalDate)
     public LocalDate getBirthdate() {
         return birthdate;
     }

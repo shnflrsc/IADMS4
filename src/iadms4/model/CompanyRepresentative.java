@@ -14,7 +14,7 @@ public class CompanyRepresentative extends Person {
         this.company = company;
     }
 
-    // gets company (Company)
+    // gets the one company this rep works for (Company)
     public Company getCompany() {
         return company;
     }

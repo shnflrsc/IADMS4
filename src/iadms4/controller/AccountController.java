@@ -22,12 +22,12 @@ public class AccountController {
         return persons.emailOf(Session.getInstance().getPerson());
     }
 
-    // change own password
+    // changes the password of whoever is logged in, service does the checks
     public void changePassword(String current, String newPassword, String confirm) {
         auth.changePassword(current, newPassword, confirm);
     }
 
-    // change own email, needs password
+    // changes the logged in user's email, password is needed to confirm its them
     public void changeEmail(String password, String newEmail) {
         auth.changeEmail(password, newEmail);
     }
