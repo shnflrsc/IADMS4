@@ -2,7 +2,7 @@ package iadms4.model;
 
 /*
  * MODEL. a published position, students get endorsed to this
- * OPEN = accepting, CLOSED = not
+ * OPEN means accepting, CLOSED means not
  */
 public class Opening {
     private final int id;

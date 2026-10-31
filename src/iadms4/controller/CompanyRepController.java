@@ -22,8 +22,8 @@ import iadms4.service.OpeningService;
 import iadms4.service.ReportService;
 
 /*
- * CONTROLLER. everything the company rep dashboard does
- * everything is limited to the rep's own company
+ * CONTROLLER. everything the company representative dashboard does
+ * everything is limited to the representative's own company
  */
 public class CompanyRepController {
     private final OpeningService openings;
@@ -42,12 +42,12 @@ public class CompanyRepController {
         this.reports = reports;
     }
 
-    // gets the logged in rep from Session, cast is safe bc only reps get this dashboard
+    // gets the logged in representative from Session, cast is safe because only representatives get this dashboard
     private CompanyRepresentative me() {
         return (CompanyRepresentative) Session.getInstance().getPerson();
     }
 
-    // gets the logged in rep's company, used to limit everything to their company
+    // gets the logged in representative's company, used to limit everything to their company
     public Company company() {
         return me().getCompany();
     }
@@ -67,7 +67,7 @@ public class CompanyRepController {
         return applications.forCompany(company());
     }
 
-    // company applications by status, null = all
+    // company applications by status, null means all
     public List<Application> applications(ApplicationStatus status) {
         return applications.forCompany(company(), status);
     }
@@ -82,17 +82,17 @@ public class CompanyRepController {
         return interns.internsOf(company(), null);
     }
 
-    // company interns by status, null = all
+    // company interns by status, null means all
     public List<Intern> interns(InternStatus status) {
         return interns.internsOf(company(), status);
     }
 
-    // gets all the daily logs written by the intern u pass in
+    // gets all the daily logs written by the intern you pass in
     public List<DailyLog> dailyLogs(Intern intern) {
         return interns.logsOf(intern);
     }
 
-    // completed interns w/ no evaluation yet
+    // completed interns with no evaluation yet
     public List<Intern> internsAwaitingEvaluation() {
         return evaluations.awaitingEvaluation(company());
     }
@@ -146,7 +146,7 @@ public class CompanyRepController {
         return applications.approve(application);
     }
 
-    // rejects the application u pass in, student stays a student
+    // rejects the application you pass in, student stays a student
     public void deny(Application application) {
         applications.reject(application);
     }
@@ -156,7 +156,7 @@ public class CompanyRepController {
         interns.changeStatus(intern, status);
     }
 
-    // saves evaluation, logged in rep is the evaluator
+    // saves evaluation, logged in representative is the evaluator
     public void evaluate(Intern intern, int rating, String comments) {
         evaluations.evaluate(me(), intern, rating, comments);
     }

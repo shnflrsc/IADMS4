@@ -1,8 +1,8 @@
 package iadms4.model;
 
 /*
- * MODEL. a company w/ internships
- * reps and positions point to this
+ * MODEL. a company with internships
+ * representatives and positions point to this
  */
 public class Company {
     private final int id;

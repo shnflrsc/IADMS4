@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /*
  * MODEL. one log entry from an intern
- * everything is final so logs cant be changed
+ * everything is final so logs can't be changed
  */
 public class DailyLog {
     private final int id;

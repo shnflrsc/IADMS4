@@ -23,7 +23,7 @@ public class AuthController {
         this.persons = persons;
     }
 
-    // true if theres no accounts yet
+    // true if there's no accounts yet
     public boolean needsSetup() {
         return auth.needsSetup();
     }
@@ -45,7 +45,7 @@ public class AuthController {
         auth.startSession(account);
     }
 
-    // tries to log in w/ the typed email and password, service throws if its wrong
+    // tries to log in with the typed email and password, service throws if its wrong
     public void login(String email, String password) {
         auth.login(email, password);
     }

@@ -9,7 +9,7 @@ import iadms4.repository.PositionRepository;
 
 /*
  * SERVICE. company rules
- * names unique, cant delete if something depends on it
+ * names unique, can't delete if something depends on it
  */
 public class CompanyService {
     private final CompanyRepository companies;
@@ -23,7 +23,7 @@ public class CompanyService {
         this.positions = positions;
     }
 
-    // makes a new company, name cant be blank or taken
+    // makes a new company, name can't be blank or taken
     public void create(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Company name is required.");
@@ -45,7 +45,7 @@ public class CompanyService {
         company.setName(name.trim());
     }
 
-    // delete, only if no reps and no positions
+    // delete, only if no representatives and no positions
     public void delete(Company company) {
         if (!persons.findRepresentatives(company).isEmpty()) {
             throw new IllegalStateException("Remove the company representatives first.");

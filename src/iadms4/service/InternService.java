@@ -13,7 +13,7 @@ import iadms4.repository.PersonRepository;
 
 /*
  * SERVICE. intern stuff after deployment
- * logging hours + status changes. COMPLETED is final
+ * logging hours and status changes. COMPLETED is final
  */
 public class InternService {
     private final PersonRepository persons;
@@ -40,7 +40,7 @@ public class InternService {
         if (intern.getRecordedHours() >= required) {
             throw new IllegalStateException("Required hours already met; wait for your company representative to mark the internship COMPLETED.");
         }
-        // cap it so they dont go over required hours
+        // cap it so they don't go over required hours
         int credited = Math.min(hours, required - intern.getRecordedHours());
         int total = intern.getRecordedHours() + credited;
         intern.setRecordedHours(total);
@@ -48,7 +48,7 @@ public class InternService {
         return required - total;
     }
 
-    // change status. COMPLETED needs full hours and cant be undone
+    // change status. COMPLETED needs full hours and can't be undone
     public void changeStatus(Intern intern, InternStatus status) {
         if (intern.getStatus() == InternStatus.COMPLETED) {
             throw new IllegalStateException("A COMPLETED internship cannot be changed.");
@@ -61,7 +61,7 @@ public class InternService {
         intern.setStatus(status);
     }
 
-    // interns of company by status, null = all
+    // interns of company by status, null means all
     public List<Intern> internsOf(Company company, InternStatus status) {
         List<Intern> matches = new ArrayList<>();
         for (Intern intern : persons.findInterns()) {

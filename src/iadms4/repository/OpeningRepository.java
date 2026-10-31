@@ -17,7 +17,7 @@ public class OpeningRepository extends Repository<Opening> {
         return item.getId();
     }
 
-    // goes through all openings and keeps the ones w/ this status
+    // goes through all openings and keeps the ones with this status
     public List<Opening> findByStatus(OpeningStatus status) {
         List<Opening> matches = new ArrayList<>();
         for (Opening opening : findAll()) {

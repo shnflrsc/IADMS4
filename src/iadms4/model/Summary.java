@@ -42,7 +42,7 @@ public class Summary {
         this.averageRating = averageRating;
     }
 
-    // how many students havent been deployed as interns yet
+    // how many students haven't been deployed as interns yet
     public int getStudents() {
         return students;
     }
@@ -112,12 +112,12 @@ public class Summary {
         return evaluations;
     }
 
-    // average rating of the evaluations, stays 0 if theres none
+    // average rating of the evaluations, stays 0 if there's none
     public double getAverageRating() {
         return averageRating;
     }
 
-    // progress %, 0 if no required hours so we dont divide by 0
+    // progress percentage, 0 if no required hours so we don't divide by 0
     public int getProgressPercent() {
         if (requiredHours == 0) {
             return 0;

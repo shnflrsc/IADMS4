@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * REPOSITORY base class. acts like a db table but its just a list in memory
+ * REPOSITORY base class. acts like a database table but its just a list in memory
  * save, find, remove, next id. NO business rules here, those go in services
- * T = whatever type the child class stores
+ * T means whatever type the child class stores
  */
 public abstract class Repository<T> {
     private final List<T> items = new ArrayList<>();
     private int nextId = 1;
 
-    // child classes write this bc only they know what T is
+    // child classes write this because only they know what T is
     protected abstract int idOf(T item);
 
     // gives the next free id then moves the counter up
@@ -22,7 +22,7 @@ public abstract class Repository<T> {
         return id;
     }
 
-    // save item. same id = replace, keeps its spot in the list
+    // save item. same id means replace, keeps its spot in the list
     public T save(T item) {
         for (int i = 0; i < items.size(); i++) {
             if (idOf(items.get(i)) == idOf(item)) {
@@ -49,7 +49,7 @@ public abstract class Repository<T> {
         return new ArrayList<>(items);
     }
 
-    // finds the item w/ this id and removes it, does nothing if not found
+    // finds the item with this id and removes it, does nothing if not found
     public void remove(int id) {
         for (int i = 0; i < items.size(); i++) {
             if (idOf(items.get(i)) == id) {

@@ -12,7 +12,7 @@ public class CompanyRepository extends Repository<Company> {
         return item.getId();
     }
 
-    // true if name is taken. ignores caps and spaces
+    // true if name is taken. ignores capital letters and spaces
     public boolean existsByName(String name) {
         for (Company company : findAll()) {
             if (company.getName().equalsIgnoreCase(name.trim())) {

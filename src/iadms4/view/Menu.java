@@ -3,7 +3,7 @@ package iadms4.view;
 /*
  * VIEW base class. numbered menu
  * dashboards extend this and write runItem()
- * service errors get caught here so the program doesnt crash
+ * service errors get caught here so the program doesn't crash
  */
 public abstract class Menu {
     protected final Console console;
@@ -16,7 +16,7 @@ public abstract class Menu {
     // every dashboard has to write this
     protected abstract void runItem(int choice);
 
-    // the menu loop. runs til user picks 0
+    // the menu loop. runs until user picks 0
     protected void run(String title, String[] items, String exitLabel) {
         while (true) {
             console.header(title);

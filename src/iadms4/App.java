@@ -39,8 +39,10 @@ import iadms4.view.StudentDashboardView;
 
 /*
  * main class. makes all the objects, connects them, runs the loop
- * | View -> Controller -> Service -> Repository -> Model
- * | user request goes down, result comes back up. thats the whole system
+ *
+ *   View -> Controller -> Service -> Repository -> Model
+ *
+ * user request goes down, result comes back up. that's the whole system
  */
 public class App {
     private final AuthController auth;
@@ -50,7 +52,7 @@ public class App {
     private final StudentDashboardView studentView;
     private final InternDashboardView internView;
 
-    // makes everything. repos first then services then controllers then views, order matters dont move stuff
+    // makes everything. repositories first then services then controllers then views, order matters don't move stuff
     public App() {
         AccountRepository accountRepo = new AccountRepository();
         PersonRepository personRepo = new PersonRepository();
@@ -89,7 +91,7 @@ public class App {
                 settings);
     }
 
-    // main loop. setup > login > dashboard > logout > repeat. only stops if u pick exit at login
+    // main loop. setup then login then dashboard then logout then repeat. only stops if you pick exit at login
     public void run() {
         while (true) {
             if (auth.needsSetup()) {
@@ -105,7 +107,7 @@ public class App {
         }
     }
 
-    // picks dashboard based on who logged in. intern HAS to be before student bc intern is also a student
+    // picks dashboard based on who logged in. intern HAS to be before student because intern is also a student
     private void showDashboard(Person person) {
         if (person instanceof Coordinator) {
             coordinatorView.show(person.getName());
@@ -118,7 +120,7 @@ public class App {
         }
     }
 
-    // start here. ctrl+d closes input so we just quit
+    // start here. Ctrl+D closes input so we just quit
     public static void main(String[] args) {
         try {
             new App().run();

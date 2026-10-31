@@ -17,7 +17,7 @@ import iadms4.repository.PersonRepository;
 
 /*
  * SERVICE. the endorsement flow
- * endorse > approve (student becomes intern) or reject or withdraw
+ * endorse then approve (student becomes intern) or reject or withdraw
  * rejected/withdrawn students can be endorsed again
  */
 public class ApplicationService {
@@ -35,7 +35,7 @@ public class ApplicationService {
 
     // coordinator endorses student, saved as PENDING
     public void endorse(Coordinator coordinator, Student student, Opening opening) {
-        // re-read bc they might be an intern already by now
+        // re-read because they might be an intern already by now
         Person current = persons.findById(student.getId());
         if (current instanceof Intern) {
             throw new IllegalStateException(student.getName() + " is already deployed as an intern.");
@@ -67,7 +67,7 @@ public class ApplicationService {
         // step 2: approve, swap student for intern
         application.setStatus(ApplicationStatus.APPROVED);
         Intern intern = personService.promoteToIntern((Student) current, application.getOpening().getPosition());
-        // step 3: reject their other pending apps
+        // step 3: reject their other pending applications
         for (Application other : applications.findByStudentId(intern.getId())) {
             if (other.getStatus() == ApplicationStatus.PENDING) {
                 other.setStatus(ApplicationStatus.REJECTED);
@@ -78,7 +78,7 @@ public class ApplicationService {
         return intern;
     }
 
-    // rep rejects a pending application, student can be endorsed again
+    // representative rejects a pending application, student can be endorsed again
     public void reject(Application application) {
         requirePending(application);
         application.setStatus(ApplicationStatus.REJECTED);
@@ -90,14 +90,14 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.WITHDRAWN);
     }
 
-    // throws an error if the application isnt PENDING anymore
+    // throws an error if the application isn't PENDING anymore
     private void requirePending(Application application) {
         if (application.getStatus() != ApplicationStatus.PENDING) {
             throw new IllegalStateException("Application is already " + application.getStatus() + ".");
         }
     }
 
-    // filter by status, null = all
+    // filter by status, null means all
     private List<Application> withStatus(List<Application> list, ApplicationStatus status) {
         List<Application> matches = new ArrayList<>();
         for (Application application : list) {
@@ -113,7 +113,7 @@ public class ApplicationService {
         return applications.findAll();
     }
 
-    // applications by status, null = all
+    // applications by status, null means all
     public List<Application> all(ApplicationStatus status) {
         return withStatus(applications.findAll(), status);
     }
@@ -123,12 +123,12 @@ public class ApplicationService {
         return applications.findByCompany(company);
     }
 
-    // applications of company by status, null = all
+    // applications of company by status, null means all
     public List<Application> forCompany(Company company, ApplicationStatus status) {
         return withStatus(applications.findByCompany(company), status);
     }
 
-    // gets all the applications of the student w/ this id
+    // gets all the applications of the student with this id
     public List<Application> forStudent(int studentId) {
         return applications.findByStudentId(studentId);
     }

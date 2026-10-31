@@ -13,9 +13,9 @@ import iadms4.model.Opening;
 import iadms4.model.Position;
 
 /*
- * VIEW. company rep dashboard
- * each private method = 1 menu item. ask input, call controller, print
- * dont call services from here
+ * VIEW. company representative dashboard
+ * each private method is one menu item. it asks for input, calls the controller, then prints
+ * don't call services from here
  */
 public class CompanyRepDashboardView extends Menu {
     private final CompanyRepController controller;
@@ -28,7 +28,7 @@ public class CompanyRepDashboardView extends Menu {
         this.settings = settings;
     }
 
-    // rep menu, stays here til logout
+    // representative menu, stays here until logout
     public void show(String repName) {
         String[] items = { "View positions", "Add position", "Edit a position", "Delete a position", "View openings",
                 "Create opening for a position", "Open / close an opening", "Delete an opening", "View applications",
@@ -39,7 +39,7 @@ public class CompanyRepDashboardView extends Menu {
         run(title, items, "Log out");
     }
 
-    // runs whatever the rep picked, numbers match the items array
+    // runs whatever the representative picked, numbers match the items array
     @Override
     protected void runItem(int choice) {
         switch (choice) {
@@ -83,7 +83,7 @@ public class CompanyRepDashboardView extends Menu {
         console.println("  Position added.");
     }
 
-    // edit position screen. blank = keep old value
+    // edit position screen. blank means keep old value
     private void editPosition() {
         List<Position> positions = controller.positions();
         int index = console.choose("Position to edit", Formatters.positions(positions));
@@ -113,7 +113,7 @@ public class CompanyRepDashboardView extends Menu {
         }
     }
 
-    // rep picks a position and it gets deleted
+    // representative picks a position and it gets deleted
     private void deletePosition() {
         List<Position> positions = controller.positions();
         int index = console.choose("Position to delete", Formatters.positions(positions));
@@ -134,7 +134,7 @@ public class CompanyRepDashboardView extends Menu {
         console.table(new String[] { "ID", "Position", "Hours", "Status" }, rows);
     }
 
-    // rep picks a position and it gets published as an opening
+    // representative picks a position and it gets published as an opening
     private void createOpening() {
         List<Position> positions = controller.positions();
         int index = console.choose("Position", Formatters.positionTitles(positions));
@@ -145,7 +145,7 @@ public class CompanyRepDashboardView extends Menu {
         console.println("  Opening created.");
     }
 
-    // rep picks an opening and it switches between OPEN and CLOSED
+    // representative picks an opening and it switches between OPEN and CLOSED
     private void toggleOpening() {
         List<Opening> openings = controller.openings();
         int index = console.choose("Opening", Formatters.openings(openings));
@@ -157,7 +157,7 @@ public class CompanyRepDashboardView extends Menu {
         console.println("  Opening is now " + opening.getStatus() + ".");
     }
 
-    // rep picks an opening and it gets deleted
+    // representative picks an opening and it gets deleted
     private void deleteOpening() {
         List<Opening> openings = controller.openings();
         int index = console.choose("Opening to delete", Formatters.openings(openings));
@@ -168,7 +168,7 @@ public class CompanyRepDashboardView extends Menu {
         console.println("  Opening deleted.");
     }
 
-    // prints a table of whatever applications u pass in
+    // prints a table of whatever applications you pass in
     private void printApplications(List<Application> applications) {
         List<String[]> rows = new ArrayList<>();
         for (Application a : applications) {
@@ -178,7 +178,7 @@ public class CompanyRepDashboardView extends Menu {
         console.table(new String[] { "ID", "Student", "Section", "Position", "Endorsed by", "Status" }, rows);
     }
 
-    // rep picks a pending application and the student becomes an intern
+    // representative picks a pending application and the student becomes an intern
     private void approve() {
         List<Application> pending = controller.pendingApplications();
         int index = console.choose("Pending application", Formatters.applications(pending));
@@ -190,7 +190,7 @@ public class CompanyRepDashboardView extends Menu {
                 + intern.getPosition().getTitle() + ". The opening is now closed.");
     }
 
-    // rep picks a pending application and it gets rejected
+    // representative picks a pending application and it gets rejected
     private void deny() {
         List<Application> pending = controller.pendingApplications();
         int index = console.choose("Pending application", Formatters.applications(pending));
@@ -201,7 +201,7 @@ public class CompanyRepDashboardView extends Menu {
         console.println("  Application denied.");
     }
 
-    // prints a table of the interns w/ their hours and status
+    // prints a table of the interns with their hours and status
     private void printInterns(List<Intern> interns) {
         List<String[]> rows = new ArrayList<>();
         for (Intern i : interns) {
@@ -211,7 +211,7 @@ public class CompanyRepDashboardView extends Menu {
         console.table(new String[] { "ID", "Student No.", "Name", "Position", "Hours", "Status" }, rows);
     }
 
-    // rep picks an intern and a new status, including COMPLETED
+    // representative picks an intern and a new status, including COMPLETED
     private void changeInternStatus() {
         List<Intern> interns = controller.interns();
         int index = console.choose("Intern", Formatters.interns(interns));
@@ -227,7 +227,7 @@ public class CompanyRepDashboardView extends Menu {
         console.println("  Intern status set to " + status + ".");
     }
 
-    // rep picks an intern then we print that intern's daily logs
+    // representative picks an intern then we print that intern's daily logs
     private void viewDailyLogs() {
         List<Intern> interns = controller.interns();
         int index = console.choose("Intern", Formatters.interns(interns));
@@ -244,7 +244,7 @@ public class CompanyRepDashboardView extends Menu {
         console.table(new String[] { "ID", "Date", "Hours", "Description" }, rows);
     }
 
-    // rep picks a completed intern, types rating and comments, then saves
+    // representative picks a completed intern, types rating and comments, then saves
     private void evaluate() {
         List<Intern> interns = controller.internsAwaitingEvaluation();
         int index = console.choose("Completed intern awaiting evaluation", Formatters.interns(interns));
@@ -269,7 +269,7 @@ public class CompanyRepDashboardView extends Menu {
         console.table(new String[] { "ID", "Intern", "Position", "Rating", "Evaluator", "Date", "Comments" }, rows);
     }
 
-    // prints the summary report of the rep's company
+    // prints the summary report of the representative's company
     private void report() {
         Reports.print(console, "Summary for " + controller.company().getName(), controller.report(), false);
     }

@@ -11,7 +11,7 @@ import iadms4.model.Person;
 import iadms4.model.Student;
 
 /*
- * REPOSITORY. all people in one place bc they share ids
+ * REPOSITORY. all people in one place because they share ids
  * instanceof picks out each type
  */
 public class PersonRepository extends Repository<Person> {
@@ -21,7 +21,7 @@ public class PersonRepository extends Repository<Person> {
         return item.getId();
     }
 
-    // all students. interns count too bc Intern extends Student
+    // all students. interns count too because Intern extends Student
     public List<Student> findStudents() {
         List<Student> students = new ArrayList<>();
         for (Person person : findAll()) {
@@ -54,7 +54,7 @@ public class PersonRepository extends Repository<Person> {
         return coordinators;
     }
 
-    // goes through everyone and keeps only the company reps
+    // goes through everyone and keeps only the company representatives
     public List<CompanyRepresentative> findRepresentatives() {
         List<CompanyRepresentative> representatives = new ArrayList<>();
         for (Person person : findAll()) {
@@ -65,7 +65,7 @@ public class PersonRepository extends Repository<Person> {
         return representatives;
     }
 
-    // takes all the reps and keeps the ones of this company
+    // takes all the representatives and keeps the ones of this company
     public List<CompanyRepresentative> findRepresentatives(Company company) {
         List<CompanyRepresentative> matches = new ArrayList<>();
         for (CompanyRepresentative representative : findRepresentatives()) {

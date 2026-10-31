@@ -23,7 +23,7 @@ public class Console {
         System.out.println(text);
     }
 
-    // clears terminal w/ ansi codes. they work dont touch
+    // clears terminal with ANSI codes. they work don't touch
     public void clear() {
         System.out.print("\033[H\033[2J\033[3J");
         System.out.flush();
@@ -55,7 +55,7 @@ public class Console {
         }
     }
 
-    // keeps asking til valid number between min and max
+    // keeps asking until valid number between min and max
     public int readInt(String prompt, int min, int max) {
         while (true) {
             String raw = readLine(prompt);
@@ -71,7 +71,7 @@ public class Console {
         }
     }
 
-    // keeps asking til valid date yyyy-mm-dd
+    // keeps asking until valid date yyyy-mm-dd
     public LocalDate readDate(String prompt) {
         while (true) {
             String raw = readLine(prompt + " (yyyy-mm-dd)");
@@ -98,7 +98,7 @@ public class Console {
         }
     }
 
-    // intern status filter, null = All
+    // intern status filter, null means All
     public InternStatus chooseInternStatus() {
         InternStatus[] values = InternStatus.values();
         println("  [0] All");
@@ -112,7 +112,7 @@ public class Console {
         return values[choice - 1];
     }
 
-    // application status filter, null = All. basically same as above
+    // application status filter, null means All. basically same as above
     public ApplicationStatus chooseApplicationStatus() {
         ApplicationStatus[] values = ApplicationStatus.values();
         println("  [0] All");
@@ -140,7 +140,7 @@ public class Console {
         readLine("Press Enter to continue");
     }
 
-    // numbered list, returns index. -1 = cancelled or empty list
+    // numbered list, returns index. -1 means cancelled or empty list
     public int choose(String prompt, List<String> labels) {
         if (labels.isEmpty()) {
             println("  (nothing to choose from)");

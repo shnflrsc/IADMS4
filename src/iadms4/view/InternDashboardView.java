@@ -22,7 +22,7 @@ public class InternDashboardView extends Menu {
         this.settings = settings;
     }
 
-    // intern menu, stays here til logout
+    // intern menu, stays here until logout
     public void show() {
         String[] items = { "View deployment details", "Log hours", "View my daily logs", "View my evaluation",
                 "Account settings" };
@@ -74,7 +74,7 @@ public class InternDashboardView extends Menu {
         console.table(new String[] { "ID", "Date", "Hours", "Description" }, rows);
     }
 
-    // prints the evaluation, or a message if theres none yet
+    // prints the evaluation, or a message if there's none yet
     private void viewEvaluation() {
         Evaluation evaluation = controller.myEvaluation();
         if (evaluation == null) {

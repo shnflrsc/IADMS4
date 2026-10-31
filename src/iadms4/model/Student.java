@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /*
  * MODEL. student who wants an internship
- * gets replaced by an Intern w/ same id when approved
+ * gets replaced by an Intern with same id when approved
  */
 public class Student extends Person {
     private final String studentId;

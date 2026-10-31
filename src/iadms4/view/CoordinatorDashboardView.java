@@ -18,8 +18,8 @@ import iadms4.model.Student;
 
 /*
  * VIEW. coordinator dashboard
- * each private method = 1 menu item aka a "drill"
- * ask input, call controller, print. dont call services from here
+ * each private method is one menu item, also called a "drill"
+ * ask input, call controller, print. don't call services from here
  */
 public class CoordinatorDashboardView extends Menu {
     private final CoordinatorController controller;
@@ -33,18 +33,18 @@ public class CoordinatorDashboardView extends Menu {
         this.settings = settings;
     }
 
-    // coordinator menu, grouped by topic bc it was a mess before
+    // coordinator menu, grouped by topic because it was a mess before
     public void show(String coordinatorName) {
         String[] items = {
-                // items 1-6 are about students n interns
+                // items 1-6 are about students and interns
                 "View students", "Search students & interns", "Register student", "View interns (with status)",
                 "Filter interns by status", "View intern evaluations",
-                // items 7-11 are about openings n applications
+                // items 7-11 are about openings and applications
                 "View openings", "Endorse student to an opening", "View applications",
                 "Filter applications by status", "Withdraw a pending application",
                 // items 12-15 are about companies
                 "View companies", "Add company", "Rename a company", "Delete a company",
-                // items 16-22 are about users n accounts
+                // items 16-22 are about users and accounts
                 "View company representatives", "View coordinators", "Add company representative account",
                 "Add coordinator account", "Edit a person's details", "Delete a person", "Reset a user's password",
                 // items 23-24 are the report and settings
@@ -103,7 +103,7 @@ public class CoordinatorDashboardView extends Menu {
         printStudents(controller.searchStudents(keyword));
     }
 
-    // asks for all the student details then registers them w/ an account
+    // asks for all the student details then registers them with an account
     private void registerStudent() {
         String name = console.readRequired("Full name");
         Gender gender = console.readGender();
@@ -116,7 +116,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Student registered.");
     }
 
-    // prints a table of the interns u pass in, w/ company and email
+    // prints a table of the interns you pass in, with company and email
     private void printInterns(List<Intern> interns) {
         List<String[]> rows = new ArrayList<>();
         for (Intern i : interns) {
@@ -170,7 +170,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  " + student.getName() + " endorsed to " + opening.getPosition().getTitle() + ".");
     }
 
-    // prints a table of whatever applications u pass in
+    // prints a table of whatever applications you pass in
     private void printApplications(List<Application> applications) {
         List<String[]> rows = new ArrayList<>();
         for (Application a : applications) {
@@ -229,7 +229,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Company deleted.");
     }
 
-    // prints a table of all the company reps
+    // prints a table of all the company representatives
     private void viewRepresentatives() {
         List<String[]> rows = new ArrayList<>();
         for (CompanyRepresentative r : controller.representatives()) {
@@ -248,7 +248,7 @@ public class CoordinatorDashboardView extends Menu {
         console.table(new String[] { "ID", "Employee ID", "Name", "Email" }, rows);
     }
 
-    // picks the company first then asks for the rep's details
+    // picks the company first then asks for the representative's details
     private void addRepresentative() {
         List<Company> companies = controller.companies();
         int index = console.choose("Company", Formatters.companies(companies));
@@ -278,7 +278,7 @@ public class CoordinatorDashboardView extends Menu {
         console.println("  Coordinator account created.");
     }
 
-    // edit person screen. blank = keep old value
+    // edit person screen. blank means keep old value
     private void editPerson() {
         List<Person> people = controller.everyone();
         int index = console.choose("Person to edit", Formatters.people(people));
@@ -299,7 +299,7 @@ public class CoordinatorDashboardView extends Menu {
         if (birthdate == null) {
             birthdate = person.getBirthdate();
         }
-        // only students have section. null = service wont change it
+        // only students have section. null means service won't change it
         String section = null;
         if (person instanceof Student) {
             section = console.readLine("Section (blank = keep \"" + ((Student) person).getSection() + "\")");

@@ -57,7 +57,7 @@ public class CoordinatorController {
         return (Coordinator) Session.getInstance().getPerson();
     }
 
-    // gets all students, interns are included bc Intern extends Student
+    // gets all students, interns are included because Intern extends Student
     public List<Student> students() {
         return persons.students();
     }
@@ -78,7 +78,7 @@ public class CoordinatorController {
         return persons.interns();
     }
 
-    // interns by status, null = all
+    // interns by status, null means all
     public List<Intern> interns(InternStatus status) {
         return persons.interns(status);
     }
@@ -93,7 +93,7 @@ public class CoordinatorController {
         return openings.allOpenings();
     }
 
-    // open openings only (yes "open openings" lol)
+    // gets only the openings that still accept endorsements
     public List<Opening> openOpenings() {
         return openings.openOpenings();
     }
@@ -108,7 +108,7 @@ public class CoordinatorController {
         return applications.all();
     }
 
-    // applications by status, null = all
+    // applications by status, null means all
     public List<Application> applications(ApplicationStatus status) {
         return applications.all(status);
     }
@@ -133,17 +133,17 @@ public class CoordinatorController {
         companies.create(name);
     }
 
-    // renames the company u pass in, new name cant be taken
+    // renames the company you pass in, new name can't be taken
     public void renameCompany(Company company, String name) {
         companies.rename(company, name);
     }
 
-    // deletes the company, blocked if it still has reps or positions
+    // deletes the company, blocked if it still has representatives or positions
     public void deleteCompany(Company company) {
         companies.delete(company);
     }
 
-    // gets the reps of every company
+    // gets the representatives of every company
     public List<CompanyRepresentative> representatives() {
         return persons.representatives();
     }
@@ -153,7 +153,7 @@ public class CoordinatorController {
         return persons.coordinators();
     }
 
-    // everyone w/ a login. students first, then reps, then coordinators
+    // everyone with a login. students first, then representatives, then coordinators
     public List<Person> everyone() {
         List<Person> all = new ArrayList<>();
         all.addAll(persons.students());
@@ -162,7 +162,7 @@ public class CoordinatorController {
         return all;
     }
 
-    // makes a company rep and their login account for the given company
+    // makes a company representative and their login account for the given company
     public void addRepresentative(String name, Gender gender, LocalDate birthdate, Company company, String email,
             String password) {
         persons.registerRepresentative(name, gender, birthdate, company, email, password);
@@ -199,7 +199,7 @@ public class CoordinatorController {
         return reports.system();
     }
 
-    // one report per company, same order as companies() dont mess this up
+    // one report per company, same order as companies() don't mess this up
     public List<Summary> reportPerCompany() {
         return reports.perCompany();
     }

@@ -7,10 +7,10 @@ package iadms4.model;
 public class Session {
     private static final Session INSTANCE = new Session();
 
-    // account thats logged in right now, null means nobody is
+    // account that's logged in right now, null means nobody is
     private Account account;
 
-    // private so nobody makes a 2nd session (singleton)
+    // private so nobody makes a second session (singleton)
     private Session() {
     }
 

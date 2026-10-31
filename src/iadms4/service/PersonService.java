@@ -22,7 +22,7 @@ import iadms4.repository.EvaluationRepository;
 import iadms4.repository.PersonRepository;
 
 /*
- * SERVICE. people + accounts
+ * SERVICE. people and accounts
  * create, promote student to intern, edit, delete, search
  */
 public class PersonService {
@@ -56,7 +56,7 @@ public class PersonService {
         }
     }
 
-    // new coordinator + account, returns account
+    // new coordinator and account, returns account
     public Account registerCoordinator(String name, Gender gender, LocalDate birthdate, String employeeId,
             String email, String password) {
         validate(name, email, password);
@@ -68,7 +68,7 @@ public class PersonService {
         return accounts.save(new Account(coordinator, email.trim(), password));
     }
 
-    // new student + account, studentId must be unique
+    // new student and account, studentId must be unique
     public void registerStudent(String name, Gender gender, LocalDate birthdate, String studentId, String section,
             String email, String password) {
         validate(name, email, password);
@@ -89,7 +89,7 @@ public class PersonService {
         accounts.save(new Account(student, email.trim(), password));
     }
 
-    // makes a new rep and their account, company is required
+    // makes a new representative and their account, company is required
     public void registerRepresentative(String name, Gender gender, LocalDate birthdate, Company company,
             String email, String password) {
         validate(name, email, password);
@@ -108,7 +108,7 @@ public class PersonService {
                 student.getStudentId(), student.getSection(), position, 0, InternStatus.ACTIVE);
         // same id so this overwrites the student
         persons.save(intern);
-        // person is final so we need a new account, same login tho
+        // person is final so we need a new account, same login though
         Account old = accounts.findByPersonId(student.getId());
         if (old != null) {
             accounts.save(new Account(intern, old.getEmail(), old.getPassword()));
@@ -116,7 +116,7 @@ public class PersonService {
         return intern;
     }
 
-    // edit person. section = students only, null = dont change
+    // edit person. section is for students only, null means don't change it
     public void updateDetails(Person person, String name, Gender gender, LocalDate birthdate, String section) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name is required.");
@@ -129,7 +129,7 @@ public class PersonService {
         }
     }
 
-    // delete person + account. so many checks but we need them
+    // delete person and account. so many checks but we need them
     public void delete(Coordinator actor, Person target) {
         if (target.getId() == actor.getId()) {
             throw new IllegalStateException("You cannot delete your own account.");
@@ -178,7 +178,7 @@ public class PersonService {
         return false;
     }
 
-    // search name, number, section, email. blank = everyone
+    // search name, number, section, email. blank means everyone
     public List<Student> searchStudents(String keyword) {
         String text = keyword.trim().toLowerCase();
         List<Student> matches = new ArrayList<>();
@@ -193,7 +193,7 @@ public class PersonService {
         return matches;
     }
 
-    // interns by status, null = all
+    // interns by status, null means all
     public List<Intern> interns(InternStatus status) {
         List<Intern> matches = new ArrayList<>();
         for (Intern intern : persons.findInterns()) {
@@ -228,7 +228,7 @@ public class PersonService {
         return persons.findCoordinators();
     }
 
-    // gets the reps of every company
+    // gets the representatives of every company
     public List<CompanyRepresentative> representatives() {
         return persons.findRepresentatives();
     }

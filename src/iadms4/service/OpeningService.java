@@ -14,8 +14,8 @@ import iadms4.repository.PersonRepository;
 import iadms4.repository.PositionRepository;
 
 /*
- * SERVICE. positions AND openings, theyre together bc the rules depend on each other
- * cant delete stuff thats being used
+ * SERVICE. positions AND openings, they're together because the rules depend on each other
+ * can't delete stuff that's being used
  */
 public class OpeningService {
     private final PositionRepository positions;
@@ -38,7 +38,7 @@ public class OpeningService {
         positions.save(new Position(positions.nextId(), company, title.trim(), requiredHours));
     }
 
-    // edit position, not allowed if theres an intern on it
+    // edit position, not allowed if there's an intern on it
     public void updatePosition(Company company, Position position, String title, int requiredHours) {
         requireOwn(company, position);
         for (Intern intern : persons.findInterns()) {
@@ -51,7 +51,7 @@ public class OpeningService {
         position.setRequiredHours(requiredHours);
     }
 
-    // title cant be blank, hours must be > 0
+    // title can't be blank, hours must be then 0
     private void requireValidDetails(String title, int requiredHours) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Position title is required.");
@@ -115,7 +115,7 @@ public class OpeningService {
         return openings.findAll();
     }
 
-    // gets only the OPEN ones, these are the ones u can endorse to
+    // gets only the OPEN ones, these are the ones you can endorse to
     public List<Opening> openOpenings() {
         return openings.findByStatus(OpeningStatus.OPEN);
     }

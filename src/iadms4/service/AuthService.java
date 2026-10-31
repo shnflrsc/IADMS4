@@ -7,12 +7,12 @@ import iadms4.repository.AccountRepository;
 
 /*
  * SERVICE. login, logout, passwords, emails
- * breaks a rule = throws exception w/ a message for the user
+ * if a rule is broken it throws an exception with a message for the user
  */
 public class AuthService {
     private final AccountRepository accounts;
 
-    // makes the service, takes the accounts repo and saves it
+    // makes the service, takes the accounts repository and saves it
     public AuthService(AccountRepository accounts) {
         this.accounts = accounts;
     }
@@ -22,7 +22,7 @@ public class AuthService {
         return accounts.isEmpty();
     }
 
-    // login. same error for both so u cant guess emails
+    // login. same error for both so you can't guess emails
     public void login(String email, String password) {
         Account account = accounts.findByEmail(email);
         if (account == null || !account.getPassword().equals(password)) {
@@ -31,12 +31,12 @@ public class AuthService {
         Session.getInstance().login(account);
     }
 
-    // login w/o password, only for after first setup
+    // login without password, only for after first setup
     public void startSession(Account account) {
         Session.getInstance().login(account);
     }
 
-    // change password, needs current one + confirm
+    // change password, needs current one and confirm
     public void changePassword(String current, String newPassword, String confirm) {
         Account account = Session.getInstance().getAccount();
         if (!account.getPassword().equals(current)) {
@@ -49,7 +49,7 @@ public class AuthService {
         account.setPassword(newPassword);
     }
 
-    // change email, needs password, email cant be taken
+    // change email, needs password, email can't be taken
     public void changeEmail(String password, String newEmail) {
         Account account = Session.getInstance().getAccount();
         if (!account.getPassword().equals(password)) {
@@ -66,7 +66,7 @@ public class AuthService {
         accounts.save(account);
     }
 
-    // coordinator sets newPassword for someone, min 4 chars still applies
+    // coordinator sets newPassword for someone, minimum 4 characters still applies
     public void resetPassword(Person person, String newPassword) {
         requireValidPassword(newPassword);
         Account account = accounts.findByPersonId(person.getId());
@@ -76,7 +76,7 @@ public class AuthService {
         account.setPassword(newPassword);
     }
 
-    // throws an error if the password is under 4 chars
+    // throws an error if the password is under 4 characters
     private void requireValidPassword(String password) {
         if (password == null || password.length() < 4) {
             throw new IllegalArgumentException("Password must be at least 4 characters.");

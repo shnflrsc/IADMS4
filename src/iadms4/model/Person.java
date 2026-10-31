@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /*
  * MODEL. parent of Student, Intern, Coordinator, CompanyRepresentative
- * abstract so u cant make a plain Person
+ * abstract so you can't make a plain Person
  */
 public abstract class Person {
     private final int id;

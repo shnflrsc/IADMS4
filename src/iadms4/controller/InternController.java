@@ -22,7 +22,7 @@ public class InternController {
         this.evaluations = evaluations;
     }
 
-    // gets the logged in intern from Session, cast is safe bc only interns get here
+    // gets the logged in intern from Session, cast is safe because only interns get here
     public Intern me() {
         return (Intern) Session.getInstance().getPerson();
     }

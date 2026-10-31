@@ -22,7 +22,7 @@ public class StudentDashboardView extends Menu {
         this.settings = settings;
     }
 
-    // student menu, stays here til logout
+    // student menu, stays here until logout
     public void show() {
         String[] items = { "View my profile", "View my applications", "Account settings" };
         run("Student Dashboard - " + controller.me().getName(), items, "Log out");

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /*
  * MODEL. faculty who runs the internship program
- * just Person + employee number
+ * just Person and employee number
  */
 public class Coordinator extends Person {
     private final String employeeId;

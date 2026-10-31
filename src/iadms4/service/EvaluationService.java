@@ -14,7 +14,7 @@ import iadms4.repository.PersonRepository;
 
 /*
  * SERVICE. evaluation rules
- * COMPLETED interns of ur own company only, one time only
+ * COMPLETED interns of your own company only, one time only
  */
 public class EvaluationService {
     private final EvaluationRepository evaluations;
@@ -46,7 +46,7 @@ public class EvaluationService {
         evaluations.save(new Evaluation(evaluations.nextId(), intern, rep, rating, comments.trim(), LocalDate.now()));
     }
 
-    // completed interns w/ no evaluation yet
+    // completed interns with no evaluation yet
     public List<Intern> awaitingEvaluation(Company company) {
         List<Intern> matches = new ArrayList<>();
         for (Intern intern : persons.findInterns()) {

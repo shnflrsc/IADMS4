@@ -7,11 +7,11 @@ import iadms4.model.Company;
 import iadms4.model.Summary;
 
 /*
- * VIEW helper. prints reports so coordinator n rep screens look the same
+ * VIEW helper. prints reports so coordinator and representative screens look the same
  * all static
  */
 class Reports {
-    // prints a summary. showStudents = also show undeployed students
+    // prints a summary. showStudents means also show undeployed students
     static void print(Console console, String title, Summary s, boolean showStudents) {
         console.println("  " + title);
         if (showStudents) {

@@ -1,7 +1,7 @@
 package iadms4.model;
 
 /*
- * MODEL. coordinator endorses a student to an opening, thats an application
+ * MODEL. coordinator endorses a student to an opening, that's an application
  * starts PENDING then gets approved, rejected or withdrawn
  */
 public class Application {

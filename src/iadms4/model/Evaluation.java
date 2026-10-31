@@ -3,7 +3,7 @@ package iadms4.model;
 import java.time.LocalDate;
 
 /*
- * MODEL. rep's review of a COMPLETED intern
+ * MODEL. representative's review of a COMPLETED intern
  * once per intern, never edited
  */
 public class Evaluation {
@@ -35,7 +35,7 @@ public class Evaluation {
         return intern;
     }
 
-    // gets the rep who wrote this evaluation (CompanyRepresentative)
+    // gets the representative who wrote this evaluation (CompanyRepresentative)
     public CompanyRepresentative getEvaluator() {
         return evaluator;
     }
@@ -45,7 +45,7 @@ public class Evaluation {
         return rating;
     }
 
-    // gets the written feedback from the rep (String)
+    // gets the written feedback from the representative (String)
     public String getComments() {
         return comments;
     }

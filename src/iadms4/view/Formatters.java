@@ -24,7 +24,7 @@ class Formatters {
         return p.getTitle() + " @ " + p.getCompany().getName() + " (" + p.getRequiredHours() + "h)";
     }
 
-    // what kind of person. intern first again bc intern is a student
+    // what kind of person. intern first again because intern is a student
     private static String kind(Person p) {
         if (p instanceof Intern) {
             return "Intern";
@@ -41,7 +41,7 @@ class Formatters {
         return "Person";
     }
 
-    // makes a label for each position w/ title, company, hours
+    // makes a label for each position with title, company, hours
     static List<String> positions(List<Position> positions) {
         List<String> labels = new ArrayList<>();
         for (Position p : positions) {
@@ -59,7 +59,7 @@ class Formatters {
         return labels;
     }
 
-    // makes a label for each opening w/ id, position, status
+    // makes a label for each opening with id, position, status
     static List<String> openings(List<Opening> openings) {
         List<String> labels = new ArrayList<>();
         for (Opening o : openings) {
@@ -68,7 +68,7 @@ class Formatters {
         return labels;
     }
 
-    // makes a label for each application w/ id, student, position, status
+    // makes a label for each application with id, student, position, status
     static List<String> applications(List<Application> applications) {
         List<String> labels = new ArrayList<>();
         for (Application a : applications) {
@@ -78,7 +78,7 @@ class Formatters {
         return labels;
     }
 
-    // makes a label for each intern w/ name, position, hours, status
+    // makes a label for each intern with name, position, hours, status
     static List<String> interns(List<Intern> interns) {
         List<String> labels = new ArrayList<>();
         for (Intern i : interns) {
@@ -97,7 +97,7 @@ class Formatters {
         return labels;
     }
 
-    // makes a label for each student w/ number, name, kind
+    // makes a label for each student with number, name, kind
     static List<String> students(List<Student> students) {
         List<String> labels = new ArrayList<>();
         for (Student s : students) {

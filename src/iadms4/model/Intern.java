@@ -11,7 +11,7 @@ public class Intern extends Student {
     private int recordedHours;
     private InternStatus status;
 
-    // makes an Intern. student stuff + position, recordedHours, status
+    // makes an Intern. student stuff and position, recordedHours, status
     public Intern(int id, String name, Gender gender, LocalDate birthdate, String studentId, String section,
             Position position, int recordedHours, InternStatus status) {
         super(id, name, gender, birthdate, studentId, section);

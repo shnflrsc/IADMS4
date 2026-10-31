@@ -7,18 +7,18 @@ import iadms4.model.Account;
 
 /*
  * REPOSITORY. stores accounts
- * doesnt extend Repository bc accounts use email not an int id
- * emails ignore caps n spaces
+ * doesn't extend Repository because accounts use email not an int id
+ * emails ignore capital letters and spaces
  */
 public class AccountRepository {
     private final List<Account> accounts = new ArrayList<>();
 
-    // trim + lowercase so emails compare properly
+    // trim and lowercase so emails compare properly
     private String normalize(String email) {
         return email.trim().toLowerCase();
     }
 
-    // save account. same email = replace it, dont add a new one
+    // save account. same email means replace it, don't add a new one
     public Account save(Account account) {
         for (int i = 0; i < accounts.size(); i++) {
             if (normalize(accounts.get(i).getEmail()).equals(normalize(account.getEmail()))) {
@@ -30,7 +30,7 @@ public class AccountRepository {
         return account;
     }
 
-    // finds the account w/ the same email and removes it from the list
+    // finds the account with the same email and removes it from the list
     public void remove(Account account) {
         Account stored = findByEmail(account.getEmail());
         if (stored != null) {

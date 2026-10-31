@@ -1,8 +1,8 @@
 package iadms4.model;
 
 /*
- * MODEL. email + password of one person
- * person is final so student -> intern needs a NEW account w/ same login
+ * MODEL. email and password of one person
+ * person is final so student -> intern needs a NEW account with same login
  */
 public class Account {
     private final Person person;

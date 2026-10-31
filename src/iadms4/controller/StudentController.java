@@ -21,7 +21,7 @@ public class StudentController {
         this.persons = persons;
     }
 
-    // gets the logged in student from Session, cast is safe bc only students get here
+    // gets the logged in student from Session, cast is safe because only students get here
     public Student me() {
         return (Student) Session.getInstance().getPerson();
     }

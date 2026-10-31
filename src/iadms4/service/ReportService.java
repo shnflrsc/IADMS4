@@ -44,7 +44,7 @@ public class ReportService {
         return build(null);
     }
 
-    // builds the report for one company, for that company's rep
+    // builds the report for one company, for that company's representative
     public Summary forCompany(Company company) {
         return build(company);
     }
@@ -58,7 +58,7 @@ public class ReportService {
         return summaries;
     }
 
-    // the actual counting. company null = whole system
+    // the actual counting. company null means whole system
     private Summary build(Company company) {
         int interns = 0;
         int active = 0;

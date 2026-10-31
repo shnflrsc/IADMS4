@@ -6,7 +6,7 @@ import iadms4.controller.AuthController;
 import iadms4.model.Gender;
 
 /*
- * VIEW. stuff before login: first time setup + login screen
+ * VIEW. stuff before login: first time setup and login screen
  */
 public class AuthView {
     private final Console console;
@@ -38,7 +38,7 @@ public class AuthView {
         }
     }
 
-    // login screen. false = user picked exit
+    // login screen. false means user picked exit
     public boolean login() {
         console.header("IADMS - Internship Application & Deployment Monitoring");
         console.println("  [1] Log in");
