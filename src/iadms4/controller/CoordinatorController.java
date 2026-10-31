@@ -39,7 +39,7 @@ public class CoordinatorController {
     private final AuthService auth;
     private final ReportService reports;
 
-    // constructor, just saves the services
+    // makes the controller, takes persons, companies, openings, applications, evaluations, auth, reports
     public CoordinatorController(PersonService persons, CompanyService companies, OpeningService openings,
             ApplicationService applications, EvaluationService evaluations, AuthService auth,
             ReportService reports) {

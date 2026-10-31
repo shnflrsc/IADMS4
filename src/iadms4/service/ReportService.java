@@ -29,7 +29,7 @@ public class ReportService {
     private final ApplicationRepository applications;
     private final EvaluationRepository evaluations;
 
-    // constructor
+    // makes the service, takes persons, companies, openings, applications, evaluations
     public ReportService(PersonRepository persons, CompanyRepository companies, OpeningRepository openings,
             ApplicationRepository applications, EvaluationRepository evaluations) {
         this.persons = persons;

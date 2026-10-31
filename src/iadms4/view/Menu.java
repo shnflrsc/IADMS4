@@ -8,7 +8,7 @@ package iadms4.view;
 public abstract class Menu {
     protected final Console console;
 
-    // constructor
+    // makes the menu, takes the console
     public Menu(Console console) {
         this.console = console;
     }

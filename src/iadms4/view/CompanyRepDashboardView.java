@@ -21,7 +21,7 @@ public class CompanyRepDashboardView extends Menu {
     private final CompanyRepController controller;
     private final AccountSettingsView settings;
 
-    // constructor
+    // makes the screen, takes console, controller, settings
     public CompanyRepDashboardView(Console console, CompanyRepController controller, AccountSettingsView settings) {
         super(console);
         this.controller = controller;

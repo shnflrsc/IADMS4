@@ -14,7 +14,7 @@ public class Evaluation {
     private final String comments;
     private final LocalDate date;
 
-    // constructor
+    // makes an Evaluation, takes id, intern, evaluator, rating, comments, date
     public Evaluation(int id, Intern intern, CompanyRepresentative evaluator, int rating, String comments,
             LocalDate date) {
         this.id = id;
@@ -25,32 +25,32 @@ public class Evaluation {
         this.date = date;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
 
-    // getter
+    // gets intern (Intern)
     public Intern getIntern() {
         return intern;
     }
 
-    // getter
+    // gets evaluator (CompanyRepresentative)
     public CompanyRepresentative getEvaluator() {
         return evaluator;
     }
 
-    // getter, 1 to 5
+    // gets rating (int), 1 to 5
     public int getRating() {
         return rating;
     }
 
-    // getter
+    // gets comments (String)
     public String getComments() {
         return comments;
     }
 
-    // getter
+    // gets date (LocalDate)
     public LocalDate getDate() {
         return date;
     }

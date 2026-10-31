@@ -31,7 +31,7 @@ public class PersonService {
     private final ApplicationRepository applications;
     private final EvaluationRepository evaluations;
 
-    // constructor
+    // makes the service, takes persons, accounts, applications, evaluations
     public PersonService(PersonRepository persons, AccountRepository accounts, ApplicationRepository applications,
             EvaluationRepository evaluations) {
         this.persons = persons;

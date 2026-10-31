@@ -25,7 +25,7 @@ public class CoordinatorDashboardView extends Menu {
     private final CoordinatorController controller;
     private final AccountSettingsView settings;
 
-    // constructor
+    // makes the screen, takes console, controller, settings
     public CoordinatorDashboardView(Console console, CoordinatorController controller,
             AccountSettingsView settings) {
         super(console);

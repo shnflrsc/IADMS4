@@ -9,7 +9,7 @@ public class Account {
     private String email;
     private String password;
 
-    // constructor
+    // makes an Account, takes person, email, password
     public Account(Person person, String email, String password) {
         this.person = person;
         this.email = email;
@@ -21,22 +21,22 @@ public class Account {
         return person;
     }
 
-    // getter
+    // gets email (String)
     public String getEmail() {
         return email;
     }
 
-    // setter
+    // sets new email, takes a String
     public void setEmail(String email) {
         this.email = email;
     }
 
-    // getter
+    // gets password (String)
     public String getPassword() {
         return password;
     }
 
-    // setter
+    // sets new password, takes a String
     public void setPassword(String password) {
         this.password = password;
     }

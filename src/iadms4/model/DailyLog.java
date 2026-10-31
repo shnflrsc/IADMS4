@@ -13,7 +13,7 @@ public class DailyLog {
     private final int hours;
     private final String description;
 
-    // constructor
+    // makes a DailyLog, takes id, intern, date, hours, description
     public DailyLog(int id, Intern intern, LocalDate date, int hours, String description) {
         this.id = id;
         this.intern = intern;
@@ -22,27 +22,27 @@ public class DailyLog {
         this.description = description;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
 
-    // getter
+    // gets intern (Intern)
     public Intern getIntern() {
         return intern;
     }
 
-    // getter
+    // gets date (LocalDate)
     public LocalDate getDate() {
         return date;
     }
 
-    // getter
+    // gets hours (int)
     public int getHours() {
         return hours;
     }
 
-    // getter
+    // gets description (String)
     public String getDescription() {
         return description;
     }

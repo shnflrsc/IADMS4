@@ -20,7 +20,7 @@ public class EvaluationService {
     private final EvaluationRepository evaluations;
     private final PersonRepository persons;
 
-    // constructor
+    // makes the service, takes evaluations, persons
     public EvaluationService(EvaluationRepository evaluations, PersonRepository persons) {
         this.evaluations = evaluations;
         this.persons = persons;

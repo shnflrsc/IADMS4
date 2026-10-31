@@ -19,7 +19,7 @@ public class InternService {
     private final PersonRepository persons;
     private final DailyLogRepository logs;
 
-    // constructor
+    // makes the service, takes persons, logs
     public InternService(PersonRepository persons, DailyLogRepository logs) {
         this.persons = persons;
         this.logs = logs;

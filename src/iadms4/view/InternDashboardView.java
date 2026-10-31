@@ -15,7 +15,7 @@ public class InternDashboardView extends Menu {
     private final InternController controller;
     private final AccountSettingsView settings;
 
-    // constructor
+    // makes the screen, takes console, controller, settings
     public InternDashboardView(Console console, InternController controller, AccountSettingsView settings) {
         super(console);
         this.controller = controller;

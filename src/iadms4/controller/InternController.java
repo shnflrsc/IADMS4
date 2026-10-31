@@ -16,7 +16,7 @@ public class InternController {
     private final InternService interns;
     private final EvaluationService evaluations;
 
-    // constructor, just saves the services
+    // makes the controller, takes interns, evaluations
     public InternController(InternService interns, EvaluationService evaluations) {
         this.interns = interns;
         this.evaluations = evaluations;

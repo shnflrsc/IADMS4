@@ -12,7 +12,7 @@ public class AuthView {
     private final Console console;
     private final AuthController controller;
 
-    // constructor
+    // makes the screen, takes console, controller
     public AuthView(Console console, AuthController controller) {
         this.console = console;
         this.controller = controller;

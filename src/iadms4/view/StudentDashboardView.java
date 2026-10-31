@@ -15,7 +15,7 @@ public class StudentDashboardView extends Menu {
     private final StudentController controller;
     private final AccountSettingsView settings;
 
-    // constructor
+    // makes the screen, takes console, controller, settings
     public StudentDashboardView(Console console, StudentController controller, AccountSettingsView settings) {
         super(console);
         this.controller = controller;

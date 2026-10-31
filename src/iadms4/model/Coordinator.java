@@ -9,13 +9,13 @@ import java.time.LocalDate;
 public class Coordinator extends Person {
     private final String employeeId;
 
-    // constructor
+    // makes a Coordinator, takes id, name, gender, birthdate, employeeId
     public Coordinator(int id, String name, Gender gender, LocalDate birthdate, String employeeId) {
         super(id, name, gender, birthdate);
         this.employeeId = employeeId;
     }
 
-    // getter
+    // gets employee id (String)
     public String getEmployeeId() {
         return employeeId;
     }

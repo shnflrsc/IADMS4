@@ -15,7 +15,7 @@ public class StudentController {
     private final ApplicationService applications;
     private final PersonService persons;
 
-    // constructor, just saves the services
+    // makes the controller, takes applications, persons
     public StudentController(ApplicationService applications, PersonService persons) {
         this.applications = applications;
         this.persons = persons;

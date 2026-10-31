@@ -12,7 +12,7 @@ public abstract class Person {
     private Gender gender;
     private LocalDate birthdate;
 
-    // constructor
+    // makes a Person, takes id, name, gender, birthdate
     public Person(int id, String name, Gender gender, LocalDate birthdate) {
         this.id = id;
         this.name = name;
@@ -20,37 +20,37 @@ public abstract class Person {
         this.birthdate = birthdate;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
 
-    // getter
+    // gets name (String)
     public String getName() {
         return name;
     }
 
-    // setter
+    // sets new name, takes a String
     public void setName(String name) {
         this.name = name;
     }
 
-    // getter
+    // gets gender (Gender)
     public Gender getGender() {
         return gender;
     }
 
-    // setter
+    // sets new gender, takes a Gender
     public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    // getter
+    // gets birthdate (LocalDate)
     public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    // setter
+    // sets new birthdate, takes a LocalDate
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }

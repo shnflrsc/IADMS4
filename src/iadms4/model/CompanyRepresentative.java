@@ -8,13 +8,13 @@ import java.time.LocalDate;
 public class CompanyRepresentative extends Person {
     private final Company company;
 
-    // constructor
+    // makes a CompanyRepresentative, takes id, name, gender, birthdate, company
     public CompanyRepresentative(int id, String name, Gender gender, LocalDate birthdate, Company company) {
         super(id, name, gender, birthdate);
         this.company = company;
     }
 
-    // getter
+    // gets company (Company)
     public Company getCompany() {
         return company;
     }

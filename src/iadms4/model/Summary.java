@@ -21,7 +21,7 @@ public class Summary {
     private final int evaluations;
     private final double averageRating;
 
-    // constructor, yes its 15 params, sorry
+    // makes a Summary, takes all 15 numbers. yes 15, sorry
     public Summary(int students, int interns, int active, int deactivated, int completed, int openOpenings,
             int closedOpenings, int pending, int approved, int rejected, int withdrawn, int recordedHours,
             int requiredHours, int evaluations, double averageRating) {

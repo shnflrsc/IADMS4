@@ -10,24 +10,24 @@ public class Student extends Person {
     private final String studentId;
     private String section;
 
-    // constructor
+    // makes a Student, takes id, name, gender, birthdate, studentId, section
     public Student(int id, String name, Gender gender, LocalDate birthdate, String studentId, String section) {
         super(id, name, gender, birthdate);
         this.studentId = studentId;
         this.section = section;
     }
 
-    // getter
+    // gets student id (String)
     public String getStudentId() {
         return studentId;
     }
 
-    // getter
+    // gets section (String)
     public String getSection() {
         return section;
     }
 
-    // setter
+    // sets new section, takes a String
     public void setSection(String section) {
         this.section = section;
     }

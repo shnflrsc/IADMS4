@@ -25,7 +25,7 @@ public class ApplicationService {
     private final PersonRepository persons;
     private final PersonService personService;
 
-    // constructor, personService is for promoting students
+    // makes the service, takes applications, persons, personService
     public ApplicationService(ApplicationRepository applications, PersonRepository persons,
             PersonService personService) {
         this.applications = applications;

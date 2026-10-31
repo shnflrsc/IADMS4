@@ -10,7 +10,7 @@ public class Position {
     private String title;
     private int requiredHours;
 
-    // constructor
+    // makes a Position, takes id, company, title, requiredHours
     public Position(int id, Company company, String title, int requiredHours) {
         this.id = id;
         this.company = company;
@@ -18,32 +18,32 @@ public class Position {
         this.requiredHours = requiredHours;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
 
-    // getter
+    // gets company (Company)
     public Company getCompany() {
         return company;
     }
 
-    // getter
+    // gets title (String)
     public String getTitle() {
         return title;
     }
 
-    // setter
+    // sets new title, takes a String
     public void setTitle(String title) {
         this.title = title;
     }
 
-    // getter
+    // gets required hours (int)
     public int getRequiredHours() {
         return requiredHours;
     }
 
-    // setter
+    // sets new required hours, takes an int
     public void setRequiredHours(int requiredHours) {
         this.requiredHours = requiredHours;
     }

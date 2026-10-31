@@ -12,7 +12,7 @@ import iadms4.repository.AccountRepository;
 public class AuthService {
     private final AccountRepository accounts;
 
-    // constructor
+    // makes the service, takes accounts
     public AuthService(AccountRepository accounts) {
         this.accounts = accounts;
     }

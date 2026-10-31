@@ -9,19 +9,19 @@ public class Opening {
     private final Position position;
     private OpeningStatus status;
 
-    // constructor
+    // makes an Opening, takes id, position, status
     public Opening(int id, Position position, OpeningStatus status) {
         this.id = id;
         this.position = position;
         this.status = status;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
 
-    // getter
+    // gets position (Position)
     public Position getPosition() {
         return position;
     }
@@ -31,7 +31,7 @@ public class Opening {
         return status;
     }
 
-    // setter
+    // sets new status, takes an OpeningStatus
     public void setStatus(OpeningStatus status) {
         this.status = status;
     }

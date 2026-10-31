@@ -11,7 +11,7 @@ public class Application {
     private final Coordinator coordinator;
     private ApplicationStatus status;
 
-    // constructor
+    // makes an Application, takes id, student, opening, coordinator, status
     public Application(int id, Student student, Opening opening, Coordinator coordinator, ApplicationStatus status) {
         this.id = id;
         this.student = student;
@@ -20,7 +20,7 @@ public class Application {
         this.status = status;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
@@ -40,12 +40,12 @@ public class Application {
         return coordinator;
     }
 
-    // getter
+    // gets status (ApplicationStatus)
     public ApplicationStatus getStatus() {
         return status;
     }
 
-    // setter
+    // sets new status, takes an ApplicationStatus
     public void setStatus(ApplicationStatus status) {
         this.status = status;
     }

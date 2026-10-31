@@ -8,23 +8,23 @@ public class Company {
     private final int id;
     private String name;
 
-    // constructor
+    // makes a Company, takes id, name
     public Company(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // getter
+    // gets id (int)
     public int getId() {
         return id;
     }
 
-    // getter
+    // gets name (String)
     public String getName() {
         return name;
     }
 
-    // setter
+    // sets new name, takes a String
     public void setName(String name) {
         this.name = name;
     }

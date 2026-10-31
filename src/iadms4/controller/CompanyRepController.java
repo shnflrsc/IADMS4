@@ -32,7 +32,7 @@ public class CompanyRepController {
     private final EvaluationService evaluations;
     private final ReportService reports;
 
-    // constructor, just saves the services
+    // makes the controller, takes openings, applications, interns, evaluations, reports
     public CompanyRepController(OpeningService openings, ApplicationService applications, InternService interns,
             EvaluationService evaluations, ReportService reports) {
         this.openings = openings;

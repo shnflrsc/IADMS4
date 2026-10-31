@@ -11,7 +11,7 @@ public class Intern extends Student {
     private int recordedHours;
     private InternStatus status;
 
-    // constructor, student stuff + position, hours, status
+    // makes an Intern. student stuff + position, recordedHours, status
     public Intern(int id, String name, Gender gender, LocalDate birthdate, String studentId, String section,
             Position position, int recordedHours, InternStatus status) {
         super(id, name, gender, birthdate, studentId, section);
@@ -20,27 +20,27 @@ public class Intern extends Student {
         this.status = status;
     }
 
-    // getter
+    // gets position (Position)
     public Position getPosition() {
         return position;
     }
 
-    // getter
+    // gets recorded hours (int)
     public int getRecordedHours() {
         return recordedHours;
     }
 
-    // setter
+    // sets new recorded hours, takes an int
     public void setRecordedHours(int recordedHours) {
         this.recordedHours = recordedHours;
     }
 
-    // getter
+    // gets status (InternStatus)
     public InternStatus getStatus() {
         return status;
     }
 
-    // setter
+    // sets new status, takes an InternStatus
     public void setStatus(InternStatus status) {
         this.status = status;
     }

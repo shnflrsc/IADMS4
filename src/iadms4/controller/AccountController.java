@@ -11,7 +11,7 @@ public class AccountController {
     private final AuthService auth;
     private final PersonService persons;
 
-    // constructor, just saves the services
+    // makes the controller, takes auth, persons
     public AccountController(AuthService auth, PersonService persons) {
         this.auth = auth;
         this.persons = persons;

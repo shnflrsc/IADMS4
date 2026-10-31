@@ -9,7 +9,7 @@ import iadms4.controller.AccountController;
 public class AccountSettingsView extends Menu {
     private final AccountController controller;
 
-    // constructor
+    // makes the screen, takes console, controller
     public AccountSettingsView(Console console, AccountController controller) {
         super(console);
         this.controller = controller;

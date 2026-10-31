@@ -16,7 +16,7 @@ public class CompanyService {
     private final PersonRepository persons;
     private final PositionRepository positions;
 
-    // constructor
+    // makes the service, takes companies, persons, positions
     public CompanyService(CompanyRepository companies, PersonRepository persons, PositionRepository positions) {
         this.companies = companies;
         this.persons = persons;

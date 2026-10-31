@@ -23,7 +23,7 @@ public class OpeningService {
     private final PersonRepository persons;
     private final ApplicationRepository applications;
 
-    // constructor
+    // makes the service, takes positions, openings, persons, applications
     public OpeningService(PositionRepository positions, OpeningRepository openings, PersonRepository persons,
             ApplicationRepository applications) {
         this.positions = positions;
